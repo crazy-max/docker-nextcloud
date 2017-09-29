@@ -39,10 +39,10 @@ services:
     restart: unless-stopped
 
   redis:
-      image: redis
-      volumes:
-        - /etc/localtime:/etc/localtime:ro
-      restart: always
+    image: redis
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
 
   cron:
     image: crazymax/nextcloud
