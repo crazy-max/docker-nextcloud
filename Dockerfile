@@ -13,4 +13,4 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 ADD assets/ /assets
 
 COPY run.sh /
-ENTRYPOINT ["/entrypoint.sh", "/run.sh"]
+ENTRYPOINT ["/entrypoint.sh", "/bin/bash", "/run.sh"]
