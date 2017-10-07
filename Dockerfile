@@ -14,3 +14,4 @@ ADD assets/ /assets
 
 COPY run.sh /
 ENTRYPOINT ["/entrypoint.sh", "/bin/bash", "/run.sh"]
+CMD ["apache2-foreground"]
