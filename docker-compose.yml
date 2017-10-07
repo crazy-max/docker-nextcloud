@@ -63,10 +63,17 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       - MYSQL_HOST=db
+      - VIRTUAL_HOST=example.com
+      - LETSENCRYPT_HOST=example.com
+      - LETSENCRYPT_EMAIL=webmaster@example.com
+      - SSMTP_ROOT=webmaster@example.com
+      - SSMTP_HOST=smtp.example.com
+      - SSMTP_PORT=587
+      - SSMTP_USER=smtp@example.com
+      - SSMTP_PASSWORD=
+      - SSMTP_TLS=YES
     env_file:
       - ./env/db.env
-      - ./env/proxy.env
-      - ./env/ssmtp.env
     restart: always
 
 volumes:

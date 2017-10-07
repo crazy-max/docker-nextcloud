@@ -1,4 +1,4 @@
-[![Docker Nextcloud](https://raw.githubusercontent.com/crazy-max/docker-nextcloud/master/docker-nextcloud.png)](https://github.com/crazy-max/docker-nextcloud)
+[![Docker Nextcloud](https://raw.githubusercontent.com/crazy-max/docker-nextcloud/master/res/docker-nextcloud.png)](https://github.com/crazy-max/docker-nextcloud)
 
 [![Version](https://images.microbadger.com/badges/version/crazymax/nextcloud.svg?style=flat-square)](https://microbadger.com/images/crazymax/nextcloud)
 [![Docker Build Status](https://img.shields.io/docker/build/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/)
@@ -11,7 +11,7 @@
 
 ## About
 
-[Nextcloud](https://nextcloud.com) Docker image based on Nextcloud stable image with advanced features.
+🐳 [Nextcloud](https://nextcloud.com) Docker image based on Nextcloud ☁ stable image with advanced features. More information about the based Nextcloud image on the [official repository](https://github.com/nextcloud/docker).
 
 ## Features
 
@@ -28,10 +28,36 @@
 
 ## Use this image
 
-Download the [docker-compose.yml](docker-compose.yml) template with the [env](env) folder to use this image and do not forget to edit the env files then run :
+Download the [docker-compose.yml](docker-compose.yml) template and the [env](env) folder in the same directory.<br />
+Edit those files with your preferences, then run :
 
 ```bash
 $ docker-compose up -d
 ```
 
-More information about the based Nextcloud image on the [official repository](https://github.com/nextcloud/docker). 
+Do not forget to choose **Cron** as background jobs :
+
+![Background jobs](https://raw.githubusercontent.com/crazy-max/docker-nextcloud/master/res/background-jobs.png)
+
+And you can customize the **Email server** settings with your preferences :
+
+![Email server](https://raw.githubusercontent.com/crazy-max/docker-nextcloud/master/res/email-server.png)
+
+## How can i help ?
+
+We welcome all kinds of contributions :raised_hands:!<br />
+The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon:<br />
+Any funds donated will be used to help further development on this project! :gift_heart:
+
+<p>
+  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ADCA2SNLJ9FW4">
+    <img src="https://github.com/crazy-max/docker-nextcloud/blob/master/res/paypal.png" alt="Donate Paypal">
+  </a>
+  <a href="https://flattr.com/submit/auto?user_id=crazymax&url=https://github.com/crazy-max/docker-nextcloud">
+    <img src="https://github.com/crazy-max/docker-nextcloud/blob/master/res/flattr.png" alt="Flattr this!">
+  </a>
+</p>
+
+## License
+
+MIT. See `LICENSE` for more details.
