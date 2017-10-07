@@ -15,7 +15,7 @@ services:
       - ./proxy/certs:/etc/nginx/certs:ro
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    restart: unless-stopped
+    restart: always
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
@@ -27,7 +27,7 @@ services:
       - ./proxy/html:/usr/share/nginx/html:rw
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    restart: unless-stopped
+    restart: always
 
   db:
     image: mariadb
@@ -36,7 +36,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - ./env/db.env
-    restart: unless-stopped
+    restart: always
 
   redis:
     image: redis
@@ -44,27 +44,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
     restart: always
 
-  cron:
-    image: crazymax/nextcloud
-    user: www-data
-    entrypoint: |
-      bash -c 'bash -s <<EOF
-        trap "break;exit" SIGHUP SIGINT SIGTERM
-        while [ ! -f /var/www/html/config/config.php ]; do
-          sleep 1
-        done
-        while true; do
-          php -f /var/www/html/cron.php
-          sleep 15m
-        done
-      EOF'
-    depends_on:
-      - db
-      - redis
-    restart: unless-stopped
-
   app:
     image: crazymax/nextcloud
+    domainname: example.com
+    hostname: nextcloud
     depends_on:
       - letsencrypt
       - proxy
@@ -76,24 +59,15 @@ services:
       - ./app/custom_apps:/var/www/html/custom_apps
       - ./app/data:/var/www/html/data
       - ./app/themes:/var/www/html/themes
+      - ./ssmtp:/etc/ssmtp
       - /etc/localtime:/etc/localtime:ro
     environment:
       - MYSQL_HOST=db
     env_file:
       - ./env/db.env
       - ./env/proxy.env
-      - ./env/letsencrypt.env
-    restart: unless-stopped
-
-  postfix:
-    image: alterrebe/postfix-relay
-    depends_on:
-      - app
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - ./env/postfix.env
-    restart: unless-stopped
+      - ./env/ssmtp.env
+    restart: always
 
 volumes:
   nextcloud:

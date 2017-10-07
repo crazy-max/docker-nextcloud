@@ -1,6 +1,13 @@
 [![Docker Nextcloud](https://raw.githubusercontent.com/crazy-max/docker-nextcloud/master/docker-nextcloud.png)](https://github.com/crazy-max/docker-nextcloud)
 
-[![Version](https://images.microbadger.com/badges/version/crazymax/nextcloud.svg?style=flat-square)](https://microbadger.com/images/crazymax/nextcloud) [![Docker Build Status](https://img.shields.io/docker/build/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/) [![Docker Stars](https://img.shields.io/docker/stars/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/) [![Docker Pulls](https://img.shields.io/docker/pulls/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/) [![Docker Build](https://img.shields.io/docker/automated/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/) [![Nextcloud Version](https://img.shields.io/badge/nextcloud-12.0.3-green.svg?style=flat-square)](https://nextcloud.com) [![Donate Paypal](https://img.shields.io/badge/donate-paypal-blue.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ADCA2SNLJ9FW4) [![Flattr this!](https://img.shields.io/badge/flattr-this-green.svg?style=flat-square)](https://flattr.com/submit/auto?user_id=crazymax&url=https://github.com/crazy-max/docker-nextcloud)
+[![Version](https://images.microbadger.com/badges/version/crazymax/nextcloud.svg?style=flat-square)](https://microbadger.com/images/crazymax/nextcloud)
+[![Docker Build Status](https://img.shields.io/docker/build/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/)
+[![Docker Stars](https://img.shields.io/docker/stars/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/)
+[![Docker Build](https://img.shields.io/docker/automated/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/)
+[![Nextcloud Version](https://img.shields.io/badge/nextcloud-12.0.3-green.svg?style=flat-square)](https://nextcloud.com)
+[![Donate Paypal](https://img.shields.io/badge/donate-paypal-blue.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ADCA2SNLJ9FW4)
+[![Flattr this!](https://img.shields.io/badge/flattr-this-green.svg?style=flat-square)](https://flattr.com/submit/auto?user_id=crazymax&url=https://github.com/crazy-max/docker-nextcloud)
 
 ## About
 
@@ -8,11 +15,16 @@
 
 ## Features
 
-* Reverse proxy with [nginx-proxy](https://github.com/jwilder/nginx-proxy).
-* Creation/renewal of Let's Encrypt certificates automatically with [letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion).
-* [Redis](https://github.com/docker-library/redis) for caching.
-* [Postfix](https://github.com/alterrebe/docker-mail-relay) as SMTP relay.
-* Cron container based on this image.
+### Included
+
+* [SSMTP](https://github.com/alterrebe/docker-mail-relay) for SMTP relay (use PHP as send mode on Nextcloud)
+* Cron for Nextcloud background jobs
+
+### From docker-compose
+
+* Reverse proxy with [nginx-proxy](https://github.com/jwilder/nginx-proxy)
+* Creation/renewal of Let's Encrypt certificates automatically with [letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)
+* [Redis](https://github.com/docker-library/redis) for caching
 
 ## Use this image
 
