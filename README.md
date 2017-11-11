@@ -6,8 +6,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/)
 [![Docker Build](https://img.shields.io/docker/automated/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/)
 [![Nextcloud Version](https://img.shields.io/badge/nextcloud-12.0.3-green.svg?style=flat-square)](https://nextcloud.com)
-[![Donate Paypal](https://img.shields.io/badge/donate-paypal-blue.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ADCA2SNLJ9FW4)
-[![Flattr this!](https://img.shields.io/badge/flattr-this-green.svg?style=flat-square)](https://flattr.com/submit/auto?user_id=crazymax&url=https://github.com/crazy-max/docker-nextcloud)
+[![Donate Paypal](https://img.shields.io/badge/donate-paypal-7057ff.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ADCA2SNLJ9FW4)
 
 ## About
 
@@ -49,14 +48,7 @@ We welcome all kinds of contributions :raised_hands:!<br />
 The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon:<br />
 Any funds donated will be used to help further development on this project! :gift_heart:
 
-<p>
-  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ADCA2SNLJ9FW4">
-    <img src="https://github.com/crazy-max/docker-nextcloud/blob/master/res/paypal.png" alt="Donate Paypal">
-  </a>
-  <a href="https://flattr.com/submit/auto?user_id=crazymax&url=https://github.com/crazy-max/docker-nextcloud">
-    <img src="https://github.com/crazy-max/docker-nextcloud/blob/master/res/flattr.png" alt="Flattr this!">
-  </a>
-</p>
+[![Donate Paypal](https://github.com/crazy-max/docker-nextcloud/blob/master/res/paypal.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ADCA2SNLJ9FW4)
 
 ## License
 
