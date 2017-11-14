@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Timezone
+ln -snf /usr/share/zoneinfo/${TZ:-"UTC"} /etc/localtime
+echo ${TZ:-"UTC"} > /etc/timezone
+
 # SSMTP
 SSMTP_TPL=/assets/ssmtp.conf
 SSMTP_CONF=/etc/ssmtp/ssmtp.conf

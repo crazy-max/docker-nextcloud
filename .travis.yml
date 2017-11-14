@@ -1,0 +1,60 @@
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    - VERSION=1.0
+    - GITHUB_REPO=crazy-max/docker-nextcloud
+    - DOCKER_USERNAME=crazymax
+    - DOCKER_REPONAME=nextcloud
+    - DOCKER_VERSION=17.10.0~ce-0~ubuntu
+    - COMPOSE_VERSION=1.17.1
+    - MICROBADGER_HOOK=https://hooks.microbadger.com/images/crazymax/nextcloud/rCjCdBDz_XNeq8rPpHopWXWxZNI=
+    - secure: LVSKcXatL4NI35riS3hmbeeRir7HlWW2ZI187Hmm0ffCe25QKHh8TJWufYPahjHRV5kpY10yUmREgJdM79wT+8RqGgflpbiRS2HECFMUSp0YgdtAL76dsNXJ2ypT9bcLuzndRhVltTkLV/G/tzvygXNXCaPmvF95DwV11JP4I3SC3LskLi9mzet8XocWHlolrV2EXjsC5/Z5dYr+gkLCLtd52PKHH+xjf783f+ZutN8POxwPt6qgraHAiolIehk7BB8tQfnPnzhKixDRZsle24o+23/KLKSguRhg/+SgeMbu5fVAVJWoYBlK5LNlnSgOtSqQHUiytmPmcJm+Jz8GBSVkLdCnp1MXy9+9fRpJbkHr/caKAgTrc/Xv5z2YHa4Zu2jzsP1cerIVCsdMZo9a1lrMmzaWz4RUDxeDXfARC9zMGU47XfZ8azX82jhTf7hlhXP/z/66MZqGJMncsMMc53hI3juKLXTXLCjs5aQl7ivgJUxpgNMyYR7imTDISfWU6vDz4LB5z+BLx4gwwARMdg6UJE1VyKmWKxNMU7Lbjd6LCsmk3Qi2dtkmizcP0cG2y++Vhm+xpjCtDCL4wZIeczrW/sBJOOuASo0IWy6EbjawqEeD6YLRaSrvYH0daOULL1RxQv4J2snWwpnGh2gGym2rvicwOioj6I0ou9HPL0A= # DOCKER_PASSWORD
+    - secure: kx18US2HSFP2kpSs0WTVd4fLHK1bO+SmfvsWxCsuItv6gI1duJ0f/yb+wXX3cJG1PpJUp3NMDL6hoz8Z/FeqzTvXEK22ikUkFoPURHj6+dzkH+ydYgJS231fw/OKaWu+3cCL+9Y/zuGhFWxewBYzscGzbP7pYPaDOotZROVWsqIx1D4n856oM/qMEHXtGMkXpVP4olr7zWZhe/QpHrzd9zaaBC8g2Mx7rcZsY/MbOrXv0gD6mS/3fJi8WDkqimMNGsP5iYg4K1iNn4g7rXhiIduwIiFWoHmCMyOcIQ6h9QPCfwT4C0CaLPFnnl1DnDh6gR+dhvCOFxJ2H3LtiFYHokiyz5fGQlaw/d4/KMMG71JYwXAnmzpwZFrOoqpoZWTi39qb4gcPhbGHHsOF/0QjXpa+uKyocCVzAWo4S/i9CqWwO+DlcQo0djF7w9nrKFVQRr+/7SKHBKZ22yvKCNBA0MKaC+J7aFnqjf/EcfdBpXeS9yDEFjnsS4qC+EKJK1Ntx299RQ65WqRgfIck3BK0GKrME+ZmGyST2XAVv24TBvq5/BRKNlZ2qNsuOIRyAcbQh0kdezuAZuMzYfrl7MRcr2EOpwPfpd65j+2Dmse6HTNZsWeD/+JAd9WtUTVWMGIt5BG+6GBL8ojrqpQPdrlgPidR0CwLOiTTIjBV6a5ffTk= # GITHUB_TOKEN
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-cache madison docker-ce
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce=${DOCKER_VERSION}
+  - docker --version
+  - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose --version
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - export DOCKER_TAG=$(if [ "$BRANCH" == "master" ]; then echo "latest"; else echo $BRANCH; fi)
+  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH, DOCKER_TAG=$DOCKER_TAG"
+
+install:
+  - |
+    docker build --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+    --build-arg VCS_REF=${TRAVIS_COMMIT::8} \
+    --build-arg VERSION=${VERSION} \
+    -t $DOCKER_USERNAME/$DOCKER_REPONAME .
+
+before_script:
+  - docker run -d --name $DOCKER_REPONAME $DOCKER_USERNAME/$DOCKER_REPONAME
+  - sleep 5
+  - docker logs $DOCKER_REPONAME
+
+script:
+  - docker ps | grep $DOCKER_REPONAME
+
+after_success:
+  - test $TRAVIS_PULL_REQUEST = false
+    && echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+    && docker tag $DOCKER_USERNAME/$DOCKER_REPONAME $DOCKER_USERNAME/$DOCKER_REPONAME:$DOCKER_TAG
+    && docker tag $DOCKER_USERNAME/$DOCKER_REPONAME $DOCKER_USERNAME/$DOCKER_REPONAME:$VERSION
+    && docker push $DOCKER_USERNAME/$DOCKER_REPONAME
+    && curl -X POST $MICROBADGER_HOOK
+    && git config --global user.email "builds@travis-ci.com"
+    && git config --global user.name "Travis CI"
+    && git tag $VERSION -a -m "Generated tag from TravisCI for $VERSION"
+    && git push --quiet https://$GITHUB_TOKEN@github.com/$GITHUB_REPO $VERSION > /dev/null 2>&1
+
+branches:
+  except:
+    - /^[0-9]/

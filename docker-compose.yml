@@ -54,14 +54,13 @@ services:
       - db
       - redis
     volumes:
-      - nextcloud:/var/www/html
       - ./app/config:/var/www/html/config
       - ./app/custom_apps:/var/www/html/custom_apps
       - ./app/data:/var/www/html/data
       - ./app/themes:/var/www/html/themes
       - ./ssmtp:/etc/ssmtp
-      - /etc/localtime:/etc/localtime:ro
     environment:
+      - TZ=Europe/Paris
       - MYSQL_HOST=db
       - VIRTUAL_HOST=example.com
       - LETSENCRYPT_HOST=example.com
@@ -75,6 +74,3 @@ services:
     env_file:
       - ./env/db.env
     restart: always
-
-volumes:
-  nextcloud:

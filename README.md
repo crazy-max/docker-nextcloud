@@ -1,12 +1,13 @@
-[![Docker Nextcloud](https://raw.githubusercontent.com/crazy-max/docker-nextcloud/master/res/docker-nextcloud.png)](https://github.com/crazy-max/docker-nextcloud)
+<p align="center"><a href="https://github.com/crazy-max/docker-nextcloud" target="_blank"><img height="100"src="https://raw.githubusercontent.com/crazy-max/docker-nextcloud/master/res/docker-nextcloud.png"></a></p>
 
-[![Version](https://images.microbadger.com/badges/version/crazymax/nextcloud.svg?style=flat-square)](https://microbadger.com/images/crazymax/nextcloud)
-[![Docker Build Status](https://img.shields.io/docker/build/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/)
-[![Docker Stars](https://img.shields.io/docker/stars/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/)
-[![Docker Build](https://img.shields.io/docker/automated/crazymax/nextcloud.svg?style=flat-square)](https://hub.docker.com/r/crazymax/nextcloud/)
-[![Nextcloud Version](https://img.shields.io/badge/nextcloud-12.0.3-green.svg?style=flat-square)](https://nextcloud.com)
-[![Donate Paypal](https://img.shields.io/badge/donate-paypal-7057ff.svg?style=flat-square)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ADCA2SNLJ9FW4)
+<p align="center">
+  <a href="https://microbadger.com/images/crazymax/nextcloud"><img src="https://images.microbadger.com/badges/version/crazymax/nextcloud.svg?style=flat-square" alt="Version"></a>
+  <a href="https://travis-ci.org/crazy-max/docker-nextcloud"><img src="https://img.shields.io/travis/crazy-max/docker-nextcloud/master.svg?style=flat-square" alt="Build Status"></a>
+  <a href="https://hub.docker.com/r/crazymax/nextcloud/"><img src="https://img.shields.io/docker/stars/crazymax/nextcloud.svg?style=flat-square" alt="Docker Stars"></a>
+  <a href="https://hub.docker.com/r/crazymax/nextcloud/"><img src="https://img.shields.io/docker/pulls/crazymax/nextcloud.svg?style=flat-square" alt="Docker Pulls"></a>
+  <a href="hhttps://nextcloud.com"><img src="https://img.shields.io/badge/nextcloud-12.0.3-green.svg?style=flat-square" alt="Nextcloud Version"></a>
+  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ADCA2SNLJ9FW4"><img src="https://img.shields.io/badge/donate-paypal-7057ff.svg?style=flat-square" alt="Donate Paypal"></a>
+</p>
 
 ## About
 
