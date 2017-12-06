@@ -45,7 +45,7 @@ services:
     restart: always
 
   app:
-    image: crazymax/nextcloud
+    image: crazymax/nextcloud:latest
     domainname: example.com
     hostname: nextcloud
     depends_on:
