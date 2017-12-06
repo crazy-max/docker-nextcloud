@@ -1,4 +1,4 @@
-FROM nextcloud:12.0.3
+FROM nextcloud:12.0.4
 MAINTAINER CrazyMax <crazy-max@users.noreply.github.com>
 
 ARG BUILD_DATE
