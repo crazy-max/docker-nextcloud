@@ -1,11 +1,10 @@
 <?php
 $CONFIG = array (
     'dbtype' => 'mysql',
-    'dbhost' => 'db:3306',
-    'dbname' => '{{ MYSQL_DATABASE }}',
-    'dbport' => '',
-    'dbuser' => '{{ MYSQL_USER }}',
-    'dbpassword' => '{{ MYSQL_PASSWORD }}',
+    'dbhost' =>  getenv('MYSQL_HOST'),
+    'dbname' => getenv('MYSQL_DATABASE'),
+    'dbuser' => getenv('MYSQL_USER'),
+    'dbpassword' => getenv('MYSQL_PASSWORD'),
     'mail_smtpmode' => 'php',
     'mail_from_address' => 'nextcloud',
     'mail_smtpauthtype' => 'LOGIN',

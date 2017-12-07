@@ -58,7 +58,6 @@ services:
       - ./app/custom_apps:/var/www/html/custom_apps
       - ./app/data:/var/www/html/data
       - ./app/themes:/var/www/html/themes
-      - ./ssmtp:/etc/ssmtp
     environment:
       - TZ=Europe/Paris
       - MYSQL_HOST=db

@@ -25,23 +25,12 @@ sed -i "s|{{ SSMTP_TLS }}|${SSMTP_TLS}|g" "$SSMTP_TPL"
 cat "$SSMTP_TPL" > "$SSMTP_CONF"
 echo "sendmail_path=/usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/sendmail-ssmtp.ini
 
-# Nextcloud config
-NEXTCLOUD_TPL=/assets/nextcloud.config.php
-NEXTCLOUD_CONF=/var/www/html/config/docker.config.php
-
-MYSQL_DATABASE=${MYSQL_DATABASE:-"nextcloud"}
-MYSQL_USER=${MYSQL_USER:-"nextcloud"}
-
-sed -i "s|{{ MYSQL_DATABASE }}|${MYSQL_DATABASE}|g" "$NEXTCLOUD_TPL"
-sed -i "s|{{ MYSQL_USER }}|${MYSQL_USER}|g" "$NEXTCLOUD_TPL"
-sed -i "s|{{ MYSQL_PASSWORD }}|${MYSQL_PASSWORD}|g" "$NEXTCLOUD_TPL"
-
-cat "$NEXTCLOUD_TPL" > "$NEXTCLOUD_CONF"
-
-# Nextcloud cron
+# Nextcloud
+if [ ! -f "/var/www/html/config/docker.config.php" ]; then
+  cp "/assets/docker.config.php" > "/var/www/html/config/"
+fi
 echo "*/15 * * * * su - www-data -s /bin/bash -c \"php -f /var/www/html/cron.php\" >/proc/1/fd/1 2>/proc/1/fd/2" | crontab -
-
-# Fix perms
 chown -R www-data /var/www/html
+
 
 exec "$@"
