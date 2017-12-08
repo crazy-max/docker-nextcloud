@@ -31,7 +31,7 @@ Download the [docker-compose.yml](docker-compose.yml) template and the [env](env
 Edit those files with your preferences, then run :
 
 ```bash
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 Do not forget to choose **Cron** as background jobs :
@@ -41,6 +41,19 @@ Do not forget to choose **Cron** as background jobs :
 And you can customize the **Email server** settings with your preferences :
 
 ![Email server](https://raw.githubusercontent.com/crazy-max/docker-nextcloud/master/res/email-server.png)
+
+## Upgrade
+
+```bash
+docker-compose down
+docker-compose pull
+docker-compose up -d
+docker-compose exec --user www-data app php occ upgrade
+docker-compose exec --user www-data app php occ app:enable <appname>
+docker-compose exec --user www-data app php occ maintenance:mode --off
+```
+
+Replace `<appname>` with an application name like `calendar` or `contacts` for example.
 
 ## How can i help ?
 
