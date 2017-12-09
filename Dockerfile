@@ -27,7 +27,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && rm -rf /var/lib/apt/lists/*
 
 COPY assets/ /
-COPY config/ /usr/src/nextcloud/config/
 COPY init.sh /
 
 RUN mkdir /var/log/supervisord /var/run/supervisord \
