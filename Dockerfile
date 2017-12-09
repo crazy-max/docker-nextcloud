@@ -20,15 +20,18 @@ RUN export DEBIAN_FRONTEND=noninteractive \
   && apt-get install -y --no-install-recommends \
     cron \
     ssmtp \
+    supervisor \
     mailutils \
     tzdata \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-ADD assets/ /assets
-ADD run.sh /
+COPY assets/ /
+COPY config/ /usr/src/nextcloud/config/
+COPY init.sh /
 
-RUN chmod a+x /run.sh
+RUN mkdir /var/log/supervisord /var/run/supervisord \
+  && echo "*/15 * * * * su - www-data -s /bin/bash -c \"php -f /var/www/html/cron.php\""| crontab -
 
-ENTRYPOINT ["/entrypoint.sh", "/bin/bash", "/run.sh"]
-CMD ["apache2-foreground"]
+ENTRYPOINT ["/entrypoint.sh", "/bin/bash", "/init.sh"]
+CMD ["/usr/bin/supervisord"]
