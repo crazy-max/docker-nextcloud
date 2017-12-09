@@ -50,10 +50,6 @@ after_success:
     && docker tag $DOCKER_USERNAME/$DOCKER_REPONAME $DOCKER_USERNAME/$DOCKER_REPONAME:$VERSION
     && docker push $DOCKER_USERNAME/$DOCKER_REPONAME
     && curl -X POST $MICROBADGER_HOOK
-    && git config --global user.email "builds@travis-ci.com"
-    && git config --global user.name "Travis CI"
-    && git tag $VERSION -a -m "Generated tag from TravisCI for $VERSION"
-    && git push --quiet https://$GITHUB_TOKEN@github.com/$GITHUB_REPO $VERSION > /dev/null 2>&1
 
 branches:
   except:
