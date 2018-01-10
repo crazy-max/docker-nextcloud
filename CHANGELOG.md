@@ -1,5 +1,9 @@
 # Changelog
 
+## 12.0.4-RC5 (2018/01/09)
+
+* Base image updated
+
 ## 12.0.4-RC4 (2018/01/07)
 
 * Base image updated
