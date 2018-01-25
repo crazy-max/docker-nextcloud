@@ -1,5 +1,9 @@
 # Changelog
 
+## 12.0.5-RC1 (2018/01/25)
+
+* Upgrade to Nextcloud 12.0.5
+
 ## 12.0.4-RC5 (2018/01/09)
 
 * Base image updated
