@@ -18,7 +18,7 @@ services:
     restart: always
 
   letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
+    image: jrcs/letsencrypt-nginx-proxy-companion:latest
     depends_on:
       - proxy
     volumes:
@@ -30,7 +30,7 @@ services:
     restart: always
 
   db:
-    image: mariadb
+    image: mariadb:10.2
     volumes:
       - ./db:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
@@ -39,8 +39,9 @@ services:
     restart: always
 
   redis:
-    image: redis
+    image: redis:4.0-alpine
     volumes:
+      - ./redis:/data
       - /etc/localtime:/etc/localtime:ro
     restart: always
 
