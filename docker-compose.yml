@@ -34,8 +34,11 @@ services:
     volumes:
       - ./db:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - ./env/db.env
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=asupersecretpassword
     restart: always
 
   redis:
@@ -54,22 +57,29 @@ services:
       - db
       - redis
     volumes:
-      - ./app/config:/var/www/html/config
-      - ./app/custom_apps:/var/www/html/custom_apps
-      - ./app/data:/var/www/html/data
-      - ./app/themes:/var/www/html/themes
+      - ./app:/data
     environment:
+      - UID=1000
+      - GID=1000
       - TZ=Europe/Paris
-      - MYSQL_HOST=db
-      - VIRTUAL_HOST=example.com
-      - LETSENCRYPT_HOST=example.com
-      - LETSENCRYPT_EMAIL=webmaster@example.com
+      - SITE_DOMAIN=nextcloud.example.com
+      - CRON_PERIOD=*/15 * * * *
+      - MEMORY_LIMIT=256M
+      - UPLOAD_MAX_SIZE=512M
+      - OPCACHE_MEM_SIZE=128
+      - APC_SHM_SIZE=128M
+      - DB_TYPE=mysql
+      - DB_HOST=db
+      - DB_NAME=nextcloud
+      - DB_USER=nextcloud
+      - DB_PASSWORD=asupersecretpassword
       - SSMTP_HOST=smtp.example.com
       - SSMTP_PORT=587
       - SSMTP_HOSTNAME=nextcloud.example.com
       - SSMTP_USER=smtp@example.com
       - SSMTP_PASSWORD=
       - SSMTP_TLS=YES
-    env_file:
-      - ./env/db.env
+      - VIRTUAL_HOST=nextcloud.example.com
+      - LETSENCRYPT_HOST=nextcloud.example.com
+      - LETSENCRYPT_EMAIL=webmaster@example.com
     restart: always

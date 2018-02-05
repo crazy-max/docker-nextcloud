@@ -1,5 +1,27 @@
 # Changelog
 
+## 12.0.5-RC2 (2018/02/05)
+
+* Based on Alpine Linux 3.7 and Nginx
+* Redirect Nginx and PHP-FPM to stdout
+* Ability to set a custom UID / GID
+* Remove env file
+* Automatic installation on first launch
+* Tarball authenticity checked during building process
+* Data, config, user apps and themes persistence in the same folder
+* Cron task disabled by default
+* OPCache enabled to store precompiled script bytecode in shared memory
+* APCu installed and configured
+* Memcached and Redis also enabled to enhance server performance
+* Database connectors MySQL/MariaDB, PostgreSQL and SQLite3 enabled
+* Exif, IMAP, LDAP, FTP, GMP, SMB enabled (required for specific apps)
+* FFmpeg, iconv, Imagick installed for preview generation
+* Ability to customize HTTP Strict Transport Security header value
+* Add occ wrapper
+* Bootstrap config
+* Log timezone set for Nextcloud
+* Publish image to Quay
+
 ## 12.0.5-RC1 (2018/01/25)
 
 * Upgrade to Nextcloud 12.0.5
