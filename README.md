@@ -78,6 +78,7 @@ Docker compose is the recommended way to run this image. You can use the followi
 
 ```bash
 docker-compose up -d
+docker-compose logs -f
 ```
 
 Or use the following minimal command :
@@ -134,7 +135,7 @@ If you want to enable Redis, deploy a redis container (see [docker-compose.yml](
     ),
 ```
 
-### Upgrade
+## Upgrade
 
 To upgrade to the latest version of Nextcloud, pull the newer image and launch the container. Nextcloud will upgrade automatically :
 

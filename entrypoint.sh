@@ -29,30 +29,30 @@ addgroup -g ${GID} ${USERNAME}
 adduser -D -s /bin/sh -G ${USERNAME} -u ${UID} ${USERNAME}
 
 # Init
+echo "Initializing files and folders..."
 mkdir -p /data/config /data/data /data/session /data/tmp /data/userapps /etc/supervisord /var/log/supervisord
-cp -f /tpls/etc/php7/conf.d/* /etc/php7/conf.d/
 chown -R ${USERNAME}. /data /tpls/data /var/lib/nginx /var/tmp/nginx /var/www
 
 # PHP
 echo "Setting PHP-FPM configuration..."
-sed -e 's/@MEMORY_LIMIT@/'"$MEMORY_LIMIT"'/g' \
-  -e 's/@UPLOAD_MAX_SIZE@/'"$UPLOAD_MAX_SIZE"'/g' \
+sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
+  -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
   /tpls/etc/php7/php-fpm.d/www.conf > /etc/php7/php-fpm.d/www.conf
 
 # OpCache
 echo "Setting OpCache configuration..."
-sed -e 's/@OPCACHE_MEM_SIZE@/'"$OPCACHE_MEM_SIZE"'/g' \
+sed -e "s/@OPCACHE_MEM_SIZE@/$OPCACHE_MEM_SIZE/g" \
   /tpls/etc/php7/conf.d/opcache.ini > /etc/php7/conf.d/opcache.ini
 
 # APCu
 echo "Setting APCu configuration..."
-sed -e 's/@APC_SHM_SIZE@/'"$APC_SHM_SIZE"'/g' \
+sed -e "s/@APC_SHM_SIZE@/$APC_SHM_SIZE/g" \
   /tpls/etc/php7/conf.d/apcu.ini > /etc/php7/conf.d/apcu.ini
 
 # Nginx
 echo "Setting Nginx configuration..."
-sed -e 's/@UPLOAD_MAX_SIZE@/'"$UPLOAD_MAX_SIZE"'/g' \
-  -e 's/@HSTS_HEADER@/'"$HSTS_HEADER"'/g' \
+sed -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
+  -e "s/@HSTS_HEADER@/$HSTS_HEADER/g" \
   /tpls/etc/nginx/nginx.conf > /etc/nginx/nginx.conf
 
 # SSMTP
@@ -72,15 +72,11 @@ UseSTARTTLS=${SSMTP_TLS}
 EOL
 fi
 
-# Supervisor
-echo "Setting Supervisor configuration..."
-cp -f /tpls/etc/supervisord/* /etc/supervisord/
-
 # Init Nextcloud
 echo "Initializing Nextcloud files / folders..."
 if [ ! -d /data/themes ]; then
   if [ -d /var/www/themes ]; then
-    mv /var/www/themes /data/
+    mv -f /var/www/themes /data/
   fi
   mkdir -p /data/themes
 elif [ -d /var/www/themes ]; then
@@ -124,7 +120,7 @@ fi
 
 # Override several config values of Nextcloud
 echo "Bootstrapping configuration..."
-su - ${USERNAME} -s /bin/sh -c "php -f /tpls/data/bootstrap.php" > /tmp/config.php
+su - ${USERNAME} -s /bin/sh -c "php -f /tpls/bootstrap.php" > /tmp/config.php
 mv /tmp/config.php /data/config/config.php
 sed -i -e "s#@TZ@#$TZ#g" /data/config/config.php
 
