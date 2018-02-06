@@ -6,8 +6,10 @@ services:
 matrix:
   include:
     - env: VERSION=12.0.5
+      env: DOCKERFILE=./Dockerfile-12
       if: env(MAJOR_VERSION) IN (12, all)
     - env: VERSION=13.0.0
+      env: DOCKERFILE=./Dockerfile-13
       if: env(MAJOR_VERSION) IN (13, all)
 
 env:
@@ -42,7 +44,7 @@ install:
     docker build --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
     --build-arg VCS_REF=${TRAVIS_COMMIT::8} \
     --build-arg VERSION=${VERSION} \
-    -t $DOCKER_USERNAME/$DOCKER_REPONAME .
+    -t $DOCKER_USERNAME/$DOCKER_REPONAME -f $DOCKERFILE .
 
 before_script:
   - docker run -d --hostname nextcloud.example.com --name $DOCKER_REPONAME $DOCKER_USERNAME/$DOCKER_REPONAME
