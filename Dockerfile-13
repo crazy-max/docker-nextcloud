@@ -1,0 +1,65 @@
+FROM alpine:3.7
+MAINTAINER CrazyMax <crazy-max@users.noreply.github.com>
+
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+
+LABEL org.label-schema.build-date=$BUILD_DATE \
+  org.label-schema.name="nextcloud" \
+  org.label-schema.description="Nextcloud based on Alpine Linux and Nginx with advanced features" \
+  org.label-schema.version=$VERSION \
+  org.label-schema.url="https://github.com/crazy-max/docker-nextcloud" \
+  org.label-schema.vcs-ref=$VCS_REF \
+  org.label-schema.vcs-url="https://github.com/crazy-max/docker-nextcloud" \
+  org.label-schema.vendor="CrazyMax" \
+  org.label-schema.schema-version="1.0"
+
+RUN apk --update --no-cache add \
+    ca-certificates dcron ffmpeg libressl libsmbclient libxml2 nginx ssmtp su-exec supervisor tzdata \
+    php7 php7-cli php7-apcu php7-bz2 php7-curl php7-ctype php7-dom php7-exif php7-fileinfo php7-fpm php7-ftp php7-gd \
+    php7-gmp php7-iconv php7-imagick php7-intl php7-json php7-ldap php7-memcached php7-mbstring php7-mcrypt \
+    php7-opcache php7-openssl php7-pdo php7-pdo_mysql php7-pdo_pgsql php7-pdo_sqlite php7-pcntl php7-posix php7-redis \
+    php7-session php7-simplexml php7-sqlite3 php7-xml php7-xmlreader php7-xmlwriter php7-zip php7-zlib \
+  && apk --update --no-cache add -t build-dependencies \
+    build-base autoconf automake pcre-dev libtool php7-dev php7-pear samba-dev \
+  && pecl install smbclient \
+  && apk del build-dependencies \
+  && rm -rf /var/cache/apk/* /var/www/* /tmp/*
+
+ENV NEXTCLOUD_VERSION="13.0.0" \
+  CRONTAB_PATH="/var/spool/cron/crontabs" \
+  SCRIPTS_PATH="/usr/local/bin" \
+  USERNAME="docker" \
+  UID=1000 GID=1000
+
+RUN apk --update --no-cache add -t build-dependencies \
+    gnupg tar wget \
+  && cd /tmp \
+  && wget -q https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
+  && wget -q https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc \
+  && wget -q https://nextcloud.com/nextcloud.asc \
+  && gpg --import nextcloud.asc \
+  && gpg --verify nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
+  && tar -xjf nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 --strip 1 -C /var/www \
+  && rm -f nextcloud-${NEXTCLOUD_VERSION}.tar* nextcloud.asc \
+  && cp -f /etc/ssmtp/ssmtp.conf /etc/ssmtp/ssmtp.conf.or \
+  && apk del build-dependencies \
+  && rm -rf /root/.gnupg /tmp/* /var/cache/apk/* /var/www/updater
+
+ADD entrypoint.sh /entrypoint.sh
+ADD assets /
+
+RUN mkdir -m 0644 -p ${CRONTAB_PATH} \
+  && cd /scripts/ && for script in *.sh; do \
+    scriptBasename=`echo $script | cut -d "." -f 1`; \
+    mv $script ${SCRIPTS_PATH}/$scriptBasename; \
+    chmod a+x ${SCRIPTS_PATH}/*; done \
+  && chmod a+x /entrypoint.sh
+
+EXPOSE 80
+WORKDIR "/var/www"
+VOLUME [ "/data" ]
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisord.conf" ]

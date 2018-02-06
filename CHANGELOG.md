@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.0.0-RC1 (2018/02/07)
+
+* Add Nextcloud 13.0.0
+
 ## 12.0.5-RC2 (2018/02/05)
 
 * Based on Alpine Linux 3.7 and Nginx
