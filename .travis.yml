@@ -3,17 +3,6 @@ sudo: required
 services:
   - docker
 
-matrix:
-  include:
-    - env:
-        VERSION=12.0.5
-        DOCKERFILE=./Dockerfile-12
-      if: env(MAJOR_VERSION) IN (12, all)
-    - env:
-        VERSION=13.0.0
-        DOCKERFILE=./Dockerfile-13
-      if: env(MAJOR_VERSION) IN (13, all)
-
 env:
   global:
     - GITHUB_REPO=crazy-max/docker-nextcloud
