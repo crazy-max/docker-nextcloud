@@ -39,7 +39,7 @@ install:
 
 before_script:
   - docker run -d --hostname nextcloud.example.com --name $DOCKER_REPONAME $DOCKER_USERNAME/$DOCKER_REPONAME
-  - sleep 5
+  - sleep 20
   - docker logs $DOCKER_REPONAME
 
 script:
