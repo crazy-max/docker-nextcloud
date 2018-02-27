@@ -1,6 +1,6 @@
 # Changelog
 
-## 13.0.0-RC1 / 12.0.5-RC3 (2018/02/27)
+## 13.0.0-RC2 / 12.0.5-RC3 (2018/02/27)
 
 * Permissions fix more efficient
 * Cron now only available as a "sidecar" container (see docker-compose)
