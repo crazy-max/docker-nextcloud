@@ -20,10 +20,11 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 ### Included
 
 * Alpine Linux 3.7, Nginx, PHP 7.1
+* Ability to set a custom UID / GID
 * Tarball authenticity checked during building process
 * Data, config, user apps and themes persistence in the same folder
 * [Automatic installation](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/automatic_configuration.html)
-* Cron task for [Nextcloud background jobs]((https://docs.nextcloud.com/server/12/admin_manual/configuration_server/background_jobs_configuration.html#cron))
+* Cron task for [Nextcloud background jobs]((https://docs.nextcloud.com/server/12/admin_manual/configuration_server/background_jobs_configuration.html#cron)) as a ["sidecar" container](#cron)
 * [SSMTP](https://linux.die.net/man/8/ssmtp) for SMTP relay (use PHP as send mode on Nextcloud)
 * OPCache enabled to store precompiled script bytecode in shared memory
 * APCu installed and configured
@@ -34,20 +35,18 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 ### From docker-compose
 
-* Reverse proxy with [nginx-proxy](https://github.com/jwilder/nginx-proxy)
-* Creation/renewal of Let's Encrypt certificates automatically with [letsencrypt-nginx-proxy-companion](https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion)
+* [Traefik](https://github.com/containous/traefik-library-image) as reverse proxy and creation/renewal of Let's Encrypt certificates
 * [Redis](https://github.com/docker-library/redis) for caching
 * [MariaDB](https://github.com/docker-library/mariadb) as database instance
+* Nextcloud cron job as a ["sidecar" container](#cron)
 
 ## Docker
 
 ### Environment variables
 
-* `UID` : Nextcloud user id (default to `1000`)
-* `GID` : Nextcloud group id (default to `1000`)
+* `PUID` : Nextcloud user id (default to `1000`)
+* `PGID` : Nextcloud group id (default to `1000`)
 * `TZ` : The timezone assigned to the container (default to `UTC`)
-* `SITE_DOMAIN` : Your primary domain used during first installation (default to `localhost`)
-* `CRON_PERIOD` : Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/background_jobs_configuration.html#cron) (disabled if empty ; ex `*/15 * * * *`)
 * `MEMORY_LIMIT` : PHP memory limit (default to `256M`)
 * `UPLOAD_MAX_SIZE` : Upload max size (default to `512M`)
 * `OPCACHE_MEM_SIZE` : PHP OpCache memory consumption (default to `128`)
@@ -65,6 +64,10 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 * `SSMTP_PASSWORD` : SMTP password
 * `SSMTP_TLS` : SSL/TLS (default to `NO`)
 
+The following environment variables are used only if you run the container as ["sidecar" mode](#cron) :
+
+* `CRON_PERIOD` : Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/background_jobs_configuration.html#cron) (disabled if empty ; ex `*/15 * * * *`)
+
 ### Volumes
 
 * `/data` : Contains config, data folders, installed user apps (not core ones), session, themes, tmp folders
@@ -75,21 +78,23 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 ## Use this image
 
-Docker compose is the recommended way to run this image. You can use the following [docker compose template](docker-compose.yml). Edit this file with your preferences, then run :
+### Docker Compose
+
+Docker compose is the recommended way to run this image. Copy the content of folder [.compose](.compose) in `/var/nextcloud/` on your host for example. Edit the compose and env files with your preferences and run the following commands :
 
 ```bash
+touch acme.json
+chmod 600 acme.json
 docker-compose up -d
 docker-compose logs -f
 ```
 
-Or use the following minimal command :
+### Command line
+
+You can also use the following minimal command :
 
 ```bash
 docker run -d -p 80:80 --name nextcloud \
-  -e UID=1000 \
-  -e GID=1000 \
-  -e TZ="Europe/Paris" \
-  -e SITE_DOMAIN="matomo.example.com" \
   -v $(pwd)/data:/data \
   crazymax/nextcloud:latest
 ```
@@ -98,8 +103,8 @@ docker run -d -p 80:80 --name nextcloud \
 
 ### First installation
 
-If you run the container for the first time, the installation will be automatic using the `SITE_DOMAIN` and `DB_*` environment variables.<br />
-Then open your browser to `http://${SITE_DOMAIN}` to configure your admin account.
+If you run the container for the first time, the installation will be automatic using the `DB_*` environment variables.<br />
+Then open your browser to configure your admin account.
 
 ### OCC command
 
@@ -111,20 +116,30 @@ docker exec -ti nextcloud occ
 
 ### Cron
 
-Do not forget to choose **Cron** as background jobs :
+If you want to enable the cron job, you have to run a "sidecar" container like in the [docker-compose file](.compose/docker-compose.yml) or run a simple container like this :
+
+```bash
+docker run -d --name nextcloud-cron \
+  --env-file $(pwd)/nextcloud.env \
+  -e CRON_PERIOD=*/15 * * * * \
+  -v $(pwd)/data:/data \
+  crazymax/nextcloud:latest /usr/local/bin/cron
+```
+
+Then do not forget to choose **Cron** as background jobs :
 
 ![Background jobs](.res/background-jobs.png)
 
 ### Email
 
-And you can customize the **Email server** settings with your preferences :
+You can customize the **Email server** settings with your preferences :
 
 ![Email server](.res/email-server.png)
 
 ### Redis cache
 
 Redis is recommended, alongside APCu to make Nextcloud more faster.
-If you want to enable Redis, deploy a redis container (see [docker-compose.yml](docker-compose.yml)) and add this to your `config.php` :
+If you want to enable Redis, deploy a redis container (see [docker-compose.yml](.compose/docker-compose.yml)) and add this to your `config.php` :
 
 ```
     'memcache.local' => '\OC\Memcache\APCu',

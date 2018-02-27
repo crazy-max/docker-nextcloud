@@ -16,7 +16,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
   org.label-schema.schema-version="1.0"
 
 RUN apk --update --no-cache add \
-    ca-certificates dcron ffmpeg libressl libsmbclient libxml2 nginx ssmtp su-exec supervisor tzdata \
+    ca-certificates ffmpeg libressl libsmbclient libxml2 nginx ssmtp su-exec supervisor tzdata \
     php7 php7-cli php7-apcu php7-bz2 php7-curl php7-ctype php7-dom php7-exif php7-fileinfo php7-fpm php7-ftp php7-gd \
     php7-gmp php7-iconv php7-imagick php7-intl php7-json php7-ldap php7-memcached php7-mbstring php7-mcrypt \
     php7-opcache php7-openssl php7-pdo php7-pdo_mysql php7-pdo_pgsql php7-pdo_sqlite php7-pcntl php7-posix php7-redis \
@@ -29,9 +29,8 @@ RUN apk --update --no-cache add \
 
 ENV NEXTCLOUD_VERSION="12.0.5" \
   CRONTAB_PATH="/var/spool/cron/crontabs" \
-  SCRIPTS_PATH="/usr/local/bin" \
   USERNAME="docker" \
-  UID=1000 GID=1000
+  PUID=1000 PGID=1000
 
 RUN apk --update --no-cache add -t build-dependencies \
     gnupg tar wget \
@@ -50,12 +49,7 @@ RUN apk --update --no-cache add -t build-dependencies \
 ADD entrypoint.sh /entrypoint.sh
 ADD assets /
 
-RUN mkdir -m 0644 -p ${CRONTAB_PATH} \
-  && cd /scripts/ && for script in *.sh; do \
-    scriptBasename=`echo $script | cut -d "." -f 1`; \
-    mv $script ${SCRIPTS_PATH}/$scriptBasename; \
-    chmod a+x ${SCRIPTS_PATH}/*; done \
-  && chmod a+x /entrypoint.sh
+RUN chmod a+x /entrypoint.sh /usr/local/bin/*
 
 EXPOSE 80
 WORKDIR "/var/www"

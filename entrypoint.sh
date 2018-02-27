@@ -1,5 +1,19 @@
 #!/bin/sh
 
+function fixperms() {
+  for folder in /data/config /data/data /data/session /data/tmp /data/userapps /tpls/data /var/lib/nginx /var/tmp/nginx /var/www; do
+    if $(find ${folder} ! -user $1 -o ! -group $2 | egrep '.' -q); then
+      echo "Fixing permissions in $folder..."
+      chown -R $1.$2 "${folder}"
+    else
+      echo "Permissions already fixed in ${folder}."
+    fi
+  done
+}
+
+USERNAME=${USERNAME:-"docker"}
+PUID=${PUID:-1000}
+PGID=${PGID:-1000}
 TZ=${TZ:-"UTC"}
 MEMORY_LIMIT=${MEMORY_LIMIT:-"256M"}
 UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-"512M"}
@@ -7,7 +21,6 @@ OPCACHE_MEM_SIZE=${OPCACHE_MEM_SIZE:-"128"}
 APC_SHM_SIZE=${APC_SHM_SIZE:-"128M"}
 HSTS_HEADER=${HSTS_HEADER:-"max-age=15768000; includeSubDomains"}
 
-SITE_DOMAIN=${SITE_DOMAIN:-"localhost"}
 DB_TYPE=${DB_TYPE:-"sqlite"}
 DB_HOST=${DB_HOST:-"db"}
 DB_NAME=${DB_NAME:-"nextcloud"}
@@ -24,14 +37,9 @@ ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
 echo ${TZ} > /etc/timezone
 
 # Create docker user
-echo "Creating ${USERNAME} user and group (uid=${UID} ; gid=${GID})..."
-addgroup -g ${GID} ${USERNAME}
-adduser -D -s /bin/sh -G ${USERNAME} -u ${UID} ${USERNAME}
-
-# Init
-echo "Initializing files and folders..."
-mkdir -p /data/config /data/data /data/session /data/tmp /data/userapps /etc/supervisord /var/log/supervisord
-chown -R ${USERNAME}. /data /tpls/data /var/lib/nginx /var/tmp/nginx /var/www
+echo "Creating ${USERNAME} user and group (uid=${PUID} ; gid=${PGID})..."
+addgroup -g ${PGID} ${USERNAME}
+adduser -D -s /bin/sh -G ${USERNAME} -u ${PUID} ${USERNAME}
 
 # PHP
 echo "Setting PHP-FPM configuration..."
@@ -74,6 +82,7 @@ fi
 
 # Init Nextcloud
 echo "Initializing Nextcloud files / folders..."
+mkdir -p /data/config /data/data /data/session /data/tmp /data/userapps /etc/supervisord /var/log/supervisord
 if [ ! -d /data/themes ]; then
   if [ -d /var/www/themes ]; then
     mv -f /var/www/themes /data/
@@ -105,11 +114,12 @@ if [ ! -f /data/config/config.php ]; then
 );
 EOL
   sed -e "s#@TZ@#$TZ#g" /tpls/data/config/config.php > /data/config/config.php
-  chown -R ${USERNAME}. /data /var/lib/nginx /var/tmp/nginx /var/www
+  chown -R ${PUID}.${PGID} /data /var/lib/nginx /var/tmp/nginx /var/www
 
   echo "Installing Nextcloud ${NEXTCLOUD_VERSION}..."
   su - ${USERNAME} -s /bin/sh -c "cd /var/www && php index.php &>/dev/null"
-  sed -i "s/localhost/$SITE_DOMAIN/g" /data/config/config.php
+else
+  fixperms ${PUID} ${PGID}
 fi
 
 # Upgrade Nextcloud if installed
@@ -124,26 +134,38 @@ su - ${USERNAME} -s /bin/sh -c "php -f /tpls/bootstrap.php" > /tmp/config.php
 mv /tmp/config.php /data/config/config.php
 sed -i -e "s#@TZ@#$TZ#g" /data/config/config.php
 
-# Cron
-rm -rf ${CRONTAB_PATH}
-mkdir -m 0644 -p ${CRONTAB_PATH}
-if [ ! -z "$CRON_PERIOD" ]; then
-  echo "Creating Nextcloud cron task with the following period fields : $CRON_PERIOD"
-  printf "${CRON_PERIOD} su - ${USERNAME} -s /bin/sh -c \"php -f /var/www/cron.php\" > /proc/1/fd/1 2>/proc/1/fd/2" > ${CRONTAB_PATH}/nextcloud
+# Sidecar cron container ?
+if [ "$1" == "/usr/local/bin/cron" ]; then
+  echo ">>"
+  echo ">> Sidecar cron container detected for Nextcloud"
+  echo ">>"
+
+  # Init
+  rm -rf ${CRONTAB_PATH}
+  mkdir -m 0644 -p ${CRONTAB_PATH}
+  touch ${CRONTAB_PATH}/${USERNAME}
+
+  # Cron
+  if [ ! -z "$CRON_PERIOD" ]; then
+    echo "Creating Nextcloud cron task with the following period fields : $CRON_PERIOD"
+    printf "${CRON_PERIOD} php -f /var/www/cron.php" >> ${CRONTAB_PATH}/${USERNAME}
+  else
+    echo "CRON_PERIOD env var empty..."
+  fi
+
+  # Fix perms
+  chmod -R 0644 ${CRONTAB_PATH}
+  fixperms ${PUID} ${PGID}
 else
-  rm -f /etc/supervisord/cron.conf
-fi
+  # Fix perms
+  fixperms ${PUID} ${PGID}
 
-# Fix perms
-echo "Fixing permissions..."
-chmod -R 0644 ${CRONTAB_PATH}
-chown -R ${USERNAME}. /data /var/lib/nginx /var/tmp/nginx /var/www
-
-# First install ?
-if [ ${firstInstall} ]; then
-  echo ">>"
-  echo ">> Open your browser (http://${SITE_DOMAIN}) to configure your admin account"
-  echo ">>"
+  # First install ?
+  if [ ${firstInstall} ]; then
+    echo ">>"
+    echo ">> Open your browser to configure your admin account"
+    echo ">>"
+  fi
 fi
 
 exec "$@"

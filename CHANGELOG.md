@@ -1,5 +1,15 @@
 # Changelog
 
+## 13.0.0-RC1 / 12.0.5-RC3 (2018/02/27)
+
+* Permissions fix more efficient
+* Cron now only available as a "sidecar" container (see docker-compose)
+* Use busybox cron
+* Replace Nginx + Let's Encrypt with Traefik (see docker-compose)
+* Disable auto restart and retries of "supervisored" programs (Docker Way)
+* Rename UID and GID env vars to PUID and PGID
+* Remove SITE_DOMAIN env var
+
 ## 13.0.0-RC1 (2018/02/07)
 
 * Add Nextcloud 13.0.0
