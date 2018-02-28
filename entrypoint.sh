@@ -1,10 +1,10 @@
 #!/bin/sh
 
 function fixperms() {
-  for folder in /data/config /data/data /data/session /data/tmp /data/userapps /tpls/data /var/lib/nginx /var/tmp/nginx /var/www; do
-    if $(find ${folder} ! -user $1 -o ! -group $2 | egrep '.' -q); then
+  for folder in $@; do
+    if $(find ${folder} ! -user ${PUID} -o ! -group ${PGID} | egrep '.' -q); then
       echo "Fixing permissions in $folder..."
-      chown -R $1.$2 "${folder}"
+      chown -R ${PUID}.${PGID} "${folder}"
     else
       echo "Permissions already fixed in ${folder}."
     fi
@@ -114,25 +114,7 @@ if [ ! -f /data/config/config.php ]; then
 );
 EOL
   sed -e "s#@TZ@#$TZ#g" /tpls/data/config/config.php > /data/config/config.php
-  chown -R ${PUID}.${PGID} /data /var/lib/nginx /var/tmp/nginx /var/www
-
-  echo "Installing Nextcloud ${NEXTCLOUD_VERSION}..."
-  su - ${USERNAME} -s /bin/sh -c "cd /var/www && php index.php &>/dev/null"
-else
-  fixperms ${PUID} ${PGID}
 fi
-
-# Upgrade Nextcloud if installed
-if [ "$(occ status --no-ansi | grep 'installed: true')" != "" ]; then
-  echo "Upgrading Nextcloud..."
-  occ upgrade --no-ansi
-fi
-
-# Override several config values of Nextcloud
-echo "Bootstrapping configuration..."
-su - ${USERNAME} -s /bin/sh -c "php -f /tpls/bootstrap.php" > /tmp/config.php
-mv /tmp/config.php /data/config/config.php
-sed -i -e "s#@TZ@#$TZ#g" /data/config/config.php
 
 # Sidecar cron container ?
 if [ "$1" == "/usr/local/bin/cron" ]; then
@@ -155,13 +137,28 @@ if [ "$1" == "/usr/local/bin/cron" ]; then
 
   # Fix perms
   chmod -R 0644 ${CRONTAB_PATH}
-  fixperms ${PUID} ${PGID}
+  fixperms /tpls/data /var/lib/nginx /var/tmp/nginx /var/www
 else
+  # Override several config values of Nextcloud
+  echo "Bootstrapping configuration..."
+  su - ${USERNAME} -s /bin/sh -c "php -f /tpls/bootstrap.php" > /tmp/config.php
+  mv /tmp/config.php /data/config/config.php
+  sed -i -e "s#@TZ@#$TZ#g" /data/config/config.php
+
   # Fix perms
-  fixperms ${PUID} ${PGID}
+  fixperms /data/config /data/data /data/session /data/themes /data/tmp /data/userapps /tpls/data /var/lib/nginx /var/tmp/nginx /var/www
+
+  # Upgrade Nextcloud if installed
+  if [ "$(occ status --no-ansi | grep 'installed: true')" != "" ]; then
+    echo "Upgrading Nextcloud..."
+    occ upgrade --no-ansi
+  fi
 
   # First install ?
-  if [ ${firstInstall} ]; then
+  if [ ${firstInstall} -eq 1 ]; then
+    echo "Installing Nextcloud ${NEXTCLOUD_VERSION}..."
+    su - ${USERNAME} -s /bin/sh -c "cd /var/www && php index.php &>/dev/null"
+
     echo ">>"
     echo ">> Open your browser to configure your admin account"
     echo ">>"
