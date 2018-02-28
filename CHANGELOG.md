@@ -1,5 +1,10 @@
 # Changelog
 
+## 13.0.0-RC3 / 12.0.5-RC4 (2018/02/28)
+
+* Fix permission on themes folder
+* Review check on first install
+
 ## 13.0.0-RC2 / 12.0.5-RC3 (2018/02/27)
 
 * Permissions fix more efficient
