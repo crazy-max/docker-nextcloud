@@ -28,9 +28,7 @@ RUN apk --update --no-cache add \
   && rm -rf /var/cache/apk/* /var/www/* /tmp/*
 
 ENV NEXTCLOUD_VERSION="12.0.5" \
-  CRONTAB_PATH="/var/spool/cron/crontabs" \
-  USERNAME="docker" \
-  PUID=1000 PGID=1000
+  CRONTAB_PATH="/var/spool/cron/crontabs"
 
 RUN apk --update --no-cache add -t build-dependencies \
     gnupg tar wget \
@@ -49,7 +47,8 @@ RUN apk --update --no-cache add -t build-dependencies \
 ADD entrypoint.sh /entrypoint.sh
 ADD assets /
 
-RUN chmod a+x /entrypoint.sh /usr/local/bin/*
+RUN chmod a+x /entrypoint.sh /usr/local/bin/* \
+  && chown -R nginx. /tpls/data /tpls/bootstrap.php /var/lib/nginx /var/log/nginx /var/log/php7 /var/tmp/nginx /var/www
 
 EXPOSE 80
 WORKDIR "/var/www"

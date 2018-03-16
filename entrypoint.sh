@@ -2,18 +2,19 @@
 
 function fixperms() {
   for folder in $@; do
-    if $(find ${folder} ! -user ${PUID} -o ! -group ${PGID} | egrep '.' -q); then
+    if $(find ${folder} ! -user nginx -o ! -group nginx | egrep '.' -q); then
       echo "Fixing permissions in $folder..."
-      chown -R ${PUID}.${PGID} "${folder}"
+      chown -R nginx. "${folder}"
     else
       echo "Permissions already fixed in ${folder}."
     fi
   done
 }
 
-USERNAME=${USERNAME:-"docker"}
-PUID=${PUID:-1000}
-PGID=${PGID:-1000}
+function runas_nginx() {
+  su - nginx -s /bin/sh -c "$1"
+}
+
 TZ=${TZ:-"UTC"}
 MEMORY_LIMIT=${MEMORY_LIMIT:-"256M"}
 UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-"512M"}
@@ -35,11 +36,6 @@ SSMTP_TLS=${SSMTP_TLS:-"NO"}
 echo "Setting timezone to ${TZ}..."
 ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
 echo ${TZ} > /etc/timezone
-
-# Create docker user
-echo "Creating ${USERNAME} user and group (uid=${PUID} ; gid=${PGID})..."
-addgroup -g ${PGID} ${USERNAME}
-adduser -D -s /bin/sh -G ${USERNAME} -u ${PUID} ${USERNAME}
 
 # PHP
 echo "Setting PHP-FPM configuration..."
@@ -114,6 +110,7 @@ if [ ! -f /data/config/config.php ]; then
 );
 EOL
   sed -e "s#@TZ@#$TZ#g" /tpls/data/config/config.php > /data/config/config.php
+  chown nginx. /data/config/config.php /var/www/config/autoconfig.php
 fi
 
 # Sidecar cron container ?
@@ -125,28 +122,27 @@ if [ "$1" == "/usr/local/bin/cron" ]; then
   # Init
   rm -rf ${CRONTAB_PATH}
   mkdir -m 0644 -p ${CRONTAB_PATH}
-  touch ${CRONTAB_PATH}/${USERNAME}
+  touch ${CRONTAB_PATH}/nginx
 
   # Cron
   if [ ! -z "$CRON_PERIOD" ]; then
     echo "Creating Nextcloud cron task with the following period fields : $CRON_PERIOD"
-    printf "${CRON_PERIOD} php -f /var/www/cron.php" >> ${CRONTAB_PATH}/${USERNAME}
+    echo "${CRON_PERIOD} php -f /var/www/cron.php" >> ${CRONTAB_PATH}/nginx
   else
     echo "CRON_PERIOD env var empty..."
   fi
 
   # Fix perms
   chmod -R 0644 ${CRONTAB_PATH}
-  fixperms /tpls/data /var/lib/nginx /var/tmp/nginx /var/www
 else
   # Override several config values of Nextcloud
   echo "Bootstrapping configuration..."
-  su - ${USERNAME} -s /bin/sh -c "php -f /tpls/bootstrap.php" > /tmp/config.php
+  runas_nginx "php -f /tpls/bootstrap.php" > /tmp/config.php
   mv /tmp/config.php /data/config/config.php
   sed -i -e "s#@TZ@#$TZ#g" /data/config/config.php
 
-  # Fix perms
-  fixperms /data/config /data/data /data/session /data/themes /data/tmp /data/userapps /tpls/data /var/lib/nginx /var/tmp/nginx /var/www
+  echo "Fixing permissions..."
+  fixperms /data/config /data/data /data/session /data/themes /data/tmp /data/userapps
 
   # Upgrade Nextcloud if installed
   if [ "$(occ status --no-ansi | grep 'installed: true')" != "" ]; then
@@ -157,7 +153,7 @@ else
   # First install ?
   if [ ${firstInstall} -eq 1 ]; then
     echo "Installing Nextcloud ${NEXTCLOUD_VERSION}..."
-    su - ${USERNAME} -s /bin/sh -c "cd /var/www && php index.php &>/dev/null"
+    runas_nginx "cd /var/www && php index.php &>/dev/null"
 
     echo ">>"
     echo ">> Open your browser to configure your admin account"

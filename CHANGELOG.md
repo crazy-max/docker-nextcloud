@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.0.1-RC1 / 12.0.6-RC1 (2018/03/16)
+
+* Remove ability to set a custom UID / GID (performance issue with overlay driver)
+
 ## 13.0.0-RC3 / 12.0.5-RC4 (2018/02/28)
 
 * Fix permission on themes folder

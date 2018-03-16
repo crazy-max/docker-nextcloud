@@ -20,7 +20,6 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 ### Included
 
 * Alpine Linux 3.7, Nginx, PHP 7.1
-* Ability to set a custom UID / GID
 * Tarball authenticity checked during building process
 * Data, config, user apps and themes persistence in the same folder
 * [Automatic installation](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/automatic_configuration.html)
@@ -44,8 +43,6 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 ### Environment variables
 
-* `PUID` : Nextcloud user id (default to `1000`)
-* `PGID` : Nextcloud group id (default to `1000`)
 * `TZ` : The timezone assigned to the container (default to `UTC`)
 * `MEMORY_LIMIT` : PHP memory limit (default to `256M`)
 * `UPLOAD_MAX_SIZE` : Upload max size (default to `512M`)
