@@ -10,8 +10,6 @@ env:
     - DOCKER_REPONAME=nextcloud
     - QUAY_USERNAME=crazymax
     - QUAY_REPONAME=nextcloud
-    - DOCKER_VERSION=17.12.0~ce-0~ubuntu
-    - COMPOSE_VERSION=1.18.0
     - MICROBADGER_HOOK=https://hooks.microbadger.com/images/crazymax/nextcloud/rCjCdBDz_XNeq8rPpHopWXWxZNI=
     - secure: LVSKcXatL4NI35riS3hmbeeRir7HlWW2ZI187Hmm0ffCe25QKHh8TJWufYPahjHRV5kpY10yUmREgJdM79wT+8RqGgflpbiRS2HECFMUSp0YgdtAL76dsNXJ2ypT9bcLuzndRhVltTkLV/G/tzvygXNXCaPmvF95DwV11JP4I3SC3LskLi9mzet8XocWHlolrV2EXjsC5/Z5dYr+gkLCLtd52PKHH+xjf783f+ZutN8POxwPt6qgraHAiolIehk7BB8tQfnPnzhKixDRZsle24o+23/KLKSguRhg/+SgeMbu5fVAVJWoYBlK5LNlnSgOtSqQHUiytmPmcJm+Jz8GBSVkLdCnp1MXy9+9fRpJbkHr/caKAgTrc/Xv5z2YHa4Zu2jzsP1cerIVCsdMZo9a1lrMmzaWz4RUDxeDXfARC9zMGU47XfZ8azX82jhTf7hlhXP/z/66MZqGJMncsMMc53hI3juKLXTXLCjs5aQl7ivgJUxpgNMyYR7imTDISfWU6vDz4LB5z+BLx4gwwARMdg6UJE1VyKmWKxNMU7Lbjd6LCsmk3Qi2dtkmizcP0cG2y++Vhm+xpjCtDCL4wZIeczrW/sBJOOuASo0IWy6EbjawqEeD6YLRaSrvYH0daOULL1RxQv4J2snWwpnGh2gGym2rvicwOioj6I0ou9HPL0A= # DOCKER_PASSWORD
     - secure: H34bNxpQKfgBJhyW7yv+LXJPEgT4uwZYokLnt8thS5qgGbjvLSX1HuyKKK1q9hwdrQRG+sszU9c32Fj8gCZrI0PQaBXSQDZ/uxMQwCcAF7yubKKat1I/jMrAXnfhUc4bQWiBVmkVr+D5G+JrrIJaJQm04bYrGlDOkHgUeiRn4w9rGXQb6ebr3K7uzE1a82xOSba7qMq8j3xcavQznq5TTJgDkFQyJ/pDhxk9aCfgA3vJ0pgcMX73GayWTGXZUSsxCfWxRMEcKwazkD2spb7PosB9FrWfSOhu2aqPnBigok/h7JNVkHb+WuFIB+HrthMRLvphhD5pS5o5FDXHGOt3lctIyrFNyMurbgzzQnMQG9tWxjoMmvWJLYbfPc9N2svUOXNkq86wnUiR/KkiE1PthfSpQB8zD4lvrC/25bSie7uvTf+uCwGSQCgH+QsKZg12kO7wstzoEdnHJWJBYpZMj1XAS8iBPJKSHnxSa/N40qWp/kiy5HMeJ7OegSdnKoTiXgy5/VNnnIs1NFRlrlvndrzO8XTnKe/1Uvc+bJD1VC+N3FLfaJiqvezec4otf+Abt7ribF1G62RO7p3g4QK1Zk+mOBCDZg4toD4EOVxYaTEVyPQheiDlm8CCJCftlf6bPoBV7jySm08a2E7XcixCDRp2ajoJu+KyUH9i1/yJUGs= # QUAY_PASSWORD
@@ -19,13 +17,8 @@ env:
 
 before_install:
   - sudo apt-get update
-  - sudo apt-cache madison docker-ce
-  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce=${DOCKER_VERSION}
+  - sudo apt-get -y install docker-ce
   - docker --version
-  - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-  - docker-compose --version
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   - export DOCKER_TAG=$(if [ "$BRANCH" == "master" ]; then echo "latest"; else echo $BRANCH; fi)
   - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH, DOCKER_TAG=$DOCKER_TAG"
@@ -33,9 +26,9 @@ before_install:
 install:
   - |
     docker build --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-    --build-arg VCS_REF=${TRAVIS_COMMIT::8} \
-    --build-arg VERSION=${VERSION} \
-    -t $DOCKER_USERNAME/$DOCKER_REPONAME -f $DOCKERFILE .
+      --build-arg VCS_REF=${TRAVIS_COMMIT::8} \
+      --build-arg VERSION=${VERSION} \
+      -t $DOCKER_USERNAME/$DOCKER_REPONAME -f $DOCKERFILE .
 
 before_script:
   - docker run -d --hostname nextcloud.example.com --name $DOCKER_REPONAME $DOCKER_USERNAME/$DOCKER_REPONAME
