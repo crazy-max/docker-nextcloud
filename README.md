@@ -76,7 +76,7 @@ The following environment variables are used only if you run the container as ["
 
 ### Docker Compose
 
-Docker compose is the recommended way to run this image. Copy the content of folder [.compose](.compose) in `/var/nextcloud/` on your host for example. Edit the compose and env files with your preferences and run the following commands :
+Docker compose is the recommended way to run this image. Copy the content of folder [examples/compose](examples/compose) in `/var/nextcloud/` on your host for example. Edit the compose and env files with your preferences and run the following commands :
 
 ```bash
 touch acme.json
@@ -112,7 +112,7 @@ docker exec -ti nextcloud occ
 
 ### Cron
 
-If you want to enable the cron job, you have to run a "sidecar" container like in the [docker-compose file](.compose/docker-compose.yml) or run a simple container like this :
+If you want to enable the cron job, you have to run a "sidecar" container like in the [docker-compose file](examples/compose/docker-compose.yml) or run a simple container like this :
 
 ```bash
 docker run -d --name nextcloud-cron \
@@ -135,7 +135,7 @@ You can customize the **Email server** settings with your preferences :
 ### Redis cache
 
 Redis is recommended, alongside APCu to make Nextcloud more faster.
-If you want to enable Redis, deploy a redis container (see [docker-compose.yml](.compose/docker-compose.yml)) and add this to your `config.php` :
+If you want to enable Redis, deploy a redis container (see [docker-compose file](examples/compose/docker-compose.yml)) and add this to your `config.php` :
 
 ```
     'memcache.local' => '\OC\Memcache\APCu',
