@@ -76,17 +76,6 @@ services:
       - CRON_PERIOD=*/15 * * * *
     restart: always
 
-  collabora:
-    image: collabora/code
-    depends_on:
-      - app
-    command: --cap-add MKNOD
-    ports:
-      - 127.0.0.1:9980:9980
-    environment:
-      -e domain=nextcloud.example.com
-    restart: always
-
 volumes:
   db:
   nextcloud:
