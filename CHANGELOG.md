@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.0.5-RC1 / 12.0.10-RC1 (2018/07/23)
+
+* Upgrade to Nextcloud 12.0.10 and 13.0.5
+* Alpine Linux 3.8
+* PHP 7.2
+
 ## 13.0.4-RC1 / 12.0.9-RC1 (2018/06/11)
 
 * Upgrade to Nextcloud 12.0.9 and 13.0.4

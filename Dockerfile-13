@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 MAINTAINER CrazyMax <crazy-max@users.noreply.github.com>
 
 ARG BUILD_DATE
@@ -27,7 +27,7 @@ RUN apk --update --no-cache add \
   && apk del build-dependencies \
   && rm -rf /var/cache/apk/* /var/www/* /tmp/*
 
-ENV NEXTCLOUD_VERSION="13.0.4" \
+ENV NEXTCLOUD_VERSION="13.0.5" \
   CRONTAB_PATH="/var/spool/cron/crontabs"
 
 RUN apk --update --no-cache add -t build-dependencies \

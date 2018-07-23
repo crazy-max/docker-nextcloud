@@ -18,7 +18,7 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 ### Included
 
-* Alpine Linux 3.7, Nginx, PHP 7.1
+* Alpine Linux 3.8, Nginx, PHP 7.2
 * Tarball authenticity checked during building process
 * Data, config, user apps and themes persistence in the same folder
 * [Automatic installation](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/automatic_configuration.html)
@@ -42,23 +42,25 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 ### Environment variables
 
-* `TZ` : The timezone assigned to the container (default to `UTC`)
-* `MEMORY_LIMIT` : PHP memory limit (default to `256M`)
-* `UPLOAD_MAX_SIZE` : Upload max size (default to `512M`)
-* `OPCACHE_MEM_SIZE` : PHP OpCache memory consumption (default to `128`)
-* `APC_SHM_SIZE` : APCu memory size (default to `128M`)
-* `HSTS_HEADER` : [HTTP Strict Transport Security](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/harden_server.html#enable-http-strict-transport-security) header value (default to `max-age=15768000; includeSubDomains`)
-* `DB_TYPE` : Database type (mysql, pgsql or sqlite) (default to `sqlite`)
-* `DB_NAME` : Database name (default to `nextcloud`)
-* `DB_USER` : Username for database (default to `nextcloud`)
-* `DB_PASSWORD` : Password for database user (default to `asupersecretpassword`)
-* `DB_HOST` : Database host (default to `db`)
-* `SSMTP_HOST` : SMTP server host
-* `SSMTP_PORT` : SMTP server port (default to `25`)
-* `SSMTP_HOSTNAME` : Full hostname (default to `$(hostname -f)`)
-* `SSMTP_USER` : SMTP username
-* `SSMTP_PASSWORD` : SMTP password
-* `SSMTP_TLS` : SSL/TLS (default to `NO`)
+| Key                         | Default                                  | Description                               
+|-----------------------------|------------------------------------------|-------------------------------------------
+| `TZ`                        | `UTC`                                    | Timezone (e.g. `Europe/Paris`)
+| `MEMORY_LIMIT`              | `256M`                                   | PHP memory limit
+| `UPLOAD_MAX_SIZE`           | `16M`                                    | Upload max size
+| `OPCACHE_MEM_SIZE`          | `128`                                    | PHP OpCache memory consumption
+| `APC_SHM_SIZE`              | `128M`                                   | APCu memory size
+| `HSTS_HEADER`               | `max-age=15768000; includeSubDomains`    | [HTTP Strict Transport Security](https://docs.nextcloud.com/server/13/admin_manual/configuration_server/harden_server.html#enable-http-strict-transport-security) header value
+| `DB_TYPE`                   | `sqlite`                                 | Database type (mysql, pgsql or sqlite)
+| `DB_NAME`                   | `nextcloud`                              | Database name
+| `DB_USER`                   | `nextcloud`                              | Username for database
+| `DB_PASSWORD`               | `asupersecretpassword`                   | Password for database user
+| `DB_HOST`                   | `db`                                     | Database host
+| `SSMTP_HOST`                |                                          | SMTP server host
+| `SSMTP_PORT`                | `25`                                     | SMTP server port
+| `SSMTP_HOSTNAME`            | `$(hostname -f)`                         | Full hostname
+| `SSMTP_USER`                |                                          | SMTP username
+| `SSMTP_PASSWORD`            |                                          | SMTP password
+| `SSMTP_TLS`                 | `NO`                                     | Enable SMTP SSL/TLS
 
 The following environment variables are used only if you run the container as ["sidecar" mode](#cron) :
 
