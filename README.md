@@ -42,23 +42,23 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 ### Environment variables
 
-* `TZ` : The timezone assigned to the container (default to `UTC`)
-* `MEMORY_LIMIT` : PHP memory limit (default to `256M`)
-* `UPLOAD_MAX_SIZE` : Upload max size (default to `512M`)
-* `OPCACHE_MEM_SIZE` : PHP OpCache memory consumption (default to `128`)
-* `APC_SHM_SIZE` : APCu memory size (default to `128M`)
-* `HSTS_HEADER` : [HTTP Strict Transport Security](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/harden_server.html#enable-http-strict-transport-security) header value (default to `max-age=15768000; includeSubDomains`)
-* `DB_TYPE` : Database type (mysql, pgsql or sqlite) (default to `sqlite`)
-* `DB_NAME` : Database name (default to `nextcloud`)
-* `DB_USER` : Username for database (default to `nextcloud`)
-* `DB_PASSWORD` : Password for database user (default to `asupersecretpassword`)
-* `DB_HOST` : Database host (default to `db`)
+* `TZ` : The timezone assigned to the container (default `UTC`)
+* `MEMORY_LIMIT` : PHP memory limit (default `256M`)
+* `UPLOAD_MAX_SIZE` : Upload max size (default `512M`)
+* `OPCACHE_MEM_SIZE` : PHP OpCache memory consumption (default `128`)
+* `APC_SHM_SIZE` : APCu memory size (default `128M`)
+* `HSTS_HEADER` : [HTTP Strict Transport Security](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/harden_server.html#enable-http-strict-transport-security) header value (default `max-age=15768000; includeSubDomains`)
+* `DB_TYPE` : Database type (mysql, pgsql or sqlite) (default `sqlite`)
+* `DB_NAME` : Database name (default `nextcloud`)
+* `DB_USER` : Username for database (default `nextcloud`)
+* `DB_PASSWORD` : Password for database user (default `asupersecretpassword`)
+* `DB_HOST` : Database host (default `db`)
 * `SSMTP_HOST` : SMTP server host
-* `SSMTP_PORT` : SMTP server port (default to `25`)
-* `SSMTP_HOSTNAME` : Full hostname (default to `$(hostname -f)`)
+* `SSMTP_PORT` : SMTP server port (default `25`)
+* `SSMTP_HOSTNAME` : Full hostname (default `$(hostname -f)`)
 * `SSMTP_USER` : SMTP username
 * `SSMTP_PASSWORD` : SMTP password
-* `SSMTP_TLS` : SSL/TLS (default to `NO`)
+* `SSMTP_TLS` : SSL/TLS (default `NO`)
 
 The following environment variables are used only if you run the container as ["sidecar" mode](#cron) :
 
@@ -156,9 +156,9 @@ docker-compose pull
 docker-compose up -d
 ```
 
-## How can i help ?
+## How can I help ?
 
-All kinds of contributions are welcomed :raised_hands:!<br />
+All kinds of contributions are welcome :raised_hands:!<br />
 The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon:<br />
 But we're not gonna lie to each other, I'd rather you buy me a beer or two :beers:!
 
