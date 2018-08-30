@@ -1,5 +1,10 @@
 # Changelog
 
+## 13.0.6-RC1 (2018/08/30)
+
+* Upgrade to Nextcloud 13.0.6
+* Unset sensitive environment variables
+
 ## 13.0.5-RC1 / 12.0.10-RC1 (2018/07/23)
 
 * Upgrade to Nextcloud 12.0.10 and 13.0.5
