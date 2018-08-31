@@ -1,5 +1,9 @@
 # Changelog
 
+## 12.0.11-RC1 (2018/08/31)
+
+* Upgrade to Nextcloud 12.0.11
+
 ## 13.0.6-RC1 (2018/08/30)
 
 * Upgrade to Nextcloud 13.0.6
