@@ -16,11 +16,14 @@ function runas_nginx() {
 }
 
 TZ=${TZ:-"UTC"}
+
 MEMORY_LIMIT=${MEMORY_LIMIT:-"512M"}
 UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-"512M"}
 OPCACHE_MEM_SIZE=${OPCACHE_MEM_SIZE:-"128"}
 APC_SHM_SIZE=${APC_SHM_SIZE:-"128M"}
+
 HSTS_HEADER=${HSTS_HEADER:-"max-age=15768000; includeSubDomains"}
+RP_HEADER=${RP_HEADER:-"strict-origin"}
 
 DB_TYPE=${DB_TYPE:-"sqlite"}
 DB_HOST=${DB_HOST:-"db"}
@@ -52,6 +55,7 @@ sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
 echo "Setting Nginx configuration..."
 sed -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
   -e "s/@HSTS_HEADER@/$HSTS_HEADER/g" \
+  -e "s/@RP_HEADER@/$RP_HEADER/g" \
   /tpls/etc/nginx/nginx.conf > /etc/nginx/nginx.conf
 
 # Init Nextcloud
@@ -90,6 +94,8 @@ EOL
   sed -e "s#@TZ@#$TZ#g" /tpls/data/config/config.php > /data/config/config.php
   chown nginx. /data/config/config.php /var/www/config/autoconfig.php
 fi
+unset DB_USER
+unset DB_PASSWORD
 
 # Sidecar cron container ?
 if [ "$1" == "/usr/local/bin/cron" ]; then

@@ -47,6 +47,7 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 * `OPCACHE_MEM_SIZE` : PHP OpCache memory consumption (default `128`)
 * `APC_SHM_SIZE` : APCu memory size (default `128M`)
 * `HSTS_HEADER` : [HTTP Strict Transport Security](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/harden_server.html#enable-http-strict-transport-security) header value (default `max-age=15768000; includeSubDomains`)
+* `RP_HEADER` : [Referrer Policy](https://www.w3.org/TR/referrer-policy/) header value (default `strict-origin`)
 * `DB_TYPE` : Database type (mysql, pgsql or sqlite) (default `sqlite`)
 * `DB_NAME` : Database name (default `nextcloud`)
 * `DB_USER` : Username for database (default `nextcloud`)
