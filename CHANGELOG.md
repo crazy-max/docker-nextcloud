@@ -1,5 +1,13 @@
 # Changelog
 
+## 14.0.0-RC1 / 13.0.6-RC2 / 12.0.11-RC2 (2018/09/06)
+
+* Add Nextcloud 14.0.0
+* Set PHP memory limit to PHP CLI
+* Recommended PHP memory limit is 512MB
+* Remove SSMTP
+* Built in php mailer is no longer supported (default mode to smtp)
+
 ## 12.0.11-RC1 (2018/08/31)
 
 * Upgrade to Nextcloud 12.0.11

@@ -16,7 +16,7 @@ function runas_nginx() {
 }
 
 TZ=${TZ:-"UTC"}
-MEMORY_LIMIT=${MEMORY_LIMIT:-"256M"}
+MEMORY_LIMIT=${MEMORY_LIMIT:-"512M"}
 UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-"512M"}
 OPCACHE_MEM_SIZE=${OPCACHE_MEM_SIZE:-"128"}
 APC_SHM_SIZE=${APC_SHM_SIZE:-"128M"}
@@ -28,56 +28,31 @@ DB_NAME=${DB_NAME:-"nextcloud"}
 DB_USER=${DB_USER:-"nextcloud"}
 DB_PASSWORD=${DB_PASSWORD:-"asupersecretpassword"}
 
-SSMTP_PORT=${SSMTP_PORT:-"25"}
-SSMTP_HOSTNAME=${SSMTP_HOSTNAME:-"$(hostname -f)"}
-SSMTP_TLS=${SSMTP_TLS:-"NO"}
-
 # Timezone
 echo "Setting timezone to ${TZ}..."
 ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
 echo ${TZ} > /etc/timezone
 
-# PHP
+# PHP-FPM
 echo "Setting PHP-FPM configuration..."
 sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
   -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
   /tpls/etc/php7/php-fpm.d/www.conf > /etc/php7/php-fpm.d/www.conf
 
-# OpCache
-echo "Setting OpCache configuration..."
-sed -e "s/@OPCACHE_MEM_SIZE@/$OPCACHE_MEM_SIZE/g" \
-  /tpls/etc/php7/conf.d/opcache.ini > /etc/php7/conf.d/opcache.ini
-
-# APCu
-echo "Setting APCu configuration..."
+# PHP
+echo "Setting PHP configuration..."
 sed -e "s/@APC_SHM_SIZE@/$APC_SHM_SIZE/g" \
   /tpls/etc/php7/conf.d/apcu.ini > /etc/php7/conf.d/apcu.ini
+sed -e "s/@OPCACHE_MEM_SIZE@/$OPCACHE_MEM_SIZE/g" \
+  /tpls/etc/php7/conf.d/opcache.ini > /etc/php7/conf.d/opcache.ini
+sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
+  /tpls/etc/php7/conf.d/override.ini > /etc/php7/conf.d/override.ini
 
 # Nginx
 echo "Setting Nginx configuration..."
 sed -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
   -e "s/@HSTS_HEADER@/$HSTS_HEADER/g" \
   /tpls/etc/nginx/nginx.conf > /etc/nginx/nginx.conf
-
-# SSMTP
-echo "Setting SSMTP configuration..."
-if [ -z "$SSMTP_HOST" ] ; then
-  echo "WARNING: SSMTP_HOST must be defined if you want to send emails"
-  cp -f /etc/ssmtp/ssmtp.conf.or /etc/ssmtp/ssmtp.conf
-else
-  cat > /etc/ssmtp/ssmtp.conf <<EOL
-mailhub=${SSMTP_HOST}:${SSMTP_PORT}
-hostname=${SSMTP_HOSTNAME}
-FromLineOverride=YES
-AuthUser=${SSMTP_USER}
-AuthPass=${SSMTP_PASSWORD}
-UseTLS=${SSMTP_TLS}
-UseSTARTTLS=${SSMTP_TLS}
-EOL
-fi
-unset SSMTP_HOST
-unset SSMTP_USER
-unset SSMTP_PASSWORD
 
 # Init Nextcloud
 echo "Initializing Nextcloud files / folders..."

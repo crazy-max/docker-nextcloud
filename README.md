@@ -23,7 +23,6 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 * Data, config, user apps and themes persistence in the same folder
 * [Automatic installation](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/automatic_configuration.html)
 * Cron task for [Nextcloud background jobs]((https://docs.nextcloud.com/server/12/admin_manual/configuration_server/background_jobs_configuration.html#cron)) as a ["sidecar" container](#cron)
-* [SSMTP](https://linux.die.net/man/8/ssmtp) for SMTP relay (use PHP as send mode on Nextcloud)
 * OPCache enabled to store precompiled script bytecode in shared memory
 * APCu installed and configured
 * Memcached and Redis also enabled to enhance server performance
@@ -43,7 +42,7 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 ### Environment variables
 
 * `TZ` : The timezone assigned to the container (default `UTC`)
-* `MEMORY_LIMIT` : PHP memory limit (default `256M`)
+* `MEMORY_LIMIT` : PHP memory limit (default `512M`)
 * `UPLOAD_MAX_SIZE` : Upload max size (default `512M`)
 * `OPCACHE_MEM_SIZE` : PHP OpCache memory consumption (default `128`)
 * `APC_SHM_SIZE` : APCu memory size (default `128M`)
@@ -53,12 +52,6 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 * `DB_USER` : Username for database (default `nextcloud`)
 * `DB_PASSWORD` : Password for database user (default `asupersecretpassword`)
 * `DB_HOST` : Database host (default `db`)
-* `SSMTP_HOST` : SMTP server host
-* `SSMTP_PORT` : SMTP server port (default `25`)
-* `SSMTP_HOSTNAME` : Full hostname (default `$(hostname -f)`)
-* `SSMTP_USER` : SMTP username
-* `SSMTP_PASSWORD` : SMTP password
-* `SSMTP_TLS` : SSL/TLS (default `NO`)
 
 The following environment variables are used only if you run the container as ["sidecar" mode](#cron) :
 
@@ -128,9 +121,9 @@ Then do not forget to choose **Cron** as background jobs :
 
 ### Email
 
-You can customize the **Email server** settings with your preferences :
+Do not forget to configure your **Email server** settings with your preferences :
 
-![Email server](.res/email-server.png)
+![Email server](.res/email-server-config.png)
 
 ### Redis cache
 

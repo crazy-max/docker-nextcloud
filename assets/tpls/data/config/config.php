@@ -23,8 +23,5 @@ $CONFIG = array(
             'writable' => true,
         ),
     ),
-    'mail_smtpmode' => 'php',
-    'mail_from_address' => 'nextcloud',
-    'mail_smtpauthtype' => 'LOGIN',
-    'mail_smtpauth' => false,
+    'mail_smtpmode' => 'smtp'
 );
