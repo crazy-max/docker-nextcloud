@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.0.1-RC3 (2018/09/25)
+
+* Upgrade to Nextcloud 14.0.1
+
 ## 14.0.0-RC2 / 13.0.6-RC3 / 12.0.11-RC3 (2018/09/06)
 
 * Add Referrer-Policy header through `RP_HEADER` environment variable ([nextcloud/server#9122](https://github.com/nextcloud/server/issues/9122))
