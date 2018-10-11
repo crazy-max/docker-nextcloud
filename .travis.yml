@@ -6,7 +6,7 @@ services:
 env:
   global:
     - DOCKERFILE=./Dockerfile-14
-    - VERSION=14.0.0
+    - VERSION=14.0.2
     - NOT_PUSH_LATEST=false
     - GITHUB_REPO=crazy-max/docker-nextcloud
     - DOCKER_USERNAME=crazymax
