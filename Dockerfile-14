@@ -27,7 +27,7 @@ RUN apk --update --no-cache add \
   && apk del build-dependencies \
   && rm -rf /var/cache/apk/* /var/www/* /tmp/*
 
-ENV NEXTCLOUD_VERSION="14.0.2" \
+ENV NEXTCLOUD_VERSION="14.0.3" \
   CRONTAB_PATH="/var/spool/cron/crontabs"
 
 RUN apk --update --no-cache add -t build-dependencies \
