@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.0.4-RC1 / 13.0.8-RC1 / 12.0.13-RC1 (2018/11/22)
+
+* Upgrade to Nextcloud 12.0.13, 13.0.8 and 14.0.4
+
 ## 14.0.3-RC1 (2018/11/13)
 
 * Upgrade to Nextcloud 14.0.3
