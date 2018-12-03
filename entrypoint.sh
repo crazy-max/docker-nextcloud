@@ -15,21 +15,20 @@ function runas_nginx() {
   su - nginx -s /bin/sh -c "$1"
 }
 
-TZ=${TZ:-"UTC"}
+TZ=${TZ:-UTC}
 
-MEMORY_LIMIT=${MEMORY_LIMIT:-"512M"}
-UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-"512M"}
-OPCACHE_MEM_SIZE=${OPCACHE_MEM_SIZE:-"128"}
-APC_SHM_SIZE=${APC_SHM_SIZE:-"128M"}
+MEMORY_LIMIT=${MEMORY_LIMIT:-512M}
+UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-512M}
+OPCACHE_MEM_SIZE=${OPCACHE_MEM_SIZE:-128}
+APC_SHM_SIZE=${APC_SHM_SIZE:-128M}
 
-HSTS_HEADER=${HSTS_HEADER:-"max-age=15768000; includeSubDomains"}
-RP_HEADER=${RP_HEADER:-"strict-origin"}
+HSTS_HEADER=${HSTS_HEADER:-max-age=15768000; includeSubDomains}
+RP_HEADER=${RP_HEADER:-strict-origin}
 
-DB_TYPE=${DB_TYPE:-"sqlite"}
-DB_HOST=${DB_HOST:-"db"}
-DB_NAME=${DB_NAME:-"nextcloud"}
-DB_USER=${DB_USER:-"nextcloud"}
-DB_PASSWORD=${DB_PASSWORD:-"asupersecretpassword"}
+DB_TYPE=${DB_TYPE:-sqlite}
+DB_HOST=${DB_HOST:-db}
+DB_NAME=${DB_NAME:-nextcloud}
+DB_USER=${DB_USER:-nextcloud}
 
 # Timezone
 echo "Setting timezone to ${TZ}..."
@@ -72,6 +71,11 @@ fi
 ln -sf /data/config/config.php /var/www/config/config.php &>/dev/null
 ln -sf /data/themes /var/www/themes &>/dev/null
 ln -sf /data/userapps /var/www/userapps &>/dev/null
+
+if [[ -z "$DB_PASSWORD" ]]; then
+  >&2 echo "ERROR: DB_PASSWORD must be defined"
+  exit 1
+fi
 
 # Install Nextcloud if config not found
 firstInstall=0
