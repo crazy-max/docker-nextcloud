@@ -58,6 +58,9 @@ services:
       - "traefik.backend=nextcloud"
       - "traefik.port=80"
       - "traefik.frontend.rule=Host:nextcloud.example.com"
+      - "traefik.frontend.redirect.permanent=true"
+      - "traefik.frontend.redirect.regex=https://(.*)/.well-known/(card|cal)dav"
+      - "traefik.frontend.redirect.replacement=https://$$1/remote.php/dav/"
     env_file:
       - "./nextcloud.env"
     restart: always
