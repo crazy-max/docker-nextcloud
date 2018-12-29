@@ -70,7 +70,7 @@ docker run -d --network=${PROJECT} --name ${PROJECT}-db --hostname ${PROJECT}-db
   -e "MYSQL_USER=nextcloud" \
   -e "MYSQL_PASSWORD=asupersecretpassword" \
   mariadb:10.2
-docker run -d --network=${PROJECT} --link ${PROJECT}-db -p 8000:80 \
+docker run -d --network=${PROJECT} --link ${PROJECT}-db \
   -e "DB_HOST=${PROJECT}-db" \
   -e "DB_NAME=nextcloud" \
   -e "DB_USER=nextcloud" \
