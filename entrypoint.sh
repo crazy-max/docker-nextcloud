@@ -55,6 +55,7 @@ echo "Setting Nginx configuration..."
 sed -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
   -e "s/@HSTS_HEADER@/$HSTS_HEADER/g" \
   -e "s/@RP_HEADER@/$RP_HEADER/g" \
+  -e "s#@SUBDIR@#$SUBDIR#g" \
   /tpls/etc/nginx/nginx.conf > /etc/nginx/nginx.conf
 
 # Init Nextcloud
@@ -80,7 +81,7 @@ fi
 # Install Nextcloud if config not found
 firstInstall=0
 if [ ! -f /data/config/config.php ]; then
-  # https://docs.nextcloud.com/server/12/admin_manual/configuration_server/automatic_configuration.html
+  # https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/automatic_configuration.html
   firstInstall=1
   echo "Creating automatic configuration..."
   cat > /var/www/config/autoconfig.php <<EOL
@@ -100,6 +101,16 @@ EOL
 fi
 unset DB_USER
 unset DB_PASSWORD
+
+# https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/config_sample_php_parameters.html#proxy-configurations
+if [ ! -z "$SUBDIR" ]; then
+  cat > /var/www/config/subdir.config.php <<EOL
+<?php
+\$CONFIG = array(
+    'overwritewebroot' => '${SUBDIR}',
+);
+EOL
+fi
 
 # Sidecar cron container ?
 if [ "$1" == "/usr/local/bin/cron" ]; then

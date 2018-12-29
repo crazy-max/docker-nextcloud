@@ -1,5 +1,11 @@
 # Changelog
 
+## 15.0.0-RC2 / 14.0.4-RC2 / 13.0.8-RC2 / 12.0.13-RC2 (2018/12/30)
+
+* Add `SUBDIR` env var (Issue #7)
+* Add rewrite rules for user_webfinger and Social app
+* Use `--batch` for gpg (see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=913614)
+
 ## 15.0.0-RC1 (2018/12/10)
 
 * Upgrade to Nextcloud 15.0.0

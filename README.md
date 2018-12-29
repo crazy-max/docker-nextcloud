@@ -22,8 +22,8 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 * Alpine Linux 3.8, Nginx, PHP 7.2
 * Tarball authenticity checked during building process
 * Data, config, user apps and themes persistence in the same folder
-* [Automatic installation](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/automatic_configuration.html)
-* Cron task for [Nextcloud background jobs]((https://docs.nextcloud.com/server/12/admin_manual/configuration_server/background_jobs_configuration.html#cron)) as a ["sidecar" container](#cron)
+* [Automatic installation](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/automatic_configuration.html)
+* Cron task for [Nextcloud background jobs](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) as a ["sidecar" container](#cron)
 * OPCache enabled to store precompiled script bytecode in shared memory
 * APCu installed and configured
 * Memcached and Redis also enabled to enhance server performance
@@ -47,8 +47,9 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 * `UPLOAD_MAX_SIZE` : Upload max size (default `512M`)
 * `OPCACHE_MEM_SIZE` : PHP OpCache memory consumption (default `128`)
 * `APC_SHM_SIZE` : APCu memory size (default `128M`)
-* `HSTS_HEADER` : [HTTP Strict Transport Security](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/harden_server.html#enable-http-strict-transport-security) header value (default `max-age=15768000; includeSubDomains`)
+* `HSTS_HEADER` : [HTTP Strict Transport Security](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/harden_server.html?highlight=harden#enable-http-strict-transport-security) header value (default `max-age=15768000; includeSubDomains`)
 * `RP_HEADER` : [Referrer Policy](https://www.w3.org/TR/referrer-policy/) header value (default `strict-origin`)
+* `SUBDIR` : [Subdir](https://docs.nextcloud.com/server/stable/admin_manual/installation/nginx.html#nextcloud-in-a-subdir-of-nginx) to use. Read [this section](#running-in-a-subdir) for more info.
 * `DB_TYPE` : Database type (mysql, pgsql or sqlite) (default `sqlite`)
 * `DB_NAME` : Database name (default `nextcloud`)
 * `DB_USER` : Username for database (default `nextcloud`)
@@ -57,7 +58,7 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 The following environment variables are used only if you run the container as ["sidecar" mode](#cron) :
 
-* `CRON_PERIOD` : Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/background_jobs_configuration.html#cron) (disabled if empty ; ex `*/15 * * * *`)
+* `CRON_PERIOD` : Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) (disabled if empty ; ex `*/15 * * * *`)
 
 ### Volumes
 
@@ -99,7 +100,7 @@ Then open your browser to configure your admin account.
 
 ### OCC command
 
-If you want to use the [occ command](https://docs.nextcloud.com/server/12/admin_manual/configuration_server/occ_command.html) to perform common server operations like manage users, encryption, passwords, LDAP setting, and more, type :
+If you want to use the [occ command](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/occ_command.html) to perform common server operations like manage users, encryption, passwords, LDAP setting, and more, type :
 
 ```bash
 docker exec -ti nextcloud occ
@@ -141,6 +142,10 @@ If you want to enable Redis, deploy a redis container (see [docker-compose file]
         'port' => 6379,
     ),
 ```
+
+### Running in a subdir
+
+If you want to access your Nextcloud installation in a subdir (like `/nextcloud`), you have to set the `SUBDIR` environment variable and also add `PathPrefixStrip:/nextcloud` to your frontend rule if you use Traefik. Do not forget to remove `includeSubDomains` option in `HSTS_HEADER` if used.
 
 ## Upgrade
 
