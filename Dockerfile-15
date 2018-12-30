@@ -78,9 +78,10 @@ RUN apk --update --no-cache add \
     samba-dev \
     tar \
     wget \
-  && pecl install smbclient \
   && rm -rf /var/www/* /tmp/* \
   && cd /tmp \
+  && wget -q https://pecl.php.net/get/smbclient-1.0.0.tgz \
+  && pecl install smbclient-1.0.0.tgz \
   && wget -q https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
   && wget -q https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc \
   && wget -q https://nextcloud.com/nextcloud.asc \
