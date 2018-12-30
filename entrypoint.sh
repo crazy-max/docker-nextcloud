@@ -110,6 +110,7 @@ if [ ! -z "$SUBDIR" ]; then
     'overwritewebroot' => '${SUBDIR}',
 );
 EOL
+  chown nginx. /var/www/config/subdir.config.php
 fi
 
 # Sidecar cron container ?
