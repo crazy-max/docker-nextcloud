@@ -35,6 +35,7 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 * [Traefik](https://github.com/containous/traefik-library-image) as reverse proxy and creation/renewal of Let's Encrypt certificates
 * [Redis](https://github.com/docker-library/redis) for caching
+* [Collabora](https://github.com/CollaboraOnline/Docker-CODE) as an online Office Suite
 * [MariaDB](https://github.com/docker-library/mariadb) as database instance
 * Nextcloud cron job as a ["sidecar" container](#cron)
 

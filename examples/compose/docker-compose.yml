@@ -46,6 +46,19 @@ services:
     image: redis:4.0-alpine
     restart: always
 
+  collabora:
+    image: collabora/code
+    cap_add:
+      - MKNOD
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=collabora"
+      - "traefik.port=9980"
+      - "traefik.frontend.rule=Host:collabora.example.com"
+    environment:
+      - "domain=nextcloud.example.com"
+    restart: always
+
   app:
     image: crazymax/nextcloud:latest
     depends_on:
