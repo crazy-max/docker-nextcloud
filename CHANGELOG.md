@@ -1,5 +1,11 @@
 # Changelog
 
+## 15.0.1-RC2 / 14.0.5-RC2 (2019/01/10)
+
+* Enable gzip but do not remove ETag headers
+* Remove X-Powered-By, which is an information leak
+* Missing delivery of `.woff2` files
+
 ## 15.0.1-RC1 / 14.0.5-RC1 / 13.0.9-RC1 / 12.0.13-RC3 (2019/01/10)
 
 * Upgrade to Nextcloud 13.0.9, 14.0.5 and 15.0.1
