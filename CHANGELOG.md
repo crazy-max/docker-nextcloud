@@ -1,6 +1,6 @@
 # Changelog
 
-## 15.0.1-RC1 / 14.0.5-RC1 / 13.0.9-RC1 / 12.0.13-RC3 (2018/12/30)
+## 15.0.1-RC1 / 14.0.5-RC1 / 13.0.9-RC1 / 12.0.13-RC3 (2019/01/10)
 
 * Upgrade to Nextcloud 13.0.9, 14.0.5 and 15.0.1
 * Bind to unprivileged port : `8000`
