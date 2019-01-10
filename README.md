@@ -67,7 +67,7 @@ The following environment variables are used only if you run the container as ["
 
 ### Ports
 
-* `80` : HTTP port
+* `8000` : HTTP port
 
 ## Use this image
 
@@ -87,7 +87,7 @@ docker-compose logs -f
 You can also use the following minimal command :
 
 ```bash
-docker run -d -p 80:80 --name nextcloud \
+docker run -d -p 8000:8000 --name nextcloud \
   -v $(pwd)/data:/data \
   crazymax/nextcloud:latest
 ```
@@ -104,7 +104,7 @@ Then open your browser to configure your admin account.
 If you want to use the [occ command](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/occ_command.html) to perform common server operations like manage users, encryption, passwords, LDAP setting, and more, type :
 
 ```bash
-docker exec -ti nextcloud occ
+docker-compose exec nextcloud occ
 ```
 
 ### Cron
@@ -112,7 +112,7 @@ docker exec -ti nextcloud occ
 If you want to enable the cron job, you have to run a "sidecar" container like in the [docker-compose file](examples/compose/docker-compose.yml) or run a simple container like this :
 
 ```bash
-docker run -d --name nextcloud-cron \
+docker run -d --name nextcloud_cron \
   --env-file $(pwd)/nextcloud.env \
   -e CRON_PERIOD=*/15 * * * * \
   -v $(pwd)/data:/data \

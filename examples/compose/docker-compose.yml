@@ -3,6 +3,7 @@ version: "3.2"
 services:
   traefik:
     image: traefik:1.7-alpine
+    container_name: traefik
     command:
       - "--logLevel=INFO"
       - "--defaultentrypoints=http,https"
@@ -33,6 +34,7 @@ services:
 
   db:
     image: mariadb:10.2
+    container_name: nextcloud_db
     volumes:
       - "db:/var/lib/mysql"
     environment:
@@ -44,10 +46,12 @@ services:
 
   redis:
     image: redis:4.0-alpine
+    container_name: nextcloud_redis
     restart: always
 
   collabora:
     image: collabora/code
+    container_name: nextcloud_collabora
     cap_add:
       - MKNOD
     labels:
@@ -59,8 +63,9 @@ services:
       - "domain=nextcloud.example.com"
     restart: always
 
-  app:
+  nextcloud:
     image: crazymax/nextcloud:latest
+    container_name: nextcloud
     depends_on:
       - db
       - redis
@@ -69,7 +74,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=nextcloud"
-      - "traefik.port=80"
+      - "traefik.port=8000"
       - "traefik.frontend.rule=Host:nextcloud.example.com"
       - "traefik.frontend.redirect.permanent=true"
       - "traefik.frontend.redirect.regex=https://(.*)/.well-known/(card|cal)dav"
@@ -80,8 +85,9 @@ services:
 
   cron:
     image: crazymax/nextcloud:latest
+    container_name: nextcloud_cron
     depends_on:
-      - app
+      - nextcloud
     volumes:
       - "nextcloud:/data"
     command: "/usr/local/bin/cron"

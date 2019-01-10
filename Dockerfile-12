@@ -99,7 +99,7 @@ COPY assets /
 RUN chmod a+x /entrypoint.sh /usr/local/bin/* \
   && chown -R nginx. /tpls/data /tpls/bootstrap.php
 
-EXPOSE 80
+EXPOSE 8000
 WORKDIR /var/www
 VOLUME [ "/data" ]
 

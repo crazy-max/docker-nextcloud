@@ -15,7 +15,7 @@ LABEL maintainer="CrazyMax" \
   org.label-schema.vendor="CrazyMax" \
   org.label-schema.schema-version="1.0"
 
-ENV NEXTCLOUD_VERSION="14.0.4" \
+ENV NEXTCLOUD_VERSION="14.0.5" \
   CRONTAB_PATH="/var/spool/cron/crontabs"
 
 RUN apk --update --no-cache add \
@@ -99,7 +99,7 @@ COPY assets /
 RUN chmod a+x /entrypoint.sh /usr/local/bin/* \
   && chown -R nginx. /tpls/data /tpls/bootstrap.php
 
-EXPOSE 80
+EXPOSE 8000
 WORKDIR /var/www
 VOLUME [ "/data" ]
 
