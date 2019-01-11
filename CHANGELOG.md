@@ -1,5 +1,9 @@
 # Changelog
 
+## 15.0.2-RC1 / 14.0.6-RC1 / 13.0.10-RC1 (2019/01/11)
+
+* Upgrade to Nextcloud 13.0.10, 14.0.6 and 15.0.2
+
 ## 15.0.1-RC2 / 14.0.5-RC2 (2019/01/10)
 
 * Enable gzip but do not remove ETag headers
