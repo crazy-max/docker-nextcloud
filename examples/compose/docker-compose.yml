@@ -58,9 +58,12 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=collabora"
       - "traefik.port=9980"
+      - "traefik.frontend.entryPoints=http"
       - "traefik.frontend.rule=Host:collabora.example.com"
     environment:
-      - "domain=nextcloud.example.com"
+      - "DONT_GEN_SSL_CERT=true"
+      - "domain=collabora.example.com"
+      - "extra_params=--disable-ssl"
     restart: always
 
   nextcloud:
