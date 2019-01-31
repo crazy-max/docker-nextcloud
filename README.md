@@ -19,7 +19,7 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 ### Included
 
-* Alpine Linux 3.8, Nginx, PHP 7.2
+* Alpine Linux 3.9, Nginx, PHP 7.2
 * Tarball authenticity checked during building process
 * Data, config, user apps and themes persistence in the same folder
 * [Automatic installation](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/automatic_configuration.html)
