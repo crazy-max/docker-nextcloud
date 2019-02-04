@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://microbadger.com/images/crazymax/nextcloud"><img src="https://images.microbadger.com/badges/version/crazymax/nextcloud.svg?style=flat-square" alt="Version"></a>
-  <a href="https://travis-ci.org/crazy-max/docker-nextcloud"><img src="https://img.shields.io/travis/crazy-max/docker-nextcloud/master.svg?style=flat-square" alt="Build Status"></a>
+  <a href="https://travis-ci.com/crazy-max/docker-nextcloud"><img src="https://img.shields.io/travis/com/crazy-max/docker-nextcloud/master.svg?style=flat-square" alt="Build Status"></a>
   <a href="https://hub.docker.com/r/crazymax/nextcloud/"><img src="https://img.shields.io/docker/stars/crazymax/nextcloud.svg?style=flat-square" alt="Docker Stars"></a>
   <a href="https://hub.docker.com/r/crazymax/nextcloud/"><img src="https://img.shields.io/docker/pulls/crazymax/nextcloud.svg?style=flat-square" alt="Docker Pulls"></a>
   <a href="https://quay.io/repository/crazymax/nextcloud"><img src="https://quay.io/repository/crazymax/nextcloud/status?style=flat-square" alt="Docker Repository on Quay"></a>
