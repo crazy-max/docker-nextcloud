@@ -1,5 +1,10 @@
 # Changelog
 
+## 15.0.5-RC1 / 14.0.8-RC1 / 13.0.12-RC1 (2019/02/27)
+
+* Upgrade to Nextcloud 13.0.12, 14.0.8 and 15.0.5
+* Add exception for ocm-provider
+
 ## 15.0.4-RC1 / 14.0.7-RC1 / 13.0.11-RC1 (2019/02/08)
 
 * Upgrade to Nextcloud 13.0.11, 14.0.7 and 15.0.4
