@@ -1,8 +1,7 @@
 # Changelog
 
-## 15.0.5-RC3 / 14.0.8-RC3 / 13.0.12-RC3 / 12.0.13-RC6 (2019/03/17)
+## 12.0.13-RC6 (2019/03/17)
 
-* Avatar generation does not work (Issue #14)
 * Fix PHP incompatibility with Nextcloud 12 (not compatible with > PHP 7.2)
 
 ## 15.0.5-RC2 / 14.0.8-RC2 / 13.0.12-RC2 / 12.0.13-RC5 (2019/03/17)

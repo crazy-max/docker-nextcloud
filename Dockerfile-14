@@ -66,9 +66,6 @@ RUN apk --update --no-cache add \
     su-exec \
     supervisor \
     tzdata \
-  && apk --update --no-cache add \
-    php7-gd \
-    --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main \
   && apk --update --no-cache add -t build-dependencies \
     autoconf \
     automake \

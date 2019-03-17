@@ -36,6 +36,7 @@ RUN apk --update --no-cache add \
     php7-fileinfo \
     php7-fpm \
     php7-ftp \
+    php7-gd \
     php7-gmp \
     php7-iconv \
     php7-imagick \
@@ -66,9 +67,6 @@ RUN apk --update --no-cache add \
     su-exec \
     supervisor \
     tzdata \
-  && apk --update --no-cache add \
-    php7-gd \
-    --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main \
   && apk --update --no-cache add -t build-dependencies \
     autoconf \
     automake \
