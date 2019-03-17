@@ -63,6 +63,7 @@ RUN apk --update --no-cache add \
     php7-xmlwriter \
     php7-zip \
     php7-zlib \
+    python3 \
     su-exec \
     supervisor \
     tzdata \
@@ -78,6 +79,8 @@ RUN apk --update --no-cache add \
     samba-dev \
     tar \
     wget \
+  && pip3 install --upgrade pip \
+  && pip3 install nextcloud_news_updater --install-option="--install-scripts=/usr/bin" \
   && rm -rf /var/www/* /tmp/* \
   && cd /tmp \
   && wget -q https://pecl.php.net/get/smbclient-1.0.0.tgz \

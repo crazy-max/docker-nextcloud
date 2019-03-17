@@ -23,7 +23,8 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 * Tarball authenticity checked during building process
 * Data, config, user apps and themes persistence in the same folder
 * [Automatic installation](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/automatic_configuration.html)
-* Cron task for [Nextcloud background jobs](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) as a ["sidecar" container](#cron)
+* Cron task for [Nextcloud background jobs](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) as a [sidecar cron container](#cronjob)
+* Handle [Nextcloud News Updater](https://github.com/nextcloud/news-updater) for [News plugin](https://apps.nextcloud.com/apps/news) through a [sidecar news updater container](#nextcloud-news-updater)
 * OPCache enabled to store precompiled script bytecode in shared memory
 * APCu installed and configured
 * Memcached and Redis also enabled to enhance server performance
@@ -43,11 +44,16 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 ### Environment variables
 
+#### General
+
 * `TZ` : The timezone assigned to the container (default `UTC`)
 * `MEMORY_LIMIT` : PHP memory limit (default `512M`)
 * `UPLOAD_MAX_SIZE` : Upload max size (default `512M`)
 * `OPCACHE_MEM_SIZE` : PHP OpCache memory consumption (default `128`)
 * `APC_SHM_SIZE` : APCu memory size (default `128M`)
+
+#### Nextcloud
+
 * `HSTS_HEADER` : [HTTP Strict Transport Security](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/harden_server.html?highlight=harden#enable-http-strict-transport-security) header value (default `max-age=15768000; includeSubDomains`)
 * `RP_HEADER` : [Referrer Policy](https://www.w3.org/TR/referrer-policy/) header value (default `strict-origin`)
 * `SUBDIR` : [Subdir](https://docs.nextcloud.com/server/stable/admin_manual/installation/nginx.html#nextcloud-in-a-subdir-of-nginx) to use. Read [this section](#running-in-a-subdir) for more info.
@@ -57,9 +63,22 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 * `DB_PASSWORD` : Password for database user (default `asupersecretpassword`)
 * `DB_HOST` : Database host (default `db`)
 
-The following environment variables are used only if you run the container as ["sidecar" mode](#cron) :
+#### Cron
 
-* `CRON_PERIOD` : Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) (disabled if empty ; ex `*/15 * * * *`)
+> :warning: Only used if you enabled and run a [sidecar cron container](#cronjob)
+
+* `SIDECAR_CRON` : Set to `1` to enable sidecar cron mode (default `0`)
+* `CRON_PERIOD` : Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) (eg. `*/15 * * * *`)
+
+#### News Updater
+
+> :warning: Only used if you enabled and run a [sidecar news updater container](#nextcloud-news-updater)
+
+* `SIDECAR_NEWSUPDATER` : Set to `1` to enable sidecar news updater mode (default `0`)
+* `NC_NEWSUPDATER_THREADS` : How many feeds should be fetched in parallel (default `10`)
+* `NC_NEWSUPDATER_TIMEOUT` : Maximum number of seconds for updating a feed (default `300`)
+* `NC_NEWSUPDATER_INTERVAL` : Update interval between fetching the next round of updates in seconds (default `900`)
+* `NC_NEWSUPDATER_LOGLEVEL` : Log granularity, `info` will log all urls and received data, `error` will only log errors (default `error`)
 
 ### Volumes
 
@@ -107,25 +126,46 @@ If you want to use the [occ command](https://docs.nextcloud.com/server/stable/ad
 docker-compose exec nextcloud occ
 ```
 
-### Cron
+### Cronjob
 
-If you want to enable the cron job, you have to run a "sidecar" container like in the [docker-compose file](examples/compose/docker-compose.yml) or run a simple container like this :
+If you want to enable the cronjob, you have to run a "sidecar" container (see cron service in [docker-compose.yml](examples/compose/docker-compose.yml) example) or run a simple container like this :
 
 ```bash
 docker run -d --name nextcloud_cron \
   --env-file $(pwd)/nextcloud.env \
+  -e SIDECAR_CRON=1 \
   -e CRON_PERIOD=*/15 * * * * \
   -v $(pwd)/data:/data \
-  crazymax/nextcloud:latest /usr/local/bin/cron
+  crazymax/nextcloud:latest
 ```
 
-Then do not forget to choose **Cron** as background jobs :
+And do not forget to choose **Cron** as background jobs :
 
 ![Background jobs](.res/background-jobs.png)
 
+### Nextcloud News Updater
+
+If you want to enable the [Nextcloud News Updater](https://github.com/nextcloud/news-updater), you have to run a "sidecar" container (see news_updater service in [docker-compose.yml](examples/compose/docker-compose.yml) example) or run a simple container like this :
+
+```bash
+docker run -d --name nextcloud_news_updater \
+  --env-file $(pwd)/nextcloud.env \
+  -e SIDECAR_NEWSUPDATER=1 \
+  -e NC_NEWSUPDATER_THREADS=10 \
+  -e NC_NEWSUPDATER_TIMEOUT=300 \
+  -e NC_NEWSUPDATER_INTERVAL=900 \
+  -e NC_NEWSUPDATER_LOGLEVEL=error \
+  -v $(pwd)/data:/data \
+  crazymax/nextcloud:latest
+```
+
+And do not forget to disable **Use system cron for updates** in news settings :
+
+![Background jobs](.res/newsupdater-system-cron-updates.png)
+
 ### Email
 
-Do not forget to configure your **Email server** settings with your preferences :
+Configure your **Email server** settings with your preferences :
 
 ![Email server](.res/email-server-config.png)
 

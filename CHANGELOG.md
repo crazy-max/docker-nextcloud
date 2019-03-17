@@ -1,5 +1,14 @@
 # Changelog
 
+## 15.0.5-RC2 / 14.0.8-RC2 / 13.0.12-RC2 / 12.0.13-RC5 (2019/03/17)
+
+* Handle [Nextcloud News Updater](https://github.com/nextcloud/news-updater) for [News plugin](https://apps.nextcloud.com/apps/news) through a sidecar container
+* Sidecar cron is now enabled through the `SIDECAR_CRON` env var
+
+> :warning: **UPGRADE NOTES**
+> Sidecar cron container is now handled with `SIDECAR_CRON` environment variable.
+> See docker-compose example and README for more info.
+
 ## 15.0.5-RC1 / 14.0.8-RC1 / 13.0.12-RC1 (2019/02/27)
 
 * Upgrade to Nextcloud 13.0.12, 14.0.8 and 15.0.5

@@ -30,6 +30,14 @@ DB_HOST=${DB_HOST:-db}
 DB_NAME=${DB_NAME:-nextcloud}
 DB_USER=${DB_USER:-nextcloud}
 
+SIDECAR_CRON=${SIDECAR_CRON:-0}
+
+SIDECAR_NEWSUPDATER=${SIDECAR_NEWSUPDATER:-0}
+NC_NEWSUPDATER_THREADS=${NC_NEWSUPDATER_THREADS:-10}
+NC_NEWSUPDATER_TIMEOUT=${NC_NEWSUPDATER_TIMEOUT:-300}
+NC_NEWSUPDATER_INTERVAL=${NC_NEWSUPDATER_INTERVAL:-900}
+NC_NEWSUPDATER_LOGLEVEL=${NC_NEWSUPDATER_LOGLEVEL:-error}
+
 # Timezone
 echo "Setting timezone to ${TZ}..."
 ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
@@ -113,13 +121,34 @@ EOL
   chown nginx. /var/www/config/subdir.config.php
 fi
 
-# Sidecar cron container ?
-if [ "$1" == "/usr/local/bin/cron" ]; then
+# Sidecar Nextcloud news updater container
+if [ "$SIDECAR_NEWSUPDATER" = "1" ]; then
+  echo ">>"
+  echo ">> Sidecar news updater container detected for Nextcloud"
+  echo ">>"
+
+  # Init
+  rm /etc/supervisord/cron.conf /etc/supervisord/nginx.conf /etc/supervisord/php.conf
+
+  # Nextcloud News Updater config file (https://github.com/nextcloud/news-updater#usage)
+  cat > /etc/news_updater.ini <<EOL
+[updater]
+threads = ${NC_NEWSUPDATER_THREADS}
+timeout = ${NC_NEWSUPDATER_TIMEOUT}
+interval = ${NC_NEWSUPDATER_INTERVAL}
+loglevel = ${NC_NEWSUPDATER_LOGLEVEL}
+url = /var/www
+mode = endless
+EOL
+  chown nginx. /etc/news_updater.ini
+# Sidecar cron container
+elif [ "$SIDECAR_CRON" = "1" ]; then
   echo ">>"
   echo ">> Sidecar cron container detected for Nextcloud"
   echo ">>"
 
   # Init
+  rm /etc/supervisord/news_updater.conf /etc/supervisord/nginx.conf /etc/supervisord/php.conf
   rm -rf ${CRONTAB_PATH}
   mkdir -m 0644 -p ${CRONTAB_PATH}
   touch ${CRONTAB_PATH}/nginx
@@ -133,8 +162,12 @@ if [ "$1" == "/usr/local/bin/cron" ]; then
   fi
 
   # Fix perms
+  echo "Fixing permissions..."
   chmod -R 0644 ${CRONTAB_PATH}
 else
+  # Init
+  rm /etc/supervisord/cron.conf /etc/supervisord/news_updater.conf
+
   # Override several config values of Nextcloud
   echo "Bootstrapping configuration..."
   runas_nginx "php -f /tpls/bootstrap.php" > /tmp/config.php
