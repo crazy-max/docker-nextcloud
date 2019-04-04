@@ -1,5 +1,9 @@
 # Changelog
 
+## 15.0.6-RC1 (2019/04/04)
+
+* Nextcloud 15.0.6
+
 ## 12.0.13-RC6 (2019/03/17)
 
 * Fix PHP incompatibility with Nextcloud 12 (not compatible with > PHP 7.2)
@@ -15,12 +19,12 @@
 
 ## 15.0.5-RC1 / 14.0.8-RC1 / 13.0.12-RC1 (2019/02/27)
 
-* Upgrade to Nextcloud 13.0.12, 14.0.8 and 15.0.5
+* Nextcloud 13.0.12, 14.0.8 and 15.0.5
 * Add exception for ocm-provider
 
 ## 15.0.4-RC1 / 14.0.7-RC1 / 13.0.11-RC1 (2019/02/08)
 
-* Upgrade to Nextcloud 13.0.11, 14.0.7 and 15.0.4
+* Nextcloud 13.0.11, 14.0.7 and 15.0.4
 
 ## 15.0.2-RC2 / 14.0.6-RC2 / 13.0.10-RC2 / 12.0.13-RC4 (2019/01/31)
 
@@ -28,7 +32,7 @@
 
 ## 15.0.2-RC1 / 14.0.6-RC1 / 13.0.10-RC1 (2019/01/11)
 
-* Upgrade to Nextcloud 13.0.10, 14.0.6 and 15.0.2
+* Nextcloud 13.0.10, 14.0.6 and 15.0.2
 
 ## 15.0.1-RC2 / 14.0.5-RC2 (2019/01/10)
 
@@ -38,7 +42,7 @@
 
 ## 15.0.1-RC1 / 14.0.5-RC1 / 13.0.9-RC1 / 12.0.13-RC3 (2019/01/10)
 
-* Upgrade to Nextcloud 13.0.9, 14.0.5 and 15.0.1
+* Nextcloud 13.0.9, 14.0.5 and 15.0.1
 * Bind to unprivileged port : `8000`
 
 ## 15.0.0-RC2 / 14.0.4-RC2 / 13.0.8-RC2 / 12.0.13-RC2 (2018/12/30)
@@ -49,23 +53,23 @@
 
 ## 15.0.0-RC1 (2018/12/10)
 
-* Upgrade to Nextcloud 15.0.0
+* Nextcloud 15.0.0
 
 ## 14.0.4-RC1 / 13.0.8-RC1 / 12.0.13-RC1 (2018/11/22)
 
-* Upgrade to Nextcloud 12.0.13, 13.0.8 and 14.0.4
+* Nextcloud 12.0.13, 13.0.8 and 14.0.4
 
 ## 14.0.3-RC1 (2018/11/13)
 
-* Upgrade to Nextcloud 14.0.3
+* Nextcloud 14.0.3
 
 ## 14.0.2-RC1 / 13.0.7-RC1 / 12.0.12-RC1 (2018/10/11)
 
-* Upgrade to Nextcloud 12.0.12, 13.0.7 and 14.0.2
+* Nextcloud 12.0.12, 13.0.7 and 14.0.2
 
 ## 14.0.1-RC1 (2018/09/25)
 
-* Upgrade to Nextcloud 14.0.1
+* Nextcloud 14.0.1
 
 ## 14.0.0-RC2 / 13.0.6-RC3 / 12.0.11-RC3 (2018/09/06)
 
@@ -82,34 +86,34 @@
 
 ## 12.0.11-RC1 (2018/08/31)
 
-* Upgrade to Nextcloud 12.0.11
+* Nextcloud 12.0.11
 
 ## 13.0.6-RC1 (2018/08/30)
 
-* Upgrade to Nextcloud 13.0.6
+* Nextcloud 13.0.6
 * Unset sensitive environment variables
 
 ## 13.0.5-RC1 / 12.0.10-RC1 (2018/07/23)
 
-* Upgrade to Nextcloud 12.0.10 and 13.0.5
+* Nextcloud 12.0.10 and 13.0.5
 * Alpine Linux 3.8
 * PHP 7.2
 
 ## 13.0.4-RC1 / 12.0.9-RC1 (2018/06/11)
 
-* Upgrade to Nextcloud 12.0.9 and 13.0.4
+* Nextcloud 12.0.9 and 13.0.4
 
 ## 13.0.3-RC1 / 12.0.8-RC1 (2018/06/07)
 
-* Upgrade to Nextcloud 12.0.8 and 13.0.3
+* Nextcloud 12.0.8 and 13.0.3
 
 ## 13.0.2-RC1 / 12.0.7-RC1 (2018/04/27)
 
-* Upgrade to Nextcloud 12.0.7 and 13.0.2
+* Nextcloud 12.0.7 and 13.0.2
 
 ## 13.0.1-RC1 / 12.0.6-RC1 (2018/03/16)
 
-* Upgrade to Nextcloud 12.0.6 and 13.0.1
+* Nextcloud 12.0.6 and 13.0.1
 * Remove ability to set a custom UID / GID (performance issue with overlay driver)
 
 ## 13.0.0-RC3 / 12.0.5-RC4 (2018/02/28)
@@ -155,7 +159,7 @@
 
 ## 12.0.5-RC1 (2018/01/25)
 
-* Upgrade to Nextcloud 12.0.5
+* Nextcloud 12.0.5
 
 ## 12.0.4-RC5 (2018/01/09)
 
