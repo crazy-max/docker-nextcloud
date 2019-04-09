@@ -15,7 +15,7 @@ LABEL maintainer="CrazyMax" \
   org.label-schema.vendor="CrazyMax" \
   org.label-schema.schema-version="1.0"
 
-ENV NEXTCLOUD_VERSION="15.0.6" \
+ENV NEXTCLOUD_VERSION="15.0.7" \
   CRONTAB_PATH="/var/spool/cron/crontabs"
 
 RUN apk --update --no-cache add \
