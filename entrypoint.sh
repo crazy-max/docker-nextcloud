@@ -21,6 +21,9 @@ MEMORY_LIMIT=${MEMORY_LIMIT:-512M}
 UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-512M}
 OPCACHE_MEM_SIZE=${OPCACHE_MEM_SIZE:-128}
 APC_SHM_SIZE=${APC_SHM_SIZE:-128M}
+REAL_IP_FROM=${REAL_IP_FROM:-0.0.0.0/32}
+REAL_IP_HEADER=${REAL_IP_HEADER:-X-Forwarded-For}
+LOG_IP_VAR=${LOG_IP_VAR:-remote_addr}
 
 HSTS_HEADER=${HSTS_HEADER:-max-age=15768000; includeSubDomains}
 RP_HEADER=${RP_HEADER:-strict-origin}
@@ -61,6 +64,9 @@ sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
 # Nginx
 echo "Setting Nginx configuration..."
 sed -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
+  -e "s#@REAL_IP_FROM@#$REAL_IP_FROM#g" \
+  -e "s#@REAL_IP_HEADER@#$REAL_IP_HEADER#g" \
+  -e "s#@LOG_IP_VAR@#$LOG_IP_VAR#g" \
   -e "s/@HSTS_HEADER@/$HSTS_HEADER/g" \
   -e "s/@RP_HEADER@/$RP_HEADER/g" \
   -e "s#@SUBDIR@#$SUBDIR#g" \

@@ -1,5 +1,10 @@
 # Changelog
 
+## 16.0.0RC1-RC1 / 15.0.7-RC2 / 14.0.10-RC2 / 13.0.12-RC3 / 12.0.13-RC7 (2019/04/13)
+
+* Nextcloud 16.0.0RC1 (not pushed to latest)
+* Add `REAL_IP_FROM`, `REAL_IP_HEADER` and `LOG_IP_VAR` environment variables
+
 ## 14.0.9-RC1 / 14.0.10-RC1 (2019/04/10)
 
 * Nextcloud 14.0.9, 14.0.10
