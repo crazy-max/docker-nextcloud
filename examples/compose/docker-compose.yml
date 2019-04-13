@@ -84,8 +84,6 @@ services:
       - "traefik.frontend.redirect.replacement=https://$$1/remote.php/dav/"
     env_file:
       - "./nextcloud.env"
-    environment:
-      - "LOG_IP_VAR=http_x_forwarded_for"
     restart: always
 
   cron:
