@@ -1,5 +1,10 @@
 # Changelog
 
+## 16.0.0RC2-RC1 / 15.0.7-RC3 / 14.0.10-RC3 / 13.0.12-RC4 / 12.0.13-RC8 (2019/04/22)
+
+* Nextcloud 16.0.0RC2
+* Bind IPv6
+
 ## 16.0.0RC1-RC1 / 15.0.7-RC2 / 14.0.10-RC2 / 13.0.12-RC3 / 12.0.13-RC7 (2019/04/13)
 
 * Nextcloud 16.0.0RC1 (not pushed to latest)
