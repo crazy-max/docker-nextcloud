@@ -15,7 +15,7 @@ LABEL maintainer="CrazyMax" \
   org.label-schema.vendor="CrazyMax" \
   org.label-schema.schema-version="1.0"
 
-ENV NEXTCLOUD_VERSION="16.0.0RC2" \
+ENV NEXTCLOUD_VERSION="16.0.0" \
   CRONTAB_PATH="/var/spool/cron/crontabs"
 
 RUN apk --update --no-cache add \
@@ -85,8 +85,8 @@ RUN apk --update --no-cache add \
   && cd /tmp \
   && wget -q https://pecl.php.net/get/smbclient-1.0.0.tgz \
   && pecl install smbclient-1.0.0.tgz \
-  && wget -q https://download.nextcloud.com/server/prereleases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
-  && wget -q https://download.nextcloud.com/server/prereleases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc \
+  && wget -q https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
+  && wget -q https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc \
   && wget -q https://nextcloud.com/nextcloud.asc \
   && gpg --import nextcloud.asc \
   && gpg --verify --batch --no-tty nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
