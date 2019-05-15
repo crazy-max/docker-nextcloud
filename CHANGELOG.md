@@ -1,5 +1,9 @@
 # Changelog
 
+## 16.0.1-RC1
+
+* Nextcloud 16.0.1
+
 ## 16.0.0-RC2 / 15.0.7-RC4 / 14.0.10-RC4 / 13.0.12-RC5 / 12.0.13-RC9 (2019/04/28)
 
 * Add `large_client_header_buffers` Nginx config
