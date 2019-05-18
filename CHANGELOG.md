@@ -8,7 +8,7 @@
 
 * Add `large_client_header_buffers` Nginx config
 
-## 16.0.0-RC1
+## 16.0.0-RC1 (2019/04/24)
 
 * Nextcloud 16.0.0
 
