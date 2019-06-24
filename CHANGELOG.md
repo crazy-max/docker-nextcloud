@@ -1,5 +1,10 @@
 # Changelog
 
+## 16.0.1-RC2 / 15.0.8-RC2 / 14.0.12-RC2 (2019/06/24)
+
+* Alpine Linux 3.10 for Nextcloud 15 and 16
+* Cache `map` files
+
 ## 16.0.1-RC1 / 15.0.8-RC1 / 14.0.12-RC1 / 14.0.11-RC1 (2019/05/18)
 
 * Nextcloud 14.0.11, 14.0.12, 15.0.8, 16.0.1
