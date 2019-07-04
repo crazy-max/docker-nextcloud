@@ -1,5 +1,9 @@
 # Changelog
 
+## 16.0.2-RC1 / 15.0.9-RC1 (2019/07/04)
+
+* Nextcloud 15.0.9, 16.0.2
+
 ## 16.0.1-RC2 / 15.0.8-RC2 / 14.0.12-RC2 (2019/06/24)
 
 * Alpine Linux 3.10 for Nextcloud 15 and 16
