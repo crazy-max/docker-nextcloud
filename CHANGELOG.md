@@ -1,5 +1,10 @@
 # Changelog
 
+## 16.0.3-RC2 / 15.0.10-RC2 / 14.0.13-RC2 (2019/07/09)
+
+* Add healthcheck
+* Remove php-fpm access log (already mirrored by nginx)
+
 ## 16.0.3-RC1 / 15.0.10-RC1 (2019/07/09)
 
 * Nextcloud 15.0.10, 16.0.3

@@ -20,6 +20,7 @@ ENV NEXTCLOUD_VERSION="16.0.3" \
 
 RUN apk --update --no-cache add \
     ca-certificates \
+    curl \
     ffmpeg \
     libressl \
     libsmbclient \
@@ -108,3 +109,6 @@ VOLUME [ "/data" ]
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisord.conf" ]
+
+HEALTHCHECK --interval=10s --timeout=5s \
+  CMD /usr/local/bin/healthcheck
