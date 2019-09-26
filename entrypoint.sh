@@ -15,8 +15,6 @@ function runas_nginx() {
   su - nginx -s /bin/sh -c "$1"
 }
 
-TZ=${TZ:-UTC}
-
 MEMORY_LIMIT=${MEMORY_LIMIT:-512M}
 UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-512M}
 OPCACHE_MEM_SIZE=${OPCACHE_MEM_SIZE:-128}
@@ -40,11 +38,6 @@ NC_NEWSUPDATER_THREADS=${NC_NEWSUPDATER_THREADS:-10}
 NC_NEWSUPDATER_TIMEOUT=${NC_NEWSUPDATER_TIMEOUT:-300}
 NC_NEWSUPDATER_INTERVAL=${NC_NEWSUPDATER_INTERVAL:-900}
 NC_NEWSUPDATER_LOGLEVEL=${NC_NEWSUPDATER_LOGLEVEL:-error}
-
-# Timezone
-echo "Setting timezone to ${TZ}..."
-ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
-echo ${TZ} > /etc/timezone
 
 # PHP-FPM
 echo "Setting PHP-FPM configuration..."

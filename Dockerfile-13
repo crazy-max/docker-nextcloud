@@ -16,7 +16,8 @@ LABEL maintainer="CrazyMax" \
   org.label-schema.schema-version="1.0"
 
 ENV NEXTCLOUD_VERSION="13.0.12" \
-  CRONTAB_PATH="/var/spool/cron/crontabs"
+  CRONTAB_PATH="/var/spool/cron/crontabs" \
+  TZ="UTC"
 
 RUN apk --update --no-cache add \
     ca-certificates \
