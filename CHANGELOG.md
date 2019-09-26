@@ -1,5 +1,10 @@
 # Changelog
 
+## 17.0.0-RC2 / 16.0.5-RC2 / 15.0.12-RC2 (2019/09/26)
+
+* Switch to GitHub Actions
+* Stop publishing Docker image on Quay
+
 ## 17.0.0-RC1 / 16.0.5-RC1 / 15.0.12-RC1 (2019/09/26)
 
 * Nextcloud 15.0.12, 16.0.5, 17.0.0
