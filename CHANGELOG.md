@@ -1,5 +1,11 @@
 # Changelog
 
+## 17.0.0-RC1 / 16.0.5-RC1 / 15.0.12-RC1 (2019/09/26)
+
+* Nextcloud 15.0.12, 16.0.5, 17.0.0
+* Implicit timezone through tzdata package
+* Cache bcmap files
+
 ## 16.0.4-RC1 / 15.0.11-RC1 / 14.0.14-RC1 (2019/08/14)
 
 * Nextcloud 14.0.14, 15.0.11, 16.0.4
