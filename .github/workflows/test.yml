@@ -18,6 +18,10 @@ jobs:
           - Dockerfile-17
     steps:
       -
+        # https://github.com/actions/checkout
+        name: Checkout
+        uses: actions/checkout@v1
+      -
         name: Prepare
         id: prepare
         run: |
@@ -25,10 +29,6 @@ jobs:
           echo ::set-output name=container_name::nextcloud
           echo ::set-output name=running_timeout::120
           echo ::set-output name=running_log_check::php entered RUNNING state
-      -
-        # https://github.com/actions/checkout
-        name: Checkout
-        uses: actions/checkout@v1
       -
         name: Docker Build
         run: |

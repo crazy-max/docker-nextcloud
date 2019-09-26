@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
+        # https://github.com/actions/checkout
+        name: Checkout
+        uses: actions/checkout@v1
+      -
         name: Prepare
         id: prepare
         run: |
@@ -28,10 +32,6 @@ jobs:
           echo ::set-output name=build_date::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
           echo ::set-output name=docker_username::crazymax
           echo ::set-output name=docker_image::crazymax/nextcloud
-      -
-        # https://github.com/actions/checkout
-        name: Checkout
-        uses: actions/checkout@v1
       -
         name: Docker Build
         run: |
