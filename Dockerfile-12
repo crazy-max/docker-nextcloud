@@ -79,9 +79,9 @@ RUN apk --update --no-cache add \
   && cd /tmp \
   && wget -q https://pecl.php.net/get/smbclient-1.0.0.tgz \
   && pecl install smbclient-1.0.0.tgz \
-  && wget -q https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
-  && wget -q https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc \
-  && wget -q https://nextcloud.com/nextcloud.asc \
+  && curl -SsOL https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
+  && curl -SsOL https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc \
+  && curl -SsOL https://nextcloud.com/nextcloud.asc \
   && gpg --import nextcloud.asc \
   && gpg --verify --batch --no-tty nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
   && tar -xjf nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 --strip 1 -C /var/www \
