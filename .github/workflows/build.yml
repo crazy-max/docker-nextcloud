@@ -20,6 +20,7 @@ jobs:
             echo ::set-output name=tag_name::${TAG}
             echo ::set-output name=version::${TAG%-*}
             echo ::set-output name=docker_file::Dockerfile-${TAG%%.*}
+            echo ::set-output name=latest::$(cat .latest)
           else
             echo ::set-output name=version::17.0.0
             echo ::set-output name=docker_file::Dockerfile-17
@@ -38,9 +39,12 @@ jobs:
             --label "org.label-schema.build-date=${{ steps.prepare.outputs.build_date }}" \
             --label "org.label-schema.version=${{ steps.prepare.outputs.version }}" \
             --label "org.label-schema.vcs-ref=${GITHUB_SHA::8}" \
-            --tag "${{ steps.prepare.outputs.docker_image }}:latest" \
             --tag "${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}" \
             --file ${{ steps.prepare.outputs.docker_file }} .
+          if [ "${{ steps.prepare.outputs.latest }}" == "${{ steps.prepare.outputs.version }}" ]; then
+            docker tag "${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}" \
+              "${{ steps.prepare.outputs.docker_image }}:latest"
+          fi
       -
         name: Docker Login
         if: success() && startsWith(github.ref, 'refs/tags/')
