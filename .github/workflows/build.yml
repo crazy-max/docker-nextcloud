@@ -2,14 +2,13 @@ name: build
 
 on:
   pull_request:
-    branches: '*'
+    branches: 'master'
   push:
-    branches: '*'
+    branches: 'master'
     tags: '*'
 
 jobs:
   build:
-    name: ${GITHUB_REF#refs/tags/}
     runs-on: ubuntu-latest
     steps:
       -

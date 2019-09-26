@@ -16,16 +16,6 @@ jobs:
           - Dockerfile-15
           - Dockerfile-16
           - Dockerfile-17
-    #services:
-        #   mariadb:
-        #image: mariadb:10.2
-          #ports:
-          #- 3306/tcp
-          # env:
-          #- "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
-          #- "MYSQL_DATABASE=nextcloud"
-          #- "MYSQL_USER=nextcloud"
-          #- "MYSQL_PASSWORD=asupersecretpassword"
     steps:
       -
         name: Prepare
