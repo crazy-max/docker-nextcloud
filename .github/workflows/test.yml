@@ -58,11 +58,11 @@ jobs:
           while read LOGLINE; do
             echo ${LOGLINE}
             if [[ ${LOGLINE} == *"${{ steps.prepare.outputs.running_log_check }}"* ]]; then
-              echo "Container up!"
+              echo "🎉 Container up!"
               break
             fi
             if [[ $SECONDS -gt ${TIMEOUT} ]]; then
-              >&2 echo "ERROR: Failed to run ${{ steps.prepare.outputs.container_name }} container"
+              >&2 echo "❌ Failed to run ${{ steps.prepare.outputs.container_name }} container"
               docker rm -f ${{ steps.prepare.outputs.container_name }} > /dev/null 2>&1 || true
               exit 1
             fi
@@ -70,7 +70,7 @@ jobs:
 
           CONTAINER_STATUS=$(docker container inspect --format "{{.State.Status}}" ${{ steps.prepare.outputs.container_name }})
           if [[ ${CONTAINER_STATUS} != "running" ]]; then
-            >&2 echo "ERROR: Container ${{ steps.prepare.outputs.container_name }} returned status '$CONTAINER_STATUS'"
+            >&2 echo "❌ Container ${{ steps.prepare.outputs.container_name }} returned status '$CONTAINER_STATUS'"
             docker rm -f ${{ steps.prepare.outputs.container_name }} > /dev/null 2>&1 || true
             exit 1
           fi
