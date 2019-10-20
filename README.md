@@ -19,9 +19,6 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 ## Features
 
-### Included
-
-* Alpine Linux 3.10, Nginx, PHP 7.3
 * Tarball authenticity checked during building process
 * Data, config, user apps and themes persistence in the same folder
 * [Automatic installation](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/automatic_configuration.html)
@@ -33,9 +30,6 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 * Database connectors MySQL/MariaDB, PostgreSQL and SQLite3 enabled
 * Exif, IMAP, LDAP, FTP, GMP, SMB enabled (required for specific apps)
 * FFmpeg, iconv, Imagick installed for preview generation
-
-### From docker-compose
-
 * [Traefik](https://github.com/containous/traefik-library-image) as reverse proxy and creation/renewal of Let's Encrypt certificates
 * [Redis](https://github.com/docker-library/redis) for caching
 * [Collabora](https://github.com/CollaboraOnline/Docker-CODE) as an online Office Suite
