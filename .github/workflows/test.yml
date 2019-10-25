@@ -34,9 +34,14 @@ jobs:
         run: |
           docker build --tag ${{ steps.prepare.outputs.build_tag }} --file ${{ matrix.docker_file }} .
       -
+        name: Create network
+        run: |
+          docker network create -d bridge ${{ steps.prepare.outputs.container_name }}
+      -
         name: Start MariaDB container
         run: |
           docker run -d --name mariadb --hostname mariadb \
+            --network ${{ steps.prepare.outputs.container_name }} \
             -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" \
             -e "MYSQL_DATABASE=nextcloud" \
             -e "MYSQL_USER=nextcloud" \
@@ -46,6 +51,8 @@ jobs:
         name: Start container
         run: |
           docker run -d --name ${{ steps.prepare.outputs.container_name }} \
+            --link mariadb \
+            --network ${{ steps.prepare.outputs.container_name }} \
             -e "DB_HOST=mariadb" \
             -e "DB_NAME=nextcloud" \
             -e "DB_USER=nextcloud" \
