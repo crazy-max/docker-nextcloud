@@ -52,8 +52,9 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 #### Nextcloud
 
-* `HSTS_HEADER` : [HTTP Strict Transport Security](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/harden_server.html?highlight=harden#enable-http-strict-transport-security) header value (default `max-age=15768000; includeSubDomains`)
-* `RP_HEADER` : [Referrer Policy](https://www.w3.org/TR/referrer-policy/) header value (default `strict-origin`)
+* `HSTS_HEADER` : [HTTP Strict Transport Security](https://docs.nextcloud.com/server/stable/admin_manual/installation/harden_server.html#enable-http-strict-transport-security) header value (default `max-age=15768000; includeSubDomains`)
+* `XFRAME_OPTS_HEADER` : [X-Frame-Options](https://docs.nextcloud.com/server/stable/admin_manual/installation/harden_server.html#serve-security-related-headers-by-the-web-server) header value (default `SAMEORIGIN`)
+* `RP_HEADER` : [Referrer Policy](https://docs.nextcloud.com/server/stable/admin_manual/installation/harden_server.html#serve-security-related-headers-by-the-web-server) header value (default `strict-origin`)
 * `SUBDIR` : [Subdir](https://docs.nextcloud.com/server/stable/admin_manual/installation/nginx.html#nextcloud-in-a-subdir-of-nginx) to use. Read [this section](#running-in-a-subdir) for more info.
 * `DB_TYPE` : Database type (mysql, pgsql or sqlite) (default `sqlite`)
 * `DB_NAME` : Database name (default `nextcloud`)

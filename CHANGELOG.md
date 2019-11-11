@@ -1,5 +1,9 @@
 # Changelog
 
+## 17.0.1-RC2 / 16.0.6-RC2 / 15.0.13-RC2 (2019/11/11)
+
+* Add `XFRAME_OPTS_HEADER` environment variable
+
 ## 17.0.1-RC1 / 16.0.6-RC1 / 15.0.13-RC1 (2019/11/11)
 
 * Nextcloud 15.0.13, 16.0.6, 17.0.1
