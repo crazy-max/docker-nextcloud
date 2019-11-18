@@ -4,6 +4,7 @@ echo "Fixing perms..."
 chown nextcloud. \
   /data
 chown -R nextcloud. \
+  /home/nextcloud \
   /tpls \
   /var/lib/nginx \
   /var/log/nginx \
