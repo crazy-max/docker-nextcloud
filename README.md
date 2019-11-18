@@ -31,9 +31,9 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 * Exif, IMAP, LDAP, FTP, GMP, SMB enabled (required for specific apps)
 * FFmpeg, iconv, Imagick installed for preview generation
 * [s6-overlay](https://github.com/just-containers/s6-overlay/) as process supervisor
-* [Traefik](https://github.com/containous/traefik-library-image) as reverse proxy and creation/renewal of Let's Encrypt certificates
+* [Traefik](https://github.com/containous/traefik-library-image) as reverse proxy and creation/renewal of Let's Encrypt certificates (see [this template](examples/traefik))
 * [Redis](https://github.com/docker-library/redis) for caching
-* [Collabora](https://github.com/CollaboraOnline/Docker-CODE) as an online Office Suite
+* [Collabora](https://github.com/CollaboraOnline/Docker-CODE) as an online Office Suite (see [this template](examples/traefik))
 * [MariaDB](https://github.com/docker-library/mariadb) as database instance
 * Nextcloud cron job as a ["sidecar" container](#cron)
 
@@ -100,8 +100,6 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 Docker compose is the recommended way to run this image. Copy the content of folder [examples/compose](examples/compose) in `/var/nextcloud/` on your host for example. Edit the compose and env files with your preferences and run the following commands:
 
 ```bash
-touch acme.json
-chmod 600 acme.json
 docker-compose up -d
 docker-compose logs -f
 ```
