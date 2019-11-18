@@ -6,9 +6,8 @@ on:
     tags: '*'
     paths:
       - '.github/workflows/build.yml'
-      - 'assets/**'
+      - 'rootfs/**'
       - 'Dockerfile*'
-      - 'entrypoint.sh'
 
 jobs:
   build:
