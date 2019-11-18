@@ -36,7 +36,7 @@ jobs:
           echo ::set-output name=build_tag::test
           echo ::set-output name=container_name::nextcloud
           echo ::set-output name=running_timeout::120
-          echo ::set-output name=running_log_check::php entered RUNNING state
+          echo ::set-output name=running_log_check::ready to handle connections
       -
         name: Docker Build
         run: |
