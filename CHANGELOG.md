@@ -1,5 +1,23 @@
 # Changelog
 
+## 17.0.1-RC3 / 16.0.6-RC3 / 15.0.13-RC3 (2019/11/18)
+
+* :warning: Run as non-root user (#6)
+* Allow to set custom `PUID`/`PGID`
+* Switch to [s6-overlay](https://github.com/just-containers/s6-overlay/) as process supervisor
+* Allow to use Docker secrets for `DB_PASSWORD`
+* Prevent exposing Nginx and PHP version
+* Remove php-fpm access log (already mirrored by nginx)
+
+> :warning: **UPGRADE NOTES**
+> As the Docker container now runs as a non-root user, you have to first stop the container and change permissions to `data` volume:
+> ```
+> docker-compose stop
+> chown -R ${PUID}:${PGID} data/
+> docker-compose pull
+> docker-compose up -d
+> ```
+
 ## 17.0.1-RC2 / 16.0.6-RC2 / 15.0.13-RC2 (2019/11/11)
 
 * Add `XFRAME_OPTS_HEADER` environment variable

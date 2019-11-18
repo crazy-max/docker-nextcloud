@@ -15,11 +15,8 @@ LABEL maintainer="CrazyMax" \
   org.label-schema.vendor="CrazyMax" \
   org.label-schema.schema-version="1.0"
 
-ENV NEXTCLOUD_VERSION="17.0.1" \
-  CRONTAB_PATH="/var/spool/cron/crontabs" \
-  TZ="UTC"
-
 RUN apk --update --no-cache add \
+    bash \
     ca-certificates \
     curl \
     ffmpeg \
@@ -67,13 +64,11 @@ RUN apk --update --no-cache add \
     php7-zlib \
     python3 \
     su-exec \
-    supervisor \
     tzdata \
   && apk --update --no-cache add -t build-dependencies \
     autoconf \
     automake \
     build-base \
-    gnupg \
     libtool \
     pcre-dev \
     php7-dev \
@@ -81,12 +76,24 @@ RUN apk --update --no-cache add \
     samba-dev \
     tar \
     wget \
-  && pip3 install --upgrade pip \
-  && pip3 install nextcloud_news_updater --install-option="--install-scripts=/usr/bin" \
-  && rm -rf /var/www/* /tmp/* \
   && cd /tmp \
   && wget -q https://pecl.php.net/get/smbclient-1.0.0.tgz \
   && pecl install smbclient-1.0.0.tgz \
+  && wget -q "https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz" -qO "/tmp/s6-overlay-amd64.tar.gz" \
+  && tar xzf /tmp/s6-overlay-amd64.tar.gz -C / \
+  && apk del build-dependencies \
+  && rm -rf /tmp/* /var/cache/apk/* /var/www/*
+
+ENV NEXTCLOUD_VERSION="17.0.1" \
+  TZ="UTC" \
+  PUID="1000" \
+  PGID="1000"
+
+RUN apk --update --no-cache add -t build-dependencies \
+    gnupg \
+  && pip3 install --upgrade pip \
+  && pip3 install nextcloud_news_updater --install-option="--install-scripts=/usr/bin" \
+  && cd /tmp \
   && curl -SsOL https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
   && curl -SsOL https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc \
   && curl -SsOL https://nextcloud.com/nextcloud.asc \
@@ -94,22 +101,22 @@ RUN apk --update --no-cache add \
   && gpg --verify --batch --no-tty nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 \
   && tar -xjf nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 --strip 1 -C /var/www \
   && rm -f nextcloud-${NEXTCLOUD_VERSION}.tar* nextcloud.asc \
-  && chown -R nginx. /var/lib/nginx /var/log/nginx /var/log/php7 /var/tmp/nginx /var/www \
+  && chown -R nobody.nogroup /var/www \
   && apk del build-dependencies \
   && rm -rf /root/.gnupg /tmp/* /var/cache/apk/* /var/www/updater
 
-COPY entrypoint.sh /entrypoint.sh
 COPY assets /
 
-RUN chmod a+x /entrypoint.sh /usr/local/bin/* \
-  && chown -R nginx. /tpls/data /tpls/bootstrap.php
+RUN chmod a+x /usr/local/bin/* \
+  && addgroup -g ${PGID} nextcloud \
+  && adduser -D -h /home/nextcloud -u ${PUID} -G nextcloud -s /bin/sh nextcloud \
+  && mkdir -p /data /var/run/nginx /var/run/php-fpm
 
 EXPOSE 8000
 WORKDIR /var/www
 VOLUME [ "/data" ]
 
-ENTRYPOINT [ "/entrypoint.sh" ]
-CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisord.conf" ]
+ENTRYPOINT [ "/init" ]
 
-HEALTHCHECK --interval=10s --timeout=5s \
+HEALTHCHECK --interval=10s --timeout=5s --start-period=20s \
   CMD /usr/local/bin/healthcheck
