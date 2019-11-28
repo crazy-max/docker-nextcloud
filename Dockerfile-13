@@ -86,7 +86,8 @@ RUN apk --update --no-cache add \
 ENV NEXTCLOUD_VERSION="13.0.12" \
   TZ="UTC" \
   PUID="1000" \
-  PGID="1000"
+  PGID="1000" \
+  S6_BEHAVIOUR_IF_STAGE2_FAILS="2"
 
 RUN apk --update --no-cache add -t build-dependencies \
     gnupg \
