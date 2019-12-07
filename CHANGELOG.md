@@ -1,5 +1,9 @@
 # Changelog
 
+## 17.0.1-RC4 / 16.0.6-RC4 / 15.0.13-RC4 (2019/12/07)
+
+* Fix timezone
+
 ## 17.0.1-RC3 / 16.0.6-RC3 / 15.0.13-RC3 (2019/11/18)
 
 * :warning: Run as non-root user (#6)

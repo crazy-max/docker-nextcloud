@@ -87,11 +87,11 @@ RUN apk --update --no-cache add \
   && apk del build-dependencies \
   && rm -rf /tmp/* /var/cache/apk/* /var/www/*
 
-ENV NEXTCLOUD_VERSION="14.0.14" \
+ENV  S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
+  NEXTCLOUD_VERSION="14.0.14" \
   TZ="UTC" \
   PUID="1000" \
-  PGID="1000" \
-  S6_BEHAVIOUR_IF_STAGE2_FAILS="2"
+  PGID="1000"
 
 RUN apk --update --no-cache add -t build-dependencies \
     gnupg \

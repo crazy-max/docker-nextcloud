@@ -27,6 +27,7 @@ file_env() {
   unset "$fileVar"
 }
 
+TZ=${TZ:-UTC}
 MEMORY_LIMIT=${MEMORY_LIMIT:-512M}
 UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-512M}
 OPCACHE_MEM_SIZE=${OPCACHE_MEM_SIZE:-128}
@@ -47,6 +48,11 @@ DB_USER=${DB_USER:-nextcloud}
 SIDECAR_CRON=${SIDECAR_CRON:-0}
 SIDECAR_NEWSUPDATER=${SIDECAR_NEWSUPDATER:-0}
 
+# Timezone
+echo "Setting timezone to ${TZ}..."
+ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
+echo ${TZ} > /etc/timezone
+
 # PHP-FPM
 echo "Setting PHP-FPM configuration..."
 sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
@@ -59,7 +65,7 @@ sed -e "s/@APC_SHM_SIZE@/$APC_SHM_SIZE/g" \
   /tpls/etc/php7/conf.d/apcu.ini > /etc/php7/conf.d/apcu.ini
 sed -e "s/@OPCACHE_MEM_SIZE@/$OPCACHE_MEM_SIZE/g" \
   /tpls/etc/php7/conf.d/opcache.ini > /etc/php7/conf.d/opcache.ini
-sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
+sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" -e "s/@TIMEZONE@/$TZ/g" \
   /tpls/etc/php7/conf.d/override.ini > /etc/php7/conf.d/override.ini
 
 # Nginx
