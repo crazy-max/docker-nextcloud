@@ -1,5 +1,9 @@
 # Changelog
 
+## 17.0.1-RC5 / 16.0.6-RC5 / 15.0.13-RC5 (2019/12/18)
+
+* Add imagemagick libraries for many image formats
+
 ## 17.0.1-RC4 / 16.0.6-RC4 / 15.0.13-RC4 (2019/12/07)
 
 * Fix timezone

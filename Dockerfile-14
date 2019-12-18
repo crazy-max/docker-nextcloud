@@ -24,6 +24,7 @@ RUN apk --update --no-cache add \
     ca-certificates \
     curl \
     ffmpeg \
+    imagemagick \
     libressl \
     libsmbclient \
     libxml2 \
