@@ -1,5 +1,9 @@
 # Changelog
 
+## 17.0.2-RC1 / 16.0.7-RC1 / 15.0.14-RC1 (2019/12/19)
+
+* Nextcloud 15.0.14, 16.0.7, 17.0.2
+
 ## 17.0.1-RC5 / 16.0.6-RC5 / 15.0.13-RC5 (2019/12/18)
 
 * Add imagemagick libraries for many image formats
