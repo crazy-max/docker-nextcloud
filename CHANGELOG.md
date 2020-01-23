@@ -1,5 +1,10 @@
 # Changelog
 
+## 18.0.0-RC1 (2020/12/23)
+
+* Nextcloud 18.0.0
+* Alpine Linux 3.11
+
 ## 17.0.2-RC2 / 16.0.7-RC2 / 15.0.14-RC2 (2020/01/22)
 
 * Move Nginx temp folders to `/tmp` (#30)
