@@ -65,7 +65,8 @@ sed -e "s/@APC_SHM_SIZE@/$APC_SHM_SIZE/g" \
   /tpls/etc/php7/conf.d/apcu.ini > /etc/php7/conf.d/apcu.ini
 sed -e "s/@OPCACHE_MEM_SIZE@/$OPCACHE_MEM_SIZE/g" \
   /tpls/etc/php7/conf.d/opcache.ini > /etc/php7/conf.d/opcache.ini
-sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" -e "s/@TIMEZONE@/$TZ/g" \
+sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
+  -e "s#@TIMEZONE@#$TZ#g" \
   /tpls/etc/php7/conf.d/override.ini > /etc/php7/conf.d/override.ini
 
 # Nginx
