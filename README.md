@@ -63,7 +63,7 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 * `DB_TYPE`: Database type (mysql, pgsql or sqlite) (default `sqlite`)
 * `DB_NAME`: Database name (default `nextcloud`)
 * `DB_USER`: Username for database (default `nextcloud`)
-* `DB_PASSWORD`: Password for database user (default `asupersecretpassword`)
+* `DB_PASSWORD`: Password for database user
 * `DB_HOST`: Database host (default `db`)
 
 #### Cron
