@@ -1,5 +1,9 @@
 # Changelog
 
+## 18.0.1-RC1 (2020/02/12)
+
+* Nextcloud 18.0.1
+
 ## 18.0.0-RC2 / 17.0.3-RC2 / 16.0.8-RC2 (2020/02/10)
 
 * Fix bad substitution (#31)
@@ -8,7 +12,7 @@
 
 * Nextcloud 16.0.8, 17.0.3
 
-## 18.0.0-RC1 (2020/12/23)
+## 18.0.0-RC1 (2020/01/23)
 
 * Nextcloud 18.0.0
 * Alpine Linux 3.11
