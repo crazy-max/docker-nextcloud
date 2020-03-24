@@ -21,9 +21,9 @@ jobs:
       fail-fast: false
       matrix:
         docker_file:
-          - Dockerfile-15
           - Dockerfile-16
           - Dockerfile-17
+          - Dockerfile-18
     steps:
       -
         # https://github.com/actions/checkout
