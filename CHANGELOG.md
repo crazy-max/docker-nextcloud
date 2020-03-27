@@ -1,5 +1,9 @@
 # Changelog
 
+## 18.0.3-RC2 / 17.0.5-RC2 / 16.0.9-RC2 (2020/03/27)
+
+* Fix folder creation
+
 ## 18.0.3-RC1 / 17.0.5-RC1 (2020/03/21)
 
 * Nextcloud 17.0.5, 18.0.3
