@@ -86,7 +86,7 @@ RUN apk --update --no-cache add \
   && rm -rf /tmp/* /var/cache/apk/* /var/www/*
 
 ENV  S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
-  NEXTCLOUD_VERSION="16.0.9" \
+  NEXTCLOUD_VERSION="16.0.10" \
   TZ="UTC" \
   PUID="1000" \
   PGID="1000"
