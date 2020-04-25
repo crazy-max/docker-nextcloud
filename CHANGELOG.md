@@ -1,5 +1,10 @@
 # Changelog
 
+## 18.0.4-RC2 / 17.0.6-RC2 / 16.0.10-RC2 (2020/04/23)
+
+* Update Nginx configuration
+* Remove EOL versions
+
 ## 18.0.4-RC1 / 17.0.6-RC1 / 16.0.10-RC1 (2020/04/23)
 
 * Nextcloud 16.0.10, 17.0.6, 18.0.4
