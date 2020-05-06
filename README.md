@@ -68,14 +68,14 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 
 #### Cron
 
-> :warning: Only used if you enabled and run a [sidecar cron container](#cronjob)
+> :warning: Only used if you enable and run a [sidecar cron container](#cronjob)
 
 * `SIDECAR_CRON`: Set to `1` to enable sidecar cron mode (default `0`)
 * `CRON_PERIOD`: Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) (eg. `*/15 * * * *`)
 
 #### News Updater
 
-> :warning: Only used if you enabled and run a [sidecar news updater container](#nextcloud-news-updater)
+> :warning: Only used if you enable and run a [sidecar news updater container](#nextcloud-news-updater)
 
 * `SIDECAR_NEWSUPDATER`: Set to `1` to enable sidecar news updater mode (default `0`)
 * `NC_NEWSUPDATER_THREADS`: How many feeds should be fetched in parallel (default `10`)
