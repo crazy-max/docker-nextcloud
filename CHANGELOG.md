@@ -1,5 +1,9 @@
 # Changelog
 
+## 18.0.4-RC3 / 17.0.6-RC3 / 16.0.10-RC3 (2020/05/17)
+
+* Add `LISTEN_IPV6` env var
+
 ## 18.0.4-RC2 / 17.0.6-RC2 / 16.0.10-RC2 (2020/04/25)
 
 * Update Nginx configuration

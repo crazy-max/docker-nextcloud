@@ -31,6 +31,7 @@ TZ=${TZ:-UTC}
 MEMORY_LIMIT=${MEMORY_LIMIT:-512M}
 UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-512M}
 OPCACHE_MEM_SIZE=${OPCACHE_MEM_SIZE:-128}
+LISTEN_IPV6=${LISTEN_IPV6:-true}
 APC_SHM_SIZE=${APC_SHM_SIZE:-128M}
 REAL_IP_FROM=${REAL_IP_FROM:-0.0.0.0/32}
 REAL_IP_HEADER=${REAL_IP_HEADER:-X-Forwarded-For}
@@ -80,6 +81,10 @@ sed -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
   -e "s/@RP_HEADER@/$RP_HEADER/g" \
   -e "s#@SUBDIR@#$SUBDIR#g" \
   /tpls/etc/nginx/nginx.conf > /etc/nginx/nginx.conf
+
+if [ "$LISTEN_IPV6" != "true" ]; then
+  sed -e '/listen \[::\]:/d' -i /etc/nginx/nginx.conf
+fi
 
 # Init Nextcloud
 echo "Initializing Nextcloud files/folders..."
