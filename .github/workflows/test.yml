@@ -26,7 +26,6 @@ jobs:
           - Dockerfile-18
     steps:
       -
-        # https://github.com/actions/checkout
         name: Checkout
         uses: actions/checkout@v2
       -
