@@ -35,7 +35,7 @@ ___
   * [OCC command](#occ-command)
   * [Cronjob](#cronjob)
   * [Nextcloud News Updater](#nextcloud-news-updater)
-  * [Email](#email)
+  * [Email server](#email-server)
   * [Redis cache](#redis-cache)
   * [Running in a subdir](#running-in-a-subdir)
 * [How can I help?](#how-can-i-help)
@@ -57,6 +57,7 @@ ___
 * FFmpeg, iconv, Imagick installed for preview generation
 * [s6-overlay](https://github.com/just-containers/s6-overlay/) as process supervisor
 * [Traefik](https://github.com/containous/traefik-library-image) as reverse proxy and creation/renewal of Let's Encrypt certificates (see [this template](examples/traefik))
+* [msmtpd SMTP relay](https://github.com/crazy-max/docker-msmtpd) image to send emails
 * [Redis](https://github.com/docker-library/redis) for caching
 * [Collabora](https://github.com/CollaboraOnline/Docker-CODE) as an online Office Suite (see [this template](examples/traefik))
 * [MariaDB](https://github.com/docker-library/mariadb) as database instance
@@ -199,11 +200,11 @@ And do not forget to disable **Use system cron for updates** in news settings:
 
 ![Background jobs](.res/newsupdater-system-cron-updates.png)
 
-### Email
+### Email server
 
-Configure your **Email server** settings with your preferences:
+You can use our SMTP relay `msmtpd` service published on port `2500` and declared in our [`docker-compose.yml`](examples/compose/docker-compose.yml):
 
-![Email server](.res/email-server-config.png)
+![Email server config](.res/email-server-config.png)
 
 ### Redis cache
 

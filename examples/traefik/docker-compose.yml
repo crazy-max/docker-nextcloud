@@ -39,14 +39,25 @@ services:
       - "db:/var/lib/mysql"
     environment:
       - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
-      - "MYSQL_DATABASE=nextcloud"
-      - "MYSQL_USER=nextcloud"
-      - "MYSQL_PASSWORD=asupersecretpassword"
+      - "MYSQL_DATABASE"
+      - "MYSQL_USER"
+      - "MYSQL_PASSWORD"
     restart: always
 
   redis:
     image: redis:4.0-alpine
     container_name: nextcloud_redis
+    environment:
+      - "TZ"
+    restart: always
+
+  msmtpd:
+    image: crazymax/msmtpd:latest
+    container_name: nextcloud_msmtpd
+    env_file:
+      - "./msmtpd.env"
+    environment:
+      - "TZ"
     restart: always
 
   collabora:
@@ -72,6 +83,7 @@ services:
     depends_on:
       - db
       - redis
+      - msmtpd
     volumes:
       - "nextcloud:/data"
     labels:
@@ -84,6 +96,15 @@ services:
       - "traefik.frontend.redirect.replacement=https://$$1/remote.php/dav/"
     env_file:
       - "./nextcloud.env"
+    environment:
+      - "TZ"
+      - "PUID"
+      - "PGID"
+      - "DB_TYPE=mysql"
+      - "DB_HOST=db"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
     restart: always
 
   cron:
@@ -96,6 +117,14 @@ services:
     env_file:
       - "./nextcloud.env"
     environment:
+      - "TZ"
+      - "PUID"
+      - "PGID"
+      - "DB_TYPE=mysql"
+      - "DB_HOST=db"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
       - "SIDECAR_CRON=1"
       - "CRON_PERIOD=*/15 * * * *"
     restart: always
@@ -110,6 +139,14 @@ services:
     env_file:
       - "./nextcloud.env"
     environment:
+      - "TZ"
+      - "PUID"
+      - "PGID"
+      - "DB_TYPE=mysql"
+      - "DB_HOST=db"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
       - "SIDECAR_NEWSUPDATER=1"
       - "NC_NEWSUPDATER_THREADS=10"
       - "NC_NEWSUPDATER_TIMEOUT=300"
