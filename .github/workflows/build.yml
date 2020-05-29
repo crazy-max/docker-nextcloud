@@ -40,12 +40,12 @@ jobs:
             DOCKER_FILE=Dockerfile-${TAG%%.*}
             DOCKER_PUSH=true
           fi
-          if [ "$VERSION" == "edge" ] && [ "$VERSION" == "$(cat .latest)" ]; then
+          if [ "$VERSION" == "edge" ] && [ "$DOCKER_FILE" == "Dockerfile-18" ]; then
             DOCKER_PUSH=true
           fi
 
           TAGS="--tag ${DOCKER_IMAGE}:${VERSION}"
-          if [ "$VERSION" != "edge" ] && [ "$VERSION" == "$(cat .latest)" ]; then
+          if [ "$VERSION" == "$(cat .latest)" ]; then
             TAGS="$TAGS --tag ${DOCKER_IMAGE}:latest"
           fi
 
@@ -58,6 +58,8 @@ jobs:
             --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
             --build-arg VCS_REF=${GITHUB_SHA::8} \
             ${TAGS} --file ${DOCKER_FILE} .
+
+          env|sort
       -
         name: Set up Docker Buildx
         uses: crazy-max/ghaction-docker-buildx@v1
