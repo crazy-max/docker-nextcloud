@@ -1,5 +1,9 @@
 # Changelog
 
+## 18.0.4-RC4 / 17.0.6-RC4 / 16.0.10-RC4 (2020/05/29)
+
+* Multi-platform Docker image
+
 ## 18.0.4-RC3 / 17.0.6-RC3 / 16.0.10-RC3 (2020/05/17)
 
 * Add `LISTEN_IPV6` env var

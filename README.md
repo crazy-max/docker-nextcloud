@@ -12,13 +12,14 @@
 ## About
 
 🐳 [Nextcloud](https://nextcloud.com) Docker image based on Alpine Linux and Nginx with advanced features.<br />
-If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 🐳 Docker images!
+If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other Docker images!
 
 💡 Want to be notified of new releases? Check out 🔔 [Diun (Docker Image Update Notifier)](https://github.com/crazy-max/diun) project!
 
 ___
 
 * [Features](#features)
+* [Multi-platform image](#multi-platform-image)
 * [Environment variables](#environment-variables)
   * [General](#general)
   * [Nextcloud](#nextcloud)
@@ -44,6 +45,7 @@ ___
 ## Features
 
 * Run as non-root user
+* Multi-platform image
 * Tarball authenticity checked during building process
 * Data, config, user apps and themes persistence in the same folder
 * [Automatic installation](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/automatic_configuration.html)
@@ -62,6 +64,23 @@ ___
 * [Collabora](https://github.com/CollaboraOnline/Docker-CODE) as an online Office Suite (see [this template](examples/traefik))
 * [MariaDB](https://github.com/docker-library/mariadb) as database instance
 * Nextcloud cron job as a ["sidecar" container](#cron)
+
+## Multi-platform image
+
+Following platforms for this image are available:
+
+```
+$ docker run --rm mplatform/mquery crazymax/nextcloud:latest
+Image: crazymax/nextcloud:latest
+ * Manifest List: Yes
+ * Supported platforms:
+   - linux/amd64
+   - linux/arm/v6
+   - linux/arm/v7
+   - linux/arm64
+   - linux/386
+   - linux/ppc64le
+```
 
 ## Environment variables
 
@@ -90,6 +109,8 @@ ___
 * `DB_USER`: Username for database (default `nextcloud`)
 * `DB_PASSWORD`: Password for database user
 * `DB_HOST`: Database host (default `db`)
+
+> 💡 `DB_PASSWORD_FILE` can be used to fill in the value from a file, especially for Docker's secrets feature.
 
 ### Cron
 
