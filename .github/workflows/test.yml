@@ -24,6 +24,7 @@ jobs:
           - Dockerfile-16
           - Dockerfile-17
           - Dockerfile-18
+          - Dockerfile-19
     steps:
       -
         name: Checkout
