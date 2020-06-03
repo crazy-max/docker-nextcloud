@@ -29,7 +29,7 @@ jobs:
           DOCKER_USERNAME=crazymax
           DOCKER_IMAGE=crazymax/nextcloud
           DOCKER_PLATFORMS=linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386,linux/ppc64le
-          DOCKER_FILE=Dockerfile-18
+          DOCKER_FILE=Dockerfile-19
           VERSION=edge
           LATEST=$(cat .latest)
           DOCKER_PUSH=false
@@ -40,7 +40,7 @@ jobs:
             DOCKER_FILE=Dockerfile-${TAG%%.*}
             DOCKER_PUSH=true
           fi
-          if [ "$VERSION" == "edge" ] && [ "$DOCKER_FILE" == "Dockerfile-18" ]; then
+          if [ "$VERSION" == "edge" ] && [ "$DOCKER_FILE" == "Dockerfile-19" ]; then
             DOCKER_PUSH=true
           fi
 
