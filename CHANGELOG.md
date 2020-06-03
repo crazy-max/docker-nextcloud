@@ -1,5 +1,10 @@
 # Changelog
 
+## 19.0.0-RC1 (2020/06/03)
+
+* Nextcloud 19.0.0
+* Alpine Linux 3.12
+
 ## 18.0.4-RC4 / 17.0.6-RC4 / 16.0.10-RC4 (2020/05/29)
 
 * Multi-platform Docker image
