@@ -60,7 +60,7 @@ jobs:
             ${TAGS} --file ${DOCKER_FILE} .
       -
         name: Set up Docker Buildx
-        uses: crazy-max/ghaction-docker-buildx@v2
+        uses: crazy-max/ghaction-docker-buildx@v3.1.0
       -
         name: Docker Buildx (build)
         run: |
