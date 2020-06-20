@@ -1,5 +1,10 @@
 # Changelog
 
+## 19.0.0-RC2 / 18.0.6-RC1 / 17.0.7-RC2 / 16.0.11-RC2 (2020/06/20)
+
+* Nextcloud 18.0.6
+* Fix missing `bcmath` PHP module
+
 ## 18.0.5-RC1 / 17.0.7-RC1 / 16.0.11-RC1 (2020/06/04)
 
 * Nextcloud 16.0.11, 17.0.7, 18.0.5
