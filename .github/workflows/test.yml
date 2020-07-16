@@ -19,7 +19,6 @@ jobs:
       fail-fast: false
       matrix:
         docker_file:
-          - Dockerfile-16
           - Dockerfile-17
           - Dockerfile-18
           - Dockerfile-19
