@@ -27,7 +27,7 @@ jobs:
         run: |
           DOCKER_USERNAME=crazymax
           DOCKER_IMAGE=crazymax/nextcloud
-          DOCKER_PLATFORMS=linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386,linux/ppc64le
+          DOCKER_PLATFORMS=linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386,linux/ppc64le,linux/s390x
           DOCKER_FILE=Dockerfile-19
           VERSION=edge
           LATEST=$(cat .latest)
