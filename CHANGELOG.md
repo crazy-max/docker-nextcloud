@@ -1,5 +1,9 @@
 # Changelog
 
+## 19.0.1-RC2 / 18.0.7-RC2 / 17.0.8-RC2 (2020/08/09)
+
+* Now based on [Alpine Linux with s6 overlay](https://github.com/crazy-max/docker-alpine-s6/)
+
 ## 19.0.1-RC1 / 18.0.7-RC1 / 17.0.8-RC1 (2020/07/16)
 
 * Nextcloud 17.0.8, 18.0.7, 19.0.1
