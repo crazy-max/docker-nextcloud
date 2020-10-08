@@ -26,7 +26,7 @@ jobs:
         id: prep
         run: |
           DOCKER_IMAGE=crazymax/nextcloud
-          DOCKER_FILE=Dockerfile-19
+          DOCKER_FILE=Dockerfile-20
           VERSION=edge
           LATEST=$(cat .latest)
           DOCKER_PUSH=false
@@ -36,7 +36,7 @@ jobs:
             DOCKER_FILE=Dockerfile-${TAG%%.*}
             DOCKER_PUSH=true
           fi
-          if [ "$VERSION" == "edge" ] && [ "$DOCKER_FILE" == "Dockerfile-19" ]; then
+          if [ "$VERSION" == "edge" ] && [ "$DOCKER_FILE" == "Dockerfile-20" ]; then
             DOCKER_PUSH=true
           fi
           TAGS="${DOCKER_IMAGE}:${VERSION}"
