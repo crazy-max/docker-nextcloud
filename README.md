@@ -1,4 +1,4 @@
-<p align="center"><a href="https://github.com/crazy-max/docker-nextcloud" target="_blank"><img height="128" src="https://raw.githubusercontent.com/crazy-max/docker-nextcloud/master/.res/docker-nextcloud.jpg"></a></p>
+<p align="center"><a href="https://github.com/crazy-max/docker-nextcloud" target="_blank"><img height="128" src="https://raw.githubusercontent.com/crazy-max/docker-nextcloud/master/.github/docker-nextcloud.jpg"></a></p>
 
 <p align="center">
   <a href="https://hub.docker.com/r/crazymax/nextcloud/tags?page=1&ordering=last_updated"><img src="https://img.shields.io/github/v/tag/crazy-max/docker-nextcloud?label=version&style=flat-square" alt="Latest Version"></a>
@@ -11,7 +11,7 @@
 
 ## About
 
-🐳 [Nextcloud](https://nextcloud.com) Docker image based on Alpine Linux and Nginx with advanced features.<br />
+[Nextcloud](https://nextcloud.com) Docker image based on Alpine Linux and Nginx with advanced features.<br />
 If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other Docker images!
 
 💡 Want to be notified of new releases? Check out 🔔 [Diun (Docker Image Update Notifier)](https://github.com/crazy-max/diun) project!
@@ -200,7 +200,7 @@ docker run -d --name nextcloud_cron \
 
 And do not forget to choose **Cron** as background jobs:
 
-![Background jobs](.res/background-jobs.png)
+![Background jobs](.github/background-jobs.png)
 
 ### Nextcloud News Updater
 
@@ -220,13 +220,13 @@ docker run -d --name nextcloud_news_updater \
 
 And do not forget to disable **Use system cron for updates** in news settings:
 
-![Background jobs](.res/newsupdater-system-cron-updates.png)
+![Background jobs](.github/newsupdater-system-cron-updates.png)
 
 ### Email server
 
 You can use our SMTP relay `msmtpd` service published on port `2500` and declared in our [`docker-compose.yml`](examples/compose/docker-compose.yml):
 
-![Email server config](.res/email-server-config.png)
+![Email server config](.github/email-server-config.png)
 
 ### Redis cache
 
