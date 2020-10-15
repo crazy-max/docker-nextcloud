@@ -118,7 +118,7 @@ Image: crazymax/nextcloud:latest
 > :warning: Only used if you enable and run a [sidecar cron container](#cronjob)
 
 * `SIDECAR_CRON`: Set to `1` to enable sidecar cron mode (default `0`)
-* `CRON_PERIOD`: Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) (eg. `*/15 * * * *`)
+* `CRON_PERIOD`: Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) (eg. `*/5 * * * *`)
 
 ### News Updater
 
@@ -193,7 +193,7 @@ If you want to enable the cronjob, you have to run a "sidecar" container (see cr
 docker run -d --name nextcloud_cron \
   --env-file $(pwd)/nextcloud.env \
   -e SIDECAR_CRON=1 \
-  -e CRON_PERIOD=*/15 * * * * \
+  -e CRON_PERIOD=*/5 * * * * \
   -v $(pwd)/data:/data \
   crazymax/nextcloud:latest
 ```

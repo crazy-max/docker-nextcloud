@@ -135,7 +135,7 @@ services:
       - "DB_USER=${MYSQL_USER}"
       - "DB_PASSWORD=${MYSQL_PASSWORD}"
       - "SIDECAR_CRON=1"
-      - "CRON_PERIOD=*/15 * * * *"
+      - "CRON_PERIOD=*/5 * * * *"
     restart: always
 
   news_updater:
