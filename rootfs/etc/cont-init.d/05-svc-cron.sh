@@ -24,6 +24,10 @@ if [ -n "$CRON_PERIOD" ]; then
 else
   echo "CRON_PERIOD env var empty..."
 fi
+if [ -n "$PREVIEWGEN_CRON_PERIOD" ]; then
+  echo "Creating Preview Generator cron task with the following period fields : $PREVIEWGEN_CRON_PERIOD"
+  echo "${PREVIEWGEN_CRON_PERIOD} occ preview:pre-generate" >> ${CRONTAB_PATH}/nextcloud
+fi
 
 # Fix perms
 echo "Fixing crontabs permissions..."

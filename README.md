@@ -50,6 +50,7 @@ ___
 * Data, config, user apps and themes persistence in the same folder
 * [Automatic installation](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/automatic_configuration.html)
 * Cron task for [Nextcloud background jobs](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) as a [sidecar cron container](#cronjob)
+* Execute pre-generation of previews through [Preview Generator](https://github.com/rullzer/previewgenerator) plugin
 * Handle [Nextcloud News Updater](https://github.com/nextcloud/news-updater) for [News plugin](https://apps.nextcloud.com/apps/news) through a [sidecar news updater container](#nextcloud-news-updater)
 * OPCache enabled to store precompiled script bytecode in shared memory
 * APCu installed and configured
@@ -119,6 +120,7 @@ Image: crazymax/nextcloud:latest
 
 * `SIDECAR_CRON`: Set to `1` to enable sidecar cron mode (default `0`)
 * `CRON_PERIOD`: Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) (eg. `*/5 * * * *`)
+* `PREVIEWGEN_CRON_PERIOD`: Periodically execute pre-generation of previews through [Preview Generator](https://github.com/rullzer/previewgenerator) plugin (eg. `0 * * * *`)
 
 ### News Updater
 
