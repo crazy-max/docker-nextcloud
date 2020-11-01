@@ -14,6 +14,11 @@ on:
     paths-ignore:
       - '**.md'
 
+env:
+  LATEST_DOCKERFILE: Dockerfile-20
+  DOCKERHUB_SLUG: crazymax/nextcloud
+  GHCR_SLUG: ghcr.io/crazy-max/nextcloud
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,31 +30,25 @@ jobs:
         name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=crazymax/nextcloud
-          DOCKER_FILE=Dockerfile-20
-          VERSION=edge
-          LATEST=$(cat .latest)
-          DOCKER_PUSH=false
+          DOCKERFILE=${{ env.LATEST_DOCKERFILE }}
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             TAG=${GITHUB_REF#refs/tags/}
             VERSION=${TAG%-*}
-            DOCKER_FILE=Dockerfile-${TAG%%.*}
-            DOCKER_PUSH=true
+            DOCKERFILE=Dockerfile-${TAG%%.*}
           fi
-          if [ "$VERSION" == "edge" ] && [ "$DOCKER_FILE" == "Dockerfile-20" ]; then
-            DOCKER_PUSH=true
-          fi
-          TAGS="${DOCKER_IMAGE}:${VERSION}"
-          if [ "$VERSION" != "edge" ]; then
-            TAGS="$TAGS,${DOCKER_IMAGE}:latest"
-          fi
-          echo ::set-output name=docker_image::${DOCKER_IMAGE}
-          echo ::set-output name=docker_file::${DOCKER_FILE}
-          echo ::set-output name=docker_push::${DOCKER_PUSH}
-          echo ::set-output name=version::${VERSION}
-          echo ::set-output name=tags::${TAGS}
-          echo ::set-output name=build_date::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-          echo ::set-output name=vcs_ref::${GITHUB_SHA::8}
+          echo ::set-output name=dockerfile::${DOCKERFILE}
+      -
+        name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: |
+            ${{ env.DOCKERHUB_SLUG }}
+            ${{ env.GHCR_SLUG }}
+          tag-edge: true
+          tag-match: (.*)-RC
+          tag-match-group: 1
+          tag-match-latest: ${{ steps.prep.outputs.dockerfile == env.LATEST_DOCKERFILE }}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -66,25 +65,38 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       -
+        name: Login to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      -
         name: Build
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ${{ steps.prep.outputs.docker_file }}
+          file: ./${{ steps.prep.outputs.dockerfile }}
           platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386,linux/ppc64le,linux/s390x
-          push: ${{ github.event_name != 'pull_request' && steps.prep.outputs.docker_push == 'true' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/')) }}
-          tags: ${{ steps.prep.outputs.tags }}
-          build-args: |
-            VERSION=${{ steps.prep.outputs.version }}
-            BUILD_DATE=${{ steps.prep.outputs.build_date }}
-            VCS_REF=${{ steps.prep.outputs.vcs_ref }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: |
+            ${{ steps.docker_meta.outputs.labels }}
+            org.opencontainers.image.title=Nextcloud
+            org.opencontainers.image.description=Suite of client-server software for creating and using file hosting services
+            org.opencontainers.image.vendor=CrazyMax
       -
         name: Check manifest
-        if: success() && github.event_name != 'pull_request' && steps.prep.outputs.docker_push == 'true' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
+        if: github.event_name != 'pull_request'
         run: |
-          docker buildx imagetools inspect ${{ steps.prep.outputs.docker_image }}:${{ steps.prep.outputs.version }}
+          docker buildx imagetools inspect ${{ env.DOCKERHUB_SLUG }}:${{ steps.docker_meta.outputs.version }}
+          docker buildx imagetools inspect ${{ env.GHCR_SLUG }}:${{ steps.docker_meta.outputs.version }}
       -
-        name: Check pull
-        if: github.event_name != 'pull_request' && (endsWith(github.ref, github.event.repository.default_branch) || startsWith(github.ref, 'refs/tags/'))
+        name: Inspect image
+        if: github.event_name != 'pull_request'
         run: |
-          docker pull ${{ steps.prep.outputs.docker_image }}:${{ steps.prep.outputs.version }}
+          docker pull ${{ env.DOCKERHUB_SLUG }}:${{ steps.docker_meta.outputs.version }}
+          docker image inspect ${{ env.DOCKERHUB_SLUG }}:${{ steps.docker_meta.outputs.version }}
+          docker pull ${{ env.GHCR_SLUG }}:${{ steps.docker_meta.outputs.version }}
+          docker image inspect ${{ env.GHCR_SLUG }}:${{ steps.docker_meta.outputs.version }}

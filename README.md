@@ -19,7 +19,7 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 ___
 
 * [Features](#features)
-* [Multi-platform image](#multi-platform-image)
+* [Image](#image)
 * [Environment variables](#environment-variables)
   * [General](#general)
   * [Nextcloud](#nextcloud)
@@ -66,7 +66,12 @@ ___
 * [MariaDB](https://github.com/docker-library/mariadb) as database instance
 * Nextcloud cron job as a ["sidecar" container](#cron)
 
-## Multi-platform image
+## Image
+
+| Registry                                                                                         | Image                           |
+|--------------------------------------------------------------------------------------------------|---------------------------------|
+| [Docker Hub](https://hub.docker.com/r/crazymax/nextcloud/)                                            | `crazymax/nextcloud`                 |
+| [GitHub Container Registry](https://github.com/users/crazy-max/packages/container/package/nextcloud)  | `ghcr.io/crazy-max/nextcloud`        |
 
 Following platforms for this image are available:
 
@@ -147,7 +152,9 @@ Image: crazymax/nextcloud:latest
 
 ### Docker Compose
 
-Docker compose is the recommended way to run this image. Copy the content of folder [examples/compose](examples/compose) in `/var/nextcloud/` on your host for example. Edit the compose and env files with your preferences and run the following commands:
+Docker compose is the recommended way to run this image. Copy the content of folder [examples/compose](examples/compose)
+in `/var/nextcloud/` on your host for example. Edit the compose and env files with your preferences and run the
+following commands:
 
 ```bash
 docker-compose up -d
@@ -166,7 +173,8 @@ docker run -d -p 8000:8000 --name nextcloud \
 
 ## Upgrade
 
-To upgrade to the latest version of Nextcloud, pull the newer image and launch the container. Nextcloud will upgrade automatically:
+To upgrade to the latest version of Nextcloud, pull the newer image and launch the container. Nextcloud will upgrade
+automatically:
 
 ```bash
 docker-compose pull
@@ -182,7 +190,8 @@ Then open your browser to configure your admin account.
 
 ### OCC command
 
-If you want to use the [occ command](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/occ_command.html) to perform common server operations like manage users, encryption, passwords, LDAP setting, and more, type:
+If you want to use the [occ command](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/occ_command.html)
+to perform common server operations like manage users, encryption, passwords, LDAP setting, and more, type:
 
 ```bash
 docker-compose exec nextcloud occ
@@ -190,7 +199,8 @@ docker-compose exec nextcloud occ
 
 ### Cronjob
 
-If you want to enable the cronjob, you have to run a "sidecar" container (see cron service in [docker-compose.yml](examples/compose/docker-compose.yml) example) or run a simple container like this:
+If you want to enable the cronjob, you have to run a "sidecar" container (see cron service in
+[docker-compose.yml](examples/compose/docker-compose.yml) example) or run a simple container like this:
 
 ```bash
 docker run -d --name nextcloud_cron \
@@ -207,7 +217,9 @@ And do not forget to choose **Cron** as background jobs:
 
 ### Nextcloud News Updater
 
-If you want to enable the [Nextcloud News Updater](https://github.com/nextcloud/news-updater), you have to run a "sidecar" container (see news_updater service in [docker-compose.yml](examples/compose/docker-compose.yml) example) or run a simple container like this:
+If you want to enable the [Nextcloud News Updater](https://github.com/nextcloud/news-updater), you have to run a
+"sidecar" container (see news_updater service in [docker-compose.yml](examples/compose/docker-compose.yml) example)
+or run a simple container like this:
 
 ```bash
 docker run -d --name nextcloud_news_updater \
@@ -227,14 +239,16 @@ And do not forget to disable **Use system cron for updates** in news settings:
 
 ### Email server
 
-You can use our SMTP relay `msmtpd` service published on port `2500` and declared in our [`docker-compose.yml`](examples/compose/docker-compose.yml):
+You can use our SMTP relay `msmtpd` service published on port `2500` and declared in our
+[`docker-compose.yml`](examples/compose/docker-compose.yml):
 
 ![Email server config](.github/email-server-config.png)
 
 ### Redis cache
 
 Redis is recommended, alongside APCu to make Nextcloud more faster.
-If you want to enable Redis, deploy a redis container (see [docker-compose file](examples/compose/docker-compose.yml)) and add this to your `config.php`:
+If you want to enable Redis, deploy a redis container (see [docker-compose file](examples/compose/docker-compose.yml))
+and add this to your `config.php`:
 
 ```
     'memcache.local' => '\OC\Memcache\APCu',
@@ -248,11 +262,16 @@ If you want to enable Redis, deploy a redis container (see [docker-compose file]
 
 ### Running in a subdir
 
-If you want to access your Nextcloud installation in a subdir (like `/nextcloud`), you have to set the `SUBDIR` environment variable and also add `PathPrefixStrip:/nextcloud` to your frontend rule if you use Traefik. Do not forget to remove `includeSubDomains` option in `HSTS_HEADER` if used.
+If you want to access your Nextcloud installation in a subdir (like `/nextcloud`), you have to set the `SUBDIR`
+environment variable and also add `PathPrefixStrip:/nextcloud` to your frontend rule if you use Traefik.
+Do not forget to remove `includeSubDomains` option in `HSTS_HEADER` if used.
 
 ## How can I help?
 
-All kinds of contributions are welcome :raised_hands:! The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon: You can also support this project by [**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max) :clap: or by making a [Paypal donation](https://www.paypal.me/crazyws) to ensure this journey continues indefinitely! :rocket:
+All kinds of contributions are welcome :raised_hands:! The most basic way to show your support is to star :star2:
+the project, or to raise issues :speech_balloon: You can also support this project by
+[**becoming a sponsor on GitHub**](https://github.com/sponsors/crazy-max) :clap: or by making a
+[Paypal donation](https://www.paypal.me/crazyws) to ensure this journey continues indefinitely! :rocket:
 
 Thanks again for your support, it is much appreciated! :pray:
 
