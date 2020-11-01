@@ -1,6 +1,6 @@
 # Changelog
 
-## 20.0.1-RC1 / 19.0.4-RC2 / 18.0.10-RC2 / 17.0.10-RC2 (2020/10/16)
+## 20.0.1-RC1 / 19.0.4-RC2 / 18.0.10-RC2 / 17.0.10-RC2 (2020/11/01)
 
 * Nextcloud 20.0.1
 * Handle pre-generation of previews through [Preview Generator](https://github.com/rullzer/previewgenerator) plugin
