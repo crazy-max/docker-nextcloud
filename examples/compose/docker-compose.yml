@@ -77,6 +77,28 @@ services:
       - "CRON_PERIOD=*/5 * * * *"
     restart: always
 
+  previewgen:
+    image: crazymax/nextcloud:latest
+    container_name: nextcloud_previewgen
+    depends_on:
+      - nextcloud
+    volumes:
+      - "nextcloud:/data"
+    env_file:
+      - "./nextcloud.env"
+    environment:
+      - "TZ"
+      - "PUID"
+      - "PGID"
+      - "DB_TYPE=mysql"
+      - "DB_HOST=db"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
+      - "SIDECAR_PREVIEWGEN=1"
+      - "PREVIEWGEN_PERIOD=0 * * * *"
+    restart: always
+
   news_updater:
     image: crazymax/nextcloud:latest
     container_name: nextcloud_news_updater

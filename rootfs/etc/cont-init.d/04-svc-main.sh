@@ -1,9 +1,10 @@
 #!/usr/bin/with-contenv sh
 
 SIDECAR_CRON=${SIDECAR_CRON:-0}
+SIDECAR_PREVIEWGEN=${SIDECAR_PREVIEWGEN:-0}
 SIDECAR_NEWSUPDATER=${SIDECAR_NEWSUPDATER:-0}
 
-if [ "$SIDECAR_CRON" = "1" ] || [ "$SIDECAR_NEWSUPDATER" = "1" ]; then
+if [ "$SIDECAR_CRON" = "1" ] || [ "$SIDECAR_PREVIEWGEN" = "1" ] || [ "$SIDECAR_NEWSUPDATER" = "1" ]; then
   exit 0
 fi
 

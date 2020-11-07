@@ -1,15 +1,15 @@
 #!/usr/bin/with-contenv sh
 
 CRONTAB_PATH="/var/spool/cron/crontabs"
-SIDECAR_CRON=${SIDECAR_CRON:-0}
+SIDECAR_PREVIEWGEN=${SIDECAR_PREVIEWGEN:-0}
 
-# Continue only if sidecar cron container
-if [ "$SIDECAR_CRON" != "1" ]; then
+# Continue only if previewgen container
+if [ "$SIDECAR_PREVIEWGEN" != "1" ]; then
   exit 0
 fi
 
 echo ">>"
-echo ">> Sidecar cron container detected for Nextcloud"
+echo ">> Sidecar previews generator container detected for Nextcloud"
 echo ">>"
 
 # Init
@@ -18,11 +18,11 @@ mkdir -m 0644 -p ${CRONTAB_PATH}
 touch ${CRONTAB_PATH}/nextcloud
 
 # Cron
-if [ -n "$CRON_PERIOD" ]; then
-  echo "Creating Nextcloud cron task with the following period fields : $CRON_PERIOD"
-  echo "${CRON_PERIOD} php -f /var/www/cron.php" >> ${CRONTAB_PATH}/nextcloud
+if [ -n "$PREVIEWGEN_PERIOD" ]; then
+  echo "Creating Previews Generator cron task with the following period fields : $PREVIEWGEN_PERIOD"
+  echo "${PREVIEWGEN_PERIOD} php -f /var/www/occ preview:pre-generate" >> ${CRONTAB_PATH}/nextcloud
 else
-  echo "CRON_PERIOD env var empty..."
+  echo "PREVIEWGEN_PERIOD env var empty..."
 fi
 
 # Fix perms

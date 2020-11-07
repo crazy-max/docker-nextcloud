@@ -24,6 +24,7 @@ ___
   * [General](#general)
   * [Nextcloud](#nextcloud)
   * [Cron](#cron)
+  * [Previews generator](#previews-generator)
   * [News Updater](#news-updater)
 * [Volumes](#volumes)
 * [Ports](#ports)
@@ -34,7 +35,8 @@ ___
 * [Notes](#notes)
   * [First installation](#first-installation)
   * [OCC command](#occ-command)
-  * [Cronjob](#cronjob)
+  * [Cron sidecar](#cron-sidecar)
+  * [Previews generator sidecar](#previews-generator-sidecar)
   * [Nextcloud News Updater](#nextcloud-news-updater)
   * [Email server](#email-server)
   * [Redis cache](#redis-cache)
@@ -49,7 +51,7 @@ ___
 * Tarball authenticity checked during building process
 * Data, config, user apps and themes persistence in the same folder
 * [Automatic installation](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/automatic_configuration.html)
-* Cron task for [Nextcloud background jobs](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) as a [sidecar cron container](#cronjob)
+* Cron task for [Nextcloud background jobs](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) as a [sidecar cron container](#cron-sidecar)
 * Execute pre-generation of previews through [Preview Generator](https://github.com/rullzer/previewgenerator) plugin
 * Handle [Nextcloud News Updater](https://github.com/nextcloud/news-updater) for [News plugin](https://apps.nextcloud.com/apps/news) through a [sidecar news updater container](#nextcloud-news-updater)
 * OPCache enabled to store precompiled script bytecode in shared memory
@@ -64,7 +66,6 @@ ___
 * [Redis](https://github.com/docker-library/redis) for caching
 * [Collabora](https://github.com/CollaboraOnline/Docker-CODE) as an online Office Suite (see [this template](examples/traefik))
 * [MariaDB](https://github.com/docker-library/mariadb) as database instance
-* Nextcloud cron job as a ["sidecar" container](#cron)
 
 ## Image
 
@@ -122,11 +123,17 @@ Image: crazymax/nextcloud:latest
 
 ### Cron
 
-> :warning: Only used if you enable and run a [sidecar cron container](#cronjob)
+> :warning: Only used if you enable and run a [sidecar cron container](#cron-sidecar)
 
 * `SIDECAR_CRON`: Set to `1` to enable sidecar cron mode (default `0`)
 * `CRON_PERIOD`: Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) (eg. `*/5 * * * *`)
-* `PREVIEWGEN_CRON_PERIOD`: Periodically execute pre-generation of previews through [Preview Generator](https://github.com/rullzer/previewgenerator) plugin (eg. `0 * * * *`)
+
+### Previews generator
+
+> :warning: Only used if you enable and run a [sidecar previews generator container](#previews-generator-sidecar)
+
+* `SIDECAR_PREVIEWGEN`: Set to `1` to enable sidecar previews generator mode (default `0`)
+* `PREVIEWGEN_PERIOD`: Periodically execute pre-generation of previews through [Preview Generator](https://github.com/rullzer/previewgenerator) plugin (eg. `0 * * * *`)
 
 ### News Updater
 
@@ -167,7 +174,7 @@ You can also use the following minimal command:
 
 ```bash
 docker run -d -p 8000:8000 --name nextcloud \
-  -v $(pwd)/data:/data \
+  -v "$(pwd)/data:/data" \
   crazymax/nextcloud:latest
 ```
 
@@ -197,7 +204,7 @@ to perform common server operations like manage users, encryption, passwords, LD
 docker-compose exec nextcloud occ
 ```
 
-### Cronjob
+### Cron sidecar
 
 If you want to enable the cronjob, you have to run a "sidecar" container (see cron service in
 [docker-compose.yml](examples/compose/docker-compose.yml) example) or run a simple container like this:
@@ -205,15 +212,30 @@ If you want to enable the cronjob, you have to run a "sidecar" container (see cr
 ```bash
 docker run -d --name nextcloud_cron \
   --env-file $(pwd)/nextcloud.env \
-  -e SIDECAR_CRON=1 \
-  -e CRON_PERIOD=*/5 * * * * \
-  -v $(pwd)/data:/data \
+  -e "SIDECAR_CRON=1" \
+  -e "CRON_PERIOD=*/5 * * * *" \
+  -v "$(pwd)/data:/data" \
   crazymax/nextcloud:latest
 ```
 
 And do not forget to choose **Cron** as background jobs:
 
 ![Background jobs](.github/background-jobs.png)
+
+### Previews generator sidecar
+
+To execute pre-generation of previews through the [Preview Generator](https://github.com/rullzer/previewgenerator)
+plugin, you have to run a "sidecar" container (see cron service in [docker-compose.yml](examples/compose/docker-compose.yml)
+example) or run a simple container like this:
+
+```bash
+docker run -d --name nextcloud_previewgen \
+  --env-file $(pwd)/nextcloud.env \
+  -e "SIDECAR_PREVIEWGEN=1" \
+  -e "PREVIEWGEN_PERIOD=0 * * * *" \
+  -v "$(pwd)/data:/data" \
+  crazymax/nextcloud:latest
+```
 
 ### Nextcloud News Updater
 
@@ -224,12 +246,12 @@ or run a simple container like this:
 ```bash
 docker run -d --name nextcloud_news_updater \
   --env-file $(pwd)/nextcloud.env \
-  -e SIDECAR_NEWSUPDATER=1 \
-  -e NC_NEWSUPDATER_THREADS=10 \
-  -e NC_NEWSUPDATER_TIMEOUT=300 \
-  -e NC_NEWSUPDATER_INTERVAL=900 \
-  -e NC_NEWSUPDATER_LOGLEVEL=error \
-  -v $(pwd)/data:/data \
+  -e "SIDECAR_NEWSUPDATER=1" \
+  -e "NC_NEWSUPDATER_THREADS=10" \
+  -e "NC_NEWSUPDATER_TIMEOUT=300" \
+  -e "NC_NEWSUPDATER_INTERVAL=900" \
+  -e "NC_NEWSUPDATER_LOGLEVEL=error" \
+  -v "$(pwd)/data:/data" \
   crazymax/nextcloud:latest
 ```
 
@@ -246,7 +268,7 @@ You can use our SMTP relay `msmtpd` service published on port `2500` and declare
 
 ### Redis cache
 
-Redis is recommended, alongside APCu to make Nextcloud more faster.
+Redis is recommended, alongside APCu to make Nextcloud faster.
 If you want to enable Redis, deploy a redis container (see [docker-compose file](examples/compose/docker-compose.yml))
 and add this to your `config.php`:
 
