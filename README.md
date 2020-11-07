@@ -133,7 +133,7 @@ Image: crazymax/nextcloud:latest
 > :warning: Only used if you enable and run a [sidecar previews generator container](#previews-generator-sidecar)
 
 * `SIDECAR_PREVIEWGEN`: Set to `1` to enable sidecar previews generator mode (default `0`)
-* `PREVIEWGEN_PERIOD`: Periodically execute pre-generation of previews through [Preview Generator](https://github.com/rullzer/previewgenerator) plugin (eg. `0 * * * *`)
+* `PREVIEWGEN_PERIOD`: Periodically execute pre-generation of previews (eg. `0 * * * *`)
 
 ### News Updater
 
