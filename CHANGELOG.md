@@ -1,5 +1,9 @@
 # Changelog
 
+## 20.0.2-RC1 / 19.0.5-RC1 / 18.0.11-RC1 (2020/11/19)
+
+* Nextcloud 18.0.11, 19.0.5, 20.0.2
+
 ## 20.0.1-RC2 / 19.0.4-RC3 / 18.0.10-RC3 / 17.0.10-RC3 (2020/11/07)
 
 * Dedicated sidecar container for previews generator
