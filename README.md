@@ -19,6 +19,7 @@ If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other 
 ___
 
 * [Features](#features)
+* [Build locally](#build-locally)
 * [Image](#image)
 * [Environment variables](#environment-variables)
   * [General](#general)
@@ -66,6 +67,19 @@ ___
 * [Redis](https://github.com/docker-library/redis) for caching
 * [Collabora](https://github.com/CollaboraOnline/Docker-CODE) as an online Office Suite (see [this template](examples/traefik))
 * [MariaDB](https://github.com/docker-library/mariadb) as database instance
+
+## Build locally
+
+```shell
+git clone https://github.com/crazy-max/docker-nextcloud.git
+cd docker-matomo
+
+# Build image and output to docker (default)
+docker buildx bake
+
+# Build multi-platform image
+docker buildx bake image-all
+```
 
 ## Image
 

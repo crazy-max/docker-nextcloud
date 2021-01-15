@@ -1,7 +1,4 @@
-FROM --platform=${TARGETPLATFORM:-linux/amd64} crazymax/alpine-s6:3.11
-ARG TARGETPLATFORM
-ARG BUILDPLATFORM
-
+FROM crazymax/alpine-s6:3.11
 LABEL maintainer="CrazyMax"
 
 RUN apk --update --no-cache add \

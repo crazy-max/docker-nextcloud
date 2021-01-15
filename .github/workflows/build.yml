@@ -28,7 +28,6 @@ jobs:
         uses: actions/checkout@v2
       -
         name: Prepare
-        id: prep
         run: |
           DOCKERFILE=${{ env.LATEST_DOCKERFILE }}
           if [[ $GITHUB_REF == refs/tags/* ]]; then
@@ -36,7 +35,7 @@ jobs:
             VERSION=${TAG%-*}
             DOCKERFILE=Dockerfile-${TAG%%.*}
           fi
-          echo ::set-output name=dockerfile::${DOCKERFILE}
+          echo "DOCKERFILE=${DOCKERFILE}" >> $GITHUB_ENV
       -
         name: Docker meta
         id: docker_meta
@@ -46,9 +45,15 @@ jobs:
             ${{ env.DOCKERHUB_SLUG }}
             ${{ env.GHCR_SLUG }}
           tag-edge: true
-          tag-match: (.*)-RC
+          tag-match: (.*)-r
           tag-match-group: 1
-          tag-match-latest: ${{ steps.prep.outputs.dockerfile == env.LATEST_DOCKERFILE }}
+          tag-match-latest: ${{ env.DOCKERFILE == env.LATEST_DOCKERFILE }}
+          label-custom: |
+            org.opencontainers.image.title=Nextcloud
+            org.opencontainers.image.description=Suite of client-server software for creating and using file hosting services
+            org.opencontainers.image.vendor=CrazyMax
+        env:
+          DOCKERFILE: ${{ env.DOCKERFILE }}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -56,7 +61,8 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
         with:
-          buildkitd-flags: "--debug"
+          version: latest
+          buildkitd-flags: --debug
       -
         name: Login to DockerHub
         if: github.event_name != 'pull_request'
@@ -72,6 +78,15 @@ jobs:
           registry: ghcr.io
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.GHCR_TOKEN }}
+      -
+        name: Build image
+        uses: crazy-max/ghaction-docker-buildx-bake@v1
+        with:
+          files: |
+            ./docker-bake.hcl
+            ${{ steps.docker_meta.outputs.bake-file }}
+          targets: image-all
+          push: ${{ github.event_name != 'pull_request' }}
       -
         name: Build
         uses: docker/build-push-action@v2
