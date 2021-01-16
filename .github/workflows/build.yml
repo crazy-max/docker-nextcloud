@@ -47,7 +47,7 @@ jobs:
           tag-edge: true
           tag-match: (.*)-r
           tag-match-group: 1
-          tag-match-latest: ${{ env.DOCKERFILE == env.LATEST_DOCKERFILE }}
+          tag-latest: ${{ env.DOCKERFILE == env.LATEST_DOCKERFILE }}
           label-custom: |
             org.opencontainers.image.title=Nextcloud
             org.opencontainers.image.description=Suite of client-server software for creating and using file hosting services
