@@ -72,7 +72,7 @@ ___
 
 ```shell
 git clone https://github.com/crazy-max/docker-nextcloud.git
-cd docker-matomo
+cd docker-nextcloud
 
 # Build image and output to docker (default)
 docker buildx bake
