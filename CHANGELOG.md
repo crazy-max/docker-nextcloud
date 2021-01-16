@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.0.5-r0 / 19.0.7-r0 / 18.0.13-r0 (2021/01/15)
+
+* Nextcloud 18.0.13, 19.0.7, 20.0.5
+* Switch to buildx bake
+
 ## 20.0.4-RC1 (2020/12/18)
 
 * Nextcloud 20.0.4
