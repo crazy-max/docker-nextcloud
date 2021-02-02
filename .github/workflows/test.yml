@@ -36,7 +36,7 @@ jobs:
           echo ::set-output name=running_log_check::ready to handle connections
       -
         name: Docker Build
-        uses: crazy-max/ghaction-docker-buildx-bake@v1
+        uses: docker/bake-action@v1
         with:
           targets: image-local
         env:
