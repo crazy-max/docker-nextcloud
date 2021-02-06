@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.0.7-r0 (2021/02/06)
+
+* Nextcloud 20.0.7
+* Fix Preview Generator sidecar healthcheck
+
 ## 20.0.6-r0 / 19.0.8-r0 / 18.0.14-r0 (2021/01/26)
 
 * Nextcloud 18.0.14, 19.0.8, 20.0.6
