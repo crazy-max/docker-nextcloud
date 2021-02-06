@@ -79,7 +79,7 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.GHCR_TOKEN }}
       -
-        name: Build image
+        name: Build
         uses: docker/bake-action@v1
         with:
           files: |
