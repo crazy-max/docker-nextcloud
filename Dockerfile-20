@@ -1,8 +1,10 @@
+ARG NEXTCLOUD_VERSION="20.0.7"
+ARG SMBCLIENT_VERSION="1.0.5"
+
 FROM crazymax/alpine-s6:3.12-2.1.0.2
 LABEL maintainer="CrazyMax"
 
-ENV SMBCLIENT_VERSION="1.0.4"
-
+ARG SMBCLIENT_VERSION
 RUN apk --update --no-cache add \
     bash \
     ca-certificates \
@@ -76,11 +78,11 @@ RUN apk --update --no-cache add \
   && rm -rf /tmp/* /var/cache/apk/* /var/www/*
 
 ENV  S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
-  NEXTCLOUD_VERSION="20.0.7" \
   TZ="UTC" \
   PUID="1000" \
   PGID="1000"
 
+ARG NEXTCLOUD_VERSION
 RUN apk --update --no-cache add -t build-dependencies \
     gnupg \
   && cd /tmp \
