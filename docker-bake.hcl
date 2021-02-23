@@ -3,7 +3,7 @@ variable "DEFAULT_TAG" {
 }
 
 variable "DOCKERFILE" {
-  default = "Dockerfile-20"
+  default = "Dockerfile-21"
 }
 
 // Special target: https://github.com/crazy-max/ghaction-docker-meta#bake-definition

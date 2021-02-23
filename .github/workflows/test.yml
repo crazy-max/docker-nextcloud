@@ -21,6 +21,7 @@ jobs:
         docker_file:
           - Dockerfile-19
           - Dockerfile-20
+          - Dockerfile-21
     steps:
       -
         name: Checkout
@@ -54,7 +55,7 @@ jobs:
             -e "MYSQL_DATABASE=nextcloud" \
             -e "MYSQL_USER=nextcloud" \
             -e "MYSQL_PASSWORD=asupersecretpassword" \
-            mariadb:10.2
+            mariadb:10.4
       -
         name: Start container
         run: |
