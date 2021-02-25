@@ -65,7 +65,6 @@ ___
 * [Traefik](https://github.com/containous/traefik-library-image) as reverse proxy and creation/renewal of Let's Encrypt certificates (see [this template](examples/traefik))
 * [msmtpd SMTP relay](https://github.com/crazy-max/docker-msmtpd) image to send emails
 * [Redis](https://github.com/docker-library/redis) for caching
-* [Collabora](https://github.com/CollaboraOnline/Docker-CODE) as an online Office Suite (see [this template](examples/traefik))
 * [MariaDB](https://github.com/docker-library/mariadb) as database instance
 
 ## Build locally

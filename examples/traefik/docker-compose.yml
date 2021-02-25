@@ -63,25 +63,6 @@ services:
       - "TZ"
     restart: always
 
-  collabora:
-    image: collabora/code
-    container_name: nextcloud_collabora
-    cap_add:
-      - MKNOD
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.collabora.entrypoints=https"
-      - "traefik.http.routers.collabora.rule=Host(`collabora.example.com`)"
-      - "traefik.http.routers.collabora.tls=true"
-      - "traefik.http.routers.collabora.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.collabora.tls.domains[0].main=collabora.example.com"
-      - "traefik.http.services.collabora.loadbalancer.server.port=9980"
-    environment:
-      - "DONT_GEN_SSL_CERT=true"
-      - "domain=collabora.example.com"
-      - "extra_params=--disable-ssl"
-    restart: always
-
   nextcloud:
     image: crazymax/nextcloud:latest
     container_name: nextcloud
