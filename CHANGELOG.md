@@ -1,5 +1,11 @@
 # Changelog
 
+## 21.0.0-r1 / 20.0.8-r0 / 19.0.9-r0 (2021/03/01)
+
+* Nextcloud 19.0.9, 20.0.6
+* smbclient 1.0.6
+* Add ghostscript package
+
 ## 21.0.0-r0 (2021/02/23)
 
 * Nextcloud 21.0.0
