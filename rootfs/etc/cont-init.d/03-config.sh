@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 runas_user() {
-  su-exec nextcloud:nextcloud "$@"
+  gosu nextcloud:nextcloud "$@"
 }
 
 # From https://github.com/docker-library/mariadb/blob/master/docker-entrypoint.sh#L21-L41
