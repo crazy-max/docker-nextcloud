@@ -10,9 +10,9 @@ fi
 
 # Override several config values of Nextcloud
 echo "Bootstrapping configuration..."
-gosu nextcloud:nextcloud php -f /tpls/bootstrap.php > /tmp/config.php
-gosu nextcloud:nextcloud cp /tmp/config.php /data/config/config.php
-gosu nextcloud:nextcloud sed -i -e "s#@TZ@#$TZ#g" /data/config/config.php
+yasu nextcloud:nextcloud php -f /tpls/bootstrap.php > /tmp/config.php
+yasu nextcloud:nextcloud cp /tmp/config.php /data/config/config.php
+yasu nextcloud:nextcloud sed -i -e "s#@TZ@#$TZ#g" /data/config/config.php
 
 # Upgrade Nextcloud if installed
 if [ "$(occ status --no-ansi | grep 'installed: true')" != "" ]; then
@@ -23,7 +23,7 @@ fi
 # First install ?
 if [ -f /tmp/first-install ]; then
   echo "Installing Nextcloud ${NEXTCLOUD_VERSION}..."
-  gosu nextcloud:nextcloud php /var/www/index.php &>/dev/null
+  yasu nextcloud:nextcloud php /var/www/index.php &>/dev/null
   rm -f /tmp/first-install
 
   echo ">>"

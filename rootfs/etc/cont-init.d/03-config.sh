@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 runas_user() {
-  gosu nextcloud:nextcloud "$@"
+  yasu nextcloud:nextcloud "$@"
 }
 
 # From https://github.com/docker-library/mariadb/blob/master/docker-entrypoint.sh#L21-L41

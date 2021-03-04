@@ -1,7 +1,7 @@
 ARG NEXTCLOUD_VERSION=19.0.9
 ARG SMBCLIENT_VERSION=1.0.6
 
-FROM crazymax/gosu:latest AS gosu
+FROM crazymax/yasu:latest AS yasu
 FROM --platform=${BUILDPLATFORM:-linux/amd64} crazymax/alpine-s6:3.12-2.1.0.2 AS download
 RUN apk --update --no-cache add curl gnupg tar unzip xz
 
@@ -96,7 +96,7 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
   PUID="1000" \
   PGID="1000"
 
-COPY --from=gosu / /
+COPY --from=yasu / /
 COPY --from=download --chown=nobody:nogroup /dist/nextcloud /var/www
 COPY rootfs /
 
