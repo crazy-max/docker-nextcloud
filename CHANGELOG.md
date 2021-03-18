@@ -1,5 +1,9 @@
 # Changelog
 
+## 21.0.0-r4 / 20.0.8-r3 / 19.0.9-r3 (2021/03/18)
+
+* Upstream Alpine update
+
 ## 21.0.0-r3 / 20.0.8-r2 / 19.0.9-r2 (2021/03/03)
 
 * Renamed `yasu` (more info https://github.com/crazy-max/yasu#yet-another)
