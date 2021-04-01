@@ -38,22 +38,22 @@ jobs:
           echo "DOCKERFILE=${DOCKERFILE}" >> $GITHUB_ENV
       -
         name: Docker meta
-        id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
+        id: meta
+        uses: crazy-max/ghaction-docker-meta@v2
         with:
           images: |
             ${{ env.DOCKERHUB_SLUG }}
             ${{ env.GHCR_SLUG }}
-          tag-edge: true
-          tag-match: (.*)-r
-          tag-match-group: 1
-          tag-latest: ${{ env.DOCKERFILE == env.LATEST_DOCKERFILE }}
-          label-custom: |
+          tags: |
+            type=match,pattern=(.*)-r,group=1
+            type=ref,event=pr
+            type=edge
+          flavor: |
+            latest=${{ env.DOCKERFILE == env.LATEST_DOCKERFILE && startsWith(github.ref, 'refs/tags/') }}
+          labels: |
             org.opencontainers.image.title=Nextcloud
             org.opencontainers.image.description=Suite of client-server software for creating and using file hosting services
             org.opencontainers.image.vendor=CrazyMax
-        env:
-          DOCKERFILE: ${{ env.DOCKERFILE }}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -81,7 +81,7 @@ jobs:
         with:
           files: |
             ./docker-bake.hcl
-            ${{ steps.docker_meta.outputs.bake-file }}
+            ${{ steps.meta.outputs.bake-file }}
           targets: image-all
           push: ${{ github.event_name != 'pull_request' }}
         env:
@@ -90,13 +90,13 @@ jobs:
         name: Check manifest
         if: github.event_name != 'pull_request'
         run: |
-          docker buildx imagetools inspect ${{ env.DOCKERHUB_SLUG }}:${{ steps.docker_meta.outputs.version }}
-          docker buildx imagetools inspect ${{ env.GHCR_SLUG }}:${{ steps.docker_meta.outputs.version }}
+          docker buildx imagetools inspect ${{ env.DOCKERHUB_SLUG }}:${{ steps.meta.outputs.version }}
+          docker buildx imagetools inspect ${{ env.GHCR_SLUG }}:${{ steps.meta.outputs.version }}
       -
         name: Inspect image
         if: github.event_name != 'pull_request'
         run: |
-          docker pull ${{ env.DOCKERHUB_SLUG }}:${{ steps.docker_meta.outputs.version }}
-          docker image inspect ${{ env.DOCKERHUB_SLUG }}:${{ steps.docker_meta.outputs.version }}
-          docker pull ${{ env.GHCR_SLUG }}:${{ steps.docker_meta.outputs.version }}
-          docker image inspect ${{ env.GHCR_SLUG }}:${{ steps.docker_meta.outputs.version }}
+          docker pull ${{ env.DOCKERHUB_SLUG }}:${{ steps.meta.outputs.version }}
+          docker image inspect ${{ env.DOCKERHUB_SLUG }}:${{ steps.meta.outputs.version }}
+          docker pull ${{ env.GHCR_SLUG }}:${{ steps.meta.outputs.version }}
+          docker image inspect ${{ env.GHCR_SLUG }}:${{ steps.meta.outputs.version }}
