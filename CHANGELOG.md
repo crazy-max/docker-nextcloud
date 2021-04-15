@@ -1,5 +1,10 @@
 # Changelog
 
+## 21.0.1-r1 / 20.0.9-r1 / 19.0.10-r1 (2021/04/15)
+
+* Fix nginx config for service discovery
+* Update Traefik example
+
 ## 21.0.1-r0 / 20.0.9-r0 / 19.0.10-r0 (2021/04/11)
 
 * Nextcloud 19.0.10, 20.0.9, 21.0.1
