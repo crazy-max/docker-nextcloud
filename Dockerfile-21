@@ -2,7 +2,7 @@ ARG NEXTCLOUD_VERSION=21.0.1
 ARG SMBCLIENT_VERSION=1.0.6
 
 FROM crazymax/yasu:latest AS yasu
-FROM --platform=${BUILDPLATFORM:-linux/amd64} crazymax/alpine-s6:3.12-2.1.0.2 AS download
+FROM --platform=${BUILDPLATFORM:-linux/amd64} crazymax/alpine-s6:3.13-2.2.0.3 AS download
 RUN apk --update --no-cache add curl gnupg tar unzip xz
 
 ARG NEXTCLOUD_VERSION
@@ -15,7 +15,7 @@ RUN gpg --import "nextcloud.asc" \
 WORKDIR /dist/nextcloud
 RUN tar -xjf "/tmp/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" --strip 1 -C .
 
-FROM crazymax/alpine-s6:3.13-2.1.0.2
+FROM crazymax/alpine-s6:3.13-2.2.0.3
 LABEL maintainer="CrazyMax"
 
 ARG SMBCLIENT_VERSION

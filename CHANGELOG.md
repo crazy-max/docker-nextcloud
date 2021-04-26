@@ -1,5 +1,9 @@
 # Changelog
 
+## 21.0.1-r2 (2021/04/26)
+
+* alpine-s6 3.13-2.2.0.3 (#61)
+
 ## 21.0.1-r1 / 20.0.9-r1 / 19.0.10-r1 (2021/04/15)
 
 * Fix nginx config for service discovery
