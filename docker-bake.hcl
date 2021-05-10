@@ -6,8 +6,8 @@ variable "DOCKERFILE" {
   default = "Dockerfile-21"
 }
 
-// Special target: https://github.com/crazy-max/ghaction-docker-meta#bake-definition
-target "ghaction-docker-meta" {
+// Special target: https://github.com/docker/metadata-action#bake-definition
+target "docker-metadata-action" {
   tags = ["${DEFAULT_TAG}"]
 }
 
@@ -21,7 +21,7 @@ target "dockerfile" {
 }
 
 target "image" {
-  inherits = ["dockerfile", "ghaction-docker-meta"]
+  inherits = ["dockerfile", "docker-metadata-action"]
 }
 
 target "image-local" {
