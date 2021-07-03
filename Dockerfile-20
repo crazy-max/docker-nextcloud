@@ -45,7 +45,6 @@ RUN apk --update --no-cache add \
     php7-gd \
     php7-gmp \
     php7-iconv \
-    php7-imagick \
     php7-intl \
     php7-json \
     php7-ldap \
@@ -55,6 +54,7 @@ RUN apk --update --no-cache add \
     php7-opcache \
     php7-openssl \
     php7-pcntl \
+    php7-pecl-imagick \
     php7-pdo \
     php7-pdo_mysql \
     php7-pdo_pgsql \
