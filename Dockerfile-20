@@ -16,7 +16,6 @@ WORKDIR /dist/nextcloud
 RUN tar -xjf "/tmp/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" --strip 1 -C .
 
 FROM crazymax/alpine-s6:3.13-2.2.0.3
-LABEL maintainer="CrazyMax"
 
 ARG SMBCLIENT_VERSION
 RUN apk --update --no-cache add \
