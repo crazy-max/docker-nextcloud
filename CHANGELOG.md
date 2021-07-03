@@ -1,5 +1,12 @@
 # Changelog
 
+## 21.0.3-r0 / 20.0.11-r0 / 19.0.13-r0 (2021/07/03)
+
+* Nextcloud 19.0.13, 20.0.11, 21.0.3
+* Enable APCu on CLI
+* Fix php imagick extension
+* Remove `linux/386` support
+
 ## 21.0.2-r0 / 20.0.10-r0 / 19.0.11-r0 (2021/05/20)
 
 * Nextcloud 19.0.11, 20.0.10, 21.0.2
