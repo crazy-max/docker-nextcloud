@@ -19,9 +19,9 @@ jobs:
       fail-fast: false
       matrix:
         docker_file:
-          - Dockerfile-19
           - Dockerfile-20
           - Dockerfile-21
+          - Dockerfile-22
     steps:
       -
         name: Checkout
