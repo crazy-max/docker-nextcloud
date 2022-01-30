@@ -116,7 +116,8 @@ if [ ! -f /data/config/config.php ]; then
   # https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/automatic_configuration.html
   touch /tmp/first-install
   echo "Creating automatic configuration..."
-  cat > /var/www/config/autoconfig.php <<EOL
+  if [ -z "$NEXTCLOUD_ADMIN_USER" ]; then
+    cat > /var/www/config/autoconfig.php <<EOL
 <?php
 \$AUTOCONFIG = array(
     'directory' => '/data/data',
@@ -128,6 +129,22 @@ if [ ! -f /data/config/config.php ]; then
     'dbtableprefix' => '',
 );
 EOL
+  else
+  cat > /var/www/config/autoconfig.php <<EOL
+<?php
+\$AUTOCONFIG = array(
+    'directory' => '/data/data',
+    'dbtype' => '${DB_TYPE}',
+    'dbname' => '${DB_NAME}',
+    'dbuser' => '${DB_USER}',
+    'dbpass' => '${DB_PASSWORD}',
+    'dbhost' => '${DB_HOST}',
+    'dbtableprefix' => '',
+    'adminlogin'    => '${NEXTCLOUD_ADMIN_USER}',
+    'adminpass'     => '${NEXTCLOUD_ADMIN_PASSWORD}',
+);
+EOL
+  fi
   runas_user cat > /data/config/config.php <<EOL
 <?php
 \$CONFIG = array(
