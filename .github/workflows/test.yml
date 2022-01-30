@@ -21,6 +21,7 @@ jobs:
         docker_file:
           - Dockerfile-21
           - Dockerfile-22
+          - Dockerfile-23
     steps:
       -
         name: Checkout
