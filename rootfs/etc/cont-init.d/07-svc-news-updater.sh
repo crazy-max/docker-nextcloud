@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv sh
+# shellcheck shell=sh
 
 SIDECAR_NEWSUPDATER=${SIDECAR_NEWSUPDATER:-0}
 NC_NEWSUPDATER_THREADS=${NC_NEWSUPDATER_THREADS:-10}

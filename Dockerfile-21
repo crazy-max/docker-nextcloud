@@ -71,6 +71,12 @@ RUN apk --update --no-cache add \
     python3 \
     py3-pip \
     tzdata \
+  && mv /etc/php7 /etc/php && ln -s /etc/php /etc/php7 \
+  && mv /etc/init.d/php-fpm7 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm7 \
+  && mv /etc/logrotate.d/php-fpm7 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm7 \
+  && mv /var/log/php7 /var/log/php && ln -s /var/log/php /var/log/php7 \
+  && ln -s /usr/sbin/php-fpm7 /usr/sbin/php-fpm \
+  && ln -s /var/log/php7 /var/log/php \
   && apk --update --no-cache add -t build-dependencies \
     autoconf \
     automake \
