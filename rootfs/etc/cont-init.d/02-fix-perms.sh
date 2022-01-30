@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv sh
+# shellcheck shell=sh
 
 echo "Fixing perms..."
 mkdir -p /data \
@@ -11,6 +12,6 @@ chown -R nextcloud. \
   /tpls \
   /var/lib/nginx \
   /var/log/nginx \
-  /var/log/php7 \
+  /var/log/php* \
   /var/run/nginx \
   /var/run/php-fpm

@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv sh
+# shellcheck shell=sh
 
 CRONTAB_PATH="/var/spool/cron/crontabs"
 SIDECAR_CRON=${SIDECAR_CRON:-0}

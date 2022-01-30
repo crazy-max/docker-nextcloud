@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv bash
+# shellcheck shell=bash
 
 runas_user() {
   yasu nextcloud:nextcloud "$@"
@@ -21,7 +22,7 @@ file_env() {
   if [ "${!var:-}" ]; then
     val="${!var}"
   elif [ "${!fileVar:-}" ]; then
-    val="$(< "${!fileVar}")"
+    val="$(<"${!fileVar}")"
   fi
   export "$var"="$val"
   unset "$fileVar"
@@ -53,24 +54,24 @@ SIDECAR_NEWSUPDATER=${SIDECAR_NEWSUPDATER:-0}
 # Timezone
 echo "Setting timezone to ${TZ}..."
 ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
-echo ${TZ} > /etc/timezone
+echo ${TZ} >/etc/timezone
 
 # PHP-FPM
 echo "Setting PHP-FPM configuration..."
 sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
   -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
   -e "s/@CLEAR_ENV@/$CLEAR_ENV/g" \
-  /tpls/etc/php7/php-fpm.d/www.conf > /etc/php7/php-fpm.d/www.conf
+  /tpls/etc/php/php-fpm.d/www.conf >/etc/php/php-fpm.d/www.conf
 
 # PHP
 echo "Setting PHP configuration..."
 sed -e "s/@APC_SHM_SIZE@/$APC_SHM_SIZE/g" \
-  /tpls/etc/php7/conf.d/apcu.ini > /etc/php7/conf.d/apcu.ini
+  /tpls/etc/php/conf.d/apcu.ini >/etc/php/conf.d/apcu.ini
 sed -e "s/@OPCACHE_MEM_SIZE@/$OPCACHE_MEM_SIZE/g" \
-  /tpls/etc/php7/conf.d/opcache.ini > /etc/php7/conf.d/opcache.ini
+  /tpls/etc/php/conf.d/opcache.ini >/etc/php/conf.d/opcache.ini
 sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
   -e "s#@TIMEZONE@#$TZ#g" \
-  /tpls/etc/php7/conf.d/override.ini > /etc/php7/conf.d/override.ini
+  /tpls/etc/php/conf.d/override.ini >/etc/php/conf.d/override.ini
 
 # Nginx
 echo "Setting Nginx configuration..."
@@ -82,7 +83,7 @@ sed -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
   -e "s/@XFRAME_OPTS_HEADER@/$XFRAME_OPTS_HEADER/g" \
   -e "s/@RP_HEADER@/$RP_HEADER/g" \
   -e "s#@SUBDIR@#$SUBDIR#g" \
-  /tpls/etc/nginx/nginx.conf > /etc/nginx/nginx.conf
+  /tpls/etc/nginx/nginx.conf >/etc/nginx/nginx.conf
 
 if [ "$LISTEN_IPV6" != "true" ]; then
   sed -e '/listen \[::\]:/d' -i /etc/nginx/nginx.conf
@@ -107,7 +108,7 @@ ln -sf /data/userapps /var/www/userapps &>/dev/null
 
 file_env 'DB_PASSWORD'
 if [ -z "$DB_PASSWORD" ]; then
-  >&2 echo "ERROR: Either DB_PASSWORD or DB_PASSWORD_FILE must be defined"
+  echo >&2 "ERROR: Either DB_PASSWORD or DB_PASSWORD_FILE must be defined"
   exit 1
 fi
 
@@ -116,7 +117,7 @@ if [ ! -f /data/config/config.php ]; then
   # https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/automatic_configuration.html
   touch /tmp/first-install
   echo "Creating automatic configuration..."
-  cat > /var/www/config/autoconfig.php <<EOL
+  cat >/var/www/config/autoconfig.php <<EOL
 <?php
 \$AUTOCONFIG = array(
     'directory' => '/data/data',
@@ -128,7 +129,7 @@ if [ ! -f /data/config/config.php ]; then
     'dbtableprefix' => '',
 );
 EOL
-  runas_user cat > /data/config/config.php <<EOL
+  runas_user cat >/data/config/config.php <<EOL
 <?php
 \$CONFIG = array(
     'datadirectory' => '/data/data',
@@ -162,7 +163,7 @@ unset DB_PASSWORD
 
 # https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/config_sample_php_parameters.html#proxy-configurations
 if [ -n "$SUBDIR" ]; then
-  cat > /var/www/config/subdir.config.php <<EOL
+  cat >/var/www/config/subdir.config.php <<EOL
 <?php
 \$CONFIG = array(
     'overwritewebroot' => '${SUBDIR}',

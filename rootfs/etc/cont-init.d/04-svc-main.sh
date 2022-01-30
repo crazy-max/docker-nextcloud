@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv sh
+# shellcheck shell=sh
 
 SIDECAR_CRON=${SIDECAR_CRON:-0}
 SIDECAR_PREVIEWGEN=${SIDECAR_PREVIEWGEN:-0}
@@ -45,6 +46,6 @@ cat > /etc/services.d/php-fpm/run <<EOL
 #!/usr/bin/execlineb -P
 with-contenv
 s6-setuidgid ${PUID}:${PGID}
-php-fpm7 -F
+php-fpm -F
 EOL
 chmod +x /etc/services.d/php-fpm/run
