@@ -36,7 +36,7 @@ jobs:
           echo ::set-output name=running_log_check::ready to handle connections
       -
         name: Docker Build
-        uses: docker/bake-action@v1
+        uses: docker/bake-action@v2
         with:
           targets: image-local
         env:
