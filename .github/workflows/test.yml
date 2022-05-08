@@ -55,7 +55,7 @@ jobs:
             -e "MYSQL_DATABASE=nextcloud" \
             -e "MYSQL_USER=nextcloud" \
             -e "MYSQL_PASSWORD=asupersecretpassword" \
-            mariadb:10.4
+            mariadb:10.5
       -
         name: Start container
         run: |
