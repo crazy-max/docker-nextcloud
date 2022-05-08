@@ -1,5 +1,11 @@
 # Changelog
 
+## 24.0.0-r0 / 23.0.4-r0 / 22.2.7-r0 (2022/05/08)
+
+* Nextcloud 22.2.7, 23.0.4, 24.0.0 (#94)
+* Increase OPcache interned strings buffer to 32MB (#83)
+* Drop Nextcloud 21 support
+
 ## 23.0.3-r0 / 22.2.6-r0 (2022/03/26)
 
 * Nextcloud 22.2.6, 23.0.3 (#82)
