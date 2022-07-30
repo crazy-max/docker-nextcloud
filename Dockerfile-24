@@ -1,8 +1,9 @@
 ARG NEXTCLOUD_VERSION=24.0.3
+ARG ALPINE_VERSION=3.16
 ARG SMBCLIENT_VERSION=1.0.6
 
 FROM crazymax/yasu:latest AS yasu
-FROM --platform=${BUILDPLATFORM:-linux/amd64} crazymax/alpine-s6:3.15-2.2.0.3 AS download
+FROM --platform=${BUILDPLATFORM:-linux/amd64} crazymax/alpine-s6:${ALPINE_VERSION}-2.2.0.3 AS download
 RUN apk --update --no-cache add curl gnupg tar unzip xz
 
 ARG NEXTCLOUD_VERSION
@@ -15,7 +16,7 @@ RUN gpg --import "nextcloud.asc" \
 WORKDIR /dist/nextcloud
 RUN tar -xjf "/tmp/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" --strip 1 -C .
 
-FROM crazymax/alpine-s6:3.15-2.2.0.3
+FROM crazymax/alpine-s6:${ALPINE_VERSION}-2.2.0.3
 
 ARG SMBCLIENT_VERSION
 RUN apk --update --no-cache add \
@@ -75,7 +76,6 @@ RUN apk --update --no-cache add \
   && mv /etc/init.d/php-fpm8 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm8 \
   && mv /etc/logrotate.d/php-fpm8 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm8 \
   && mv /var/log/php8 /var/log/php && ln -s /var/log/php /var/log/php8 \
-  && ln -s /usr/bin/php8 /usr/bin/php \
   && ln -s /usr/sbin/php-fpm8 /usr/sbin/php-fpm \
   && apk --update --no-cache add -t build-dependencies \
     autoconf \
