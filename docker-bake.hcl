@@ -3,7 +3,7 @@ variable "DEFAULT_TAG" {
 }
 
 variable "DOCKERFILE" {
-  default = "Dockerfile-24"
+  default = "Dockerfile-25"
 }
 
 // Special target: https://github.com/docker/metadata-action#bake-definition
