@@ -74,6 +74,7 @@ RUN apk --update --no-cache add \
     python3 \
     py3-pip \
     tzdata \
+    gcompat \
   && mv /etc/php8 /etc/php && ln -s /etc/php /etc/php8 \
   && mv /etc/init.d/php-fpm8 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm8 \
   && mv /etc/logrotate.d/php-fpm8 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm8 \
