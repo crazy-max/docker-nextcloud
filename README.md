@@ -11,10 +11,12 @@
 
 ## About
 
-[Nextcloud](https://nextcloud.com) Docker image based on Alpine Linux and Nginx with advanced features.<br />
-If you are interested, [check out](https://hub.docker.com/r/crazymax/) my other Docker images!
+[Nextcloud](https://nextcloud.com) Docker image with advanced features.
 
-💡 Want to be notified of new releases? Check out 🔔 [Diun (Docker Image Update Notifier)](https://github.com/crazy-max/diun) project!
+> **Note**
+> 
+> Want to be notified of new releases? Check out 🔔 [Diun (Docker Image Update Notifier)](https://github.com/crazy-max/diun)
+> project!
 
 ___
 
