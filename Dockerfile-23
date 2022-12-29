@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG NEXTCLOUD_VERSION=23.0.11
-ARG ALPINE_VERSION=3.16
+ARG ALPINE_VERSION=3.17
 ARG SMBCLIENT_VERSION=1.0.6
 
 FROM crazymax/yasu:latest AS yasu
@@ -32,61 +32,60 @@ RUN apk --update --no-cache add \
     libxml2 \
     nginx \
     openssl \
-    php8 \
-    php8-bcmath \
-    php8-bz2 \
-    php8-cli \
-    php8-ctype \
-    php8-curl \
-    php8-dom \
-    php8-exif \
-    php8-fileinfo \
-    php8-fpm \
-    php8-ftp \
-    php8-gd \
-    php8-gmp \
-    php8-iconv \
-    php8-intl \
-    php8-json \
-    php8-ldap \
-    php8-mbstring \
-    php8-opcache \
-    php8-openssl \
-    php8-pcntl \
-    php8-pecl-apcu \
-    php8-pecl-imagick \
-    php8-pecl-mcrypt \
-    php8-pecl-memcached \
-    php8-pdo \
-    php8-pdo_mysql \
-    php8-pdo_pgsql \
-    php8-pdo_sqlite \
-    php8-posix \
-    php8-redis \
-    php8-session \
-    php8-simplexml \
-    php8-sqlite3 \
-    php8-xml \
-    php8-xmlreader \
-    php8-xmlwriter \
-    php8-zip \
-    php8-zlib \
+    php81 \
+    php81-bcmath \
+    php81-bz2 \
+    php81-cli \
+    php81-ctype \
+    php81-curl \
+    php81-dom \
+    php81-exif \
+    php81-fileinfo \
+    php81-fpm \
+    php81-ftp \
+    php81-gd \
+    php81-gmp \
+    php81-iconv \
+    php81-intl \
+    php81-json \
+    php81-ldap \
+    php81-mbstring \
+    php81-opcache \
+    php81-openssl \
+    php81-pcntl \
+    php81-pecl-apcu \
+    php81-pecl-imagick \
+    php81-pecl-memcached \
+    php81-pdo \
+    php81-pdo_mysql \
+    php81-pdo_pgsql \
+    php81-pdo_sqlite \
+    php81-posix \
+    php81-redis \
+    php81-session \
+    php81-simplexml \
+    php81-sqlite3 \
+    php81-xml \
+    php81-xmlreader \
+    php81-xmlwriter \
+    php81-zip \
+    php81-zlib \
     python3 \
     py3-pip \
     tzdata \
-  && mv /etc/php8 /etc/php && ln -s /etc/php /etc/php8 \
-  && mv /etc/init.d/php-fpm8 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm8 \
-  && mv /etc/logrotate.d/php-fpm8 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm8 \
-  && mv /var/log/php8 /var/log/php && ln -s /var/log/php /var/log/php8 \
-  && ln -s /usr/sbin/php-fpm8 /usr/sbin/php-fpm \
+  && mv /etc/php81 /etc/php && ln -s /etc/php /etc/php81 \
+  && mv /etc/init.d/php-fpm81 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm81 \
+  && mv /etc/logrotate.d/php-fpm81 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm81 \
+  && mv /var/log/php81 /var/log/php && ln -s /var/log/php /var/log/php81 \
+  && ln -s /usr/sbin/php-fpm81 /usr/sbin/php-fpm \
   && apk --update --no-cache add -t build-dependencies \
     autoconf \
     automake \
     build-base \
     libtool \
     pcre-dev \
-    php8-dev \
-    php8-pear \
+    php81-dev \
+    php81-pear \
     samba-dev \
     tar \
     wget \
@@ -94,7 +93,7 @@ RUN apk --update --no-cache add \
   && pip3 install nextcloud_news_updater \
   && cd /tmp \
   && wget -q https://pecl.php.net/get/smbclient-${SMBCLIENT_VERSION}.tgz \
-  && pecl8 install smbclient-${SMBCLIENT_VERSION}.tgz \
+  && pecl81 install smbclient-${SMBCLIENT_VERSION}.tgz \
   && apk del build-dependencies \
   && rm -rf /tmp/* /var/www/*
 
