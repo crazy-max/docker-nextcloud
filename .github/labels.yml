@@ -67,3 +67,7 @@
   name: "status/stale"
   color: "237da0"
   description: ""
+-
+  name: "status/triage"
+  color: "dde4b7"
+  description: ""
