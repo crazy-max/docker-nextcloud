@@ -65,6 +65,7 @@ RUN apk --update --no-cache add \
     php81-session \
     php81-simplexml \
     php81-sqlite3 \
+    php81-sysvsem \
     php81-xml \
     php81-xmlreader \
     php81-xmlwriter \
