@@ -44,10 +44,6 @@
   color: "e6e6e6"
   description: ""
 -
-  name: "kind/question"
-  color: "3f51b5"
-  description: ""
--
   name: "kind/upstream"
   color: "fbca04"
   description: ""
