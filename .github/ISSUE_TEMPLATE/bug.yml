@@ -74,12 +74,10 @@ body:
       description: |
         Output of `docker compose config` command.
       render: yaml
-    validations:
-      required: true
 
   - type: textarea
     attributes:
-      label: Container logs
+      label: Logs
       description: |
         Please provide the container logs (set `LOG_LEVEL=debug` if applicable).
       render: text
