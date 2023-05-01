@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v3
       -
         name: Docker Build
-        uses: docker/bake-action@v2
+        uses: docker/bake-action@v3
         with:
           targets: image-local
         env:
