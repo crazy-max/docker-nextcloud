@@ -19,7 +19,7 @@ on:
       - '**.md'
 
 env:
-  LATEST_DOCKERFILE: Dockerfile-26
+  LATEST_DOCKERFILE: Dockerfile-27
   DOCKERHUB_SLUG: crazymax/nextcloud
   GHCR_SLUG: ghcr.io/crazy-max/nextcloud
 
