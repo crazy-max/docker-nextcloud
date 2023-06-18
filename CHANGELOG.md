@@ -1,5 +1,11 @@
 # Changelog
 
+## 27.0.0-r0 / 26.0.2-r0 / 25.0.7-r0 (2023/06/18)
+
+* Nextcloud 25.0.7, 26.0.2, 27.0.0 (#124)
+* Alpine Linux 3.18 (#124)
+* Update `nginx.conf` to support wasm & tflite file for `talk` (#123)
+
 ## 26.0.1-r0 / 25.0.6-r0 / 24.0.12-r0 (2023/05/03)
 
 * Nextcloud 24.0.12, 25.0.6, 26.0.1 (#122)
