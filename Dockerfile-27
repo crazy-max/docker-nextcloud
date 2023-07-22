@@ -25,7 +25,6 @@ RUN apk --update --no-cache add \
     ffmpeg \
     imagemagick \
     ghostscript \
-    libsmbclient \
     libxml2 \
     nginx \
     openssl \
