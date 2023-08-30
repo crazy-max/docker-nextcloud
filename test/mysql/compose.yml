@@ -1,13 +1,16 @@
+name: nextcloud
+
 services:
   db:
-    image: postgres:9.6
+    image: mariadb:10.5
     container_name: nextcloud_db
     volumes:
-      - "db:/var/lib/postgresql/data"
+      - "db:/var/lib/mysql"
     environment:
-      - "POSTGRES_DB"
-      - "POSTGRES_USER"
-      - "POSTGRES_PASSWORD"
+      - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
+      - "MYSQL_DATABASE"
+      - "MYSQL_USER"
+      - "MYSQL_PASSWORD"
     restart: always
 
   redis:
@@ -35,11 +38,11 @@ services:
       - "TZ"
       - "PUID"
       - "PGID"
-      - "DB_TYPE=pgsql"
+      - "DB_TYPE=mysql"
       - "DB_HOST=db"
-      - "DB_NAME=${POSTGRES_DB}"
-      - "DB_USER=${POSTGRES_USER}"
-      - "DB_PASSWORD=${POSTGRES_PASSWORD}"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
     restart: always
 
   cron:
@@ -55,11 +58,11 @@ services:
       - "TZ"
       - "PUID"
       - "PGID"
-      - "DB_TYPE=pgsql"
+      - "DB_TYPE=mysql"
       - "DB_HOST=db"
-      - "DB_NAME=${POSTGRES_DB}"
-      - "DB_USER=${POSTGRES_USER}"
-      - "DB_PASSWORD=${POSTGRES_PASSWORD}"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
       - "SIDECAR_CRON=1"
       - "CRON_PERIOD=*/5 * * * *"
     restart: always
@@ -77,11 +80,11 @@ services:
       - "TZ"
       - "PUID"
       - "PGID"
-      - "DB_TYPE=pgsql"
+      - "DB_TYPE=mysql"
       - "DB_HOST=db"
-      - "DB_NAME=${POSTGRES_DB}"
-      - "DB_USER=${POSTGRES_USER}"
-      - "DB_PASSWORD=${POSTGRES_PASSWORD}"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
       - "SIDECAR_PREVIEWGEN=1"
       - "PREVIEWGEN_PERIOD=0 * * * *"
     restart: always
@@ -99,11 +102,11 @@ services:
       - "TZ"
       - "PUID"
       - "PGID"
-      - "DB_TYPE=pgsql"
+      - "DB_TYPE=mysql"
       - "DB_HOST=db"
-      - "DB_NAME=${POSTGRES_DB}"
-      - "DB_USER=${POSTGRES_USER}"
-      - "DB_PASSWORD=${POSTGRES_PASSWORD}"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
       - "SIDECAR_NEWSUPDATER=1"
       - "NC_NEWSUPDATER_THREADS=10"
       - "NC_NEWSUPDATER_TIMEOUT=300"
