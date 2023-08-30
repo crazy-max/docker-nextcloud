@@ -47,6 +47,7 @@ DB_TYPE=${DB_TYPE:-sqlite}
 DB_HOST=${DB_HOST:-db}
 DB_NAME=${DB_NAME:-nextcloud}
 DB_USER=${DB_USER:-nextcloud}
+DB_TIMEOUT=${DB_TIMEOUT:-60}
 
 SIDECAR_CRON=${SIDECAR_CRON:-0}
 SIDECAR_NEWSUPDATER=${SIDECAR_NEWSUPDATER:-0}
@@ -106,10 +107,62 @@ ln -sf /data/config/config.php /var/www/config/config.php &>/dev/null
 ln -sf /data/themes /var/www/themes &>/dev/null
 ln -sf /data/userapps /var/www/userapps &>/dev/null
 
+file_env 'DB_USER'
 file_env 'DB_PASSWORD'
-if [ -z "$DB_PASSWORD" ]; then
-  echo >&2 "ERROR: Either DB_PASSWORD or DB_PASSWORD_FILE must be defined"
-  exit 1
+
+if [ "$DB_TYPE" = "mysql" ]; then
+  echo "Checking mysql database connection..."
+  if [ -z "$DB_HOST" ]; then
+    echo >&2 "ERROR: DB_HOST must be defined"
+    exit 1
+  fi
+  if [ -z "$DB_PASSWORD" ]; then
+    echo >&2 "ERROR: Either DB_PASSWORD or DB_PASSWORD_FILE must be defined"
+    exit 1
+  fi
+
+  dbcmd="mysql -h ${DB_HOST} -u "${DB_USER}" "-p${DB_PASSWORD}""
+
+  echo "Waiting ${DB_TIMEOUT}s for database to be ready..."
+  counter=1
+  while ! ${dbcmd} -e "show databases;" >/dev/null 2>&1; do
+    sleep 1
+    counter=$((counter + 1))
+    if [ ${counter} -gt ${DB_TIMEOUT} ]; then
+      echo >&2 "ERROR: Failed to connect to database on $DB_HOST"
+      exit 1
+    fi
+  done
+  echo "Database ready!"
+  unset dbcmd
+fi
+
+if [ "$DB_TYPE" = "pgsql" ]; then
+  echo "Checking pgsql database connection..."
+  if [ -z "$DB_HOST" ]; then
+    echo >&2 "ERROR: DB_HOST must be defined"
+    exit 1
+  fi
+  if [ -z "$DB_PASSWORD" ]; then
+    echo >&2 "ERROR: Either DB_PASSWORD or DB_PASSWORD_FILE must be defined"
+    exit 1
+  fi
+
+  export PGPASSWORD=${DB_PASSWORD}
+  dbcmd="psql --host=${DB_HOST} --username=${DB_USER} -lqt"
+
+  echo "Waiting ${DB_TIMEOUT}s for database to be ready..."
+  counter=1
+  while ${dbcmd} | cut -d \| -f 1 | grep -qw "${DB_NAME}" > /dev/null 2>&1; [ $? -ne 0 ]; do
+    sleep 1
+    counter=$((counter + 1))
+    if [ ${counter} -gt ${DB_TIMEOUT} ]; then
+      echo >&2 "ERROR: Failed to connect to database on $DB_HOST"
+      exit 1
+    fi
+  done
+  echo "Database ready!"
+  unset dbcmd PGPASSWORD
 fi
 
 # Install Nextcloud if config not found

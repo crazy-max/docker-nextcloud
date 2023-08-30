@@ -84,10 +84,10 @@ docker buildx bake image-all
 
 ## Image
 
-| Registry                                                                                         | Image                           |
-|--------------------------------------------------------------------------------------------------|---------------------------------|
-| [Docker Hub](https://hub.docker.com/r/crazymax/nextcloud/)                                            | `crazymax/nextcloud`                 |
-| [GitHub Container Registry](https://github.com/users/crazy-max/packages/container/package/nextcloud)  | `ghcr.io/crazy-max/nextcloud`        |
+| Registry                                                                                             | Image                         |
+|------------------------------------------------------------------------------------------------------|-------------------------------|
+| [Docker Hub](https://hub.docker.com/r/crazymax/nextcloud/)                                           | `crazymax/nextcloud`          |
+| [GitHub Container Registry](https://github.com/users/crazy-max/packages/container/package/nextcloud) | `ghcr.io/crazy-max/nextcloud` |
 
 Following platforms for this image are available:
 
@@ -132,26 +132,36 @@ Image: crazymax/nextcloud:latest
 * `DB_USER`: Username for database (default `nextcloud`)
 * `DB_PASSWORD`: Password for database user
 * `DB_HOST`: Database host (default `db`)
+* `DB_TIMEOUT`: Time in seconds after which we stop trying to reach the database server. Only used for `mysql` and `pgsql` db type (default `60`)
 
-> 💡 `DB_PASSWORD_FILE` can be used to fill in the value from a file, especially for Docker's secrets feature.
+> **Note**
+> 
+> `DB_PASSWORD_FILE` can be used to fill in the value from a file, especially
+> for Docker's secrets feature.
 
 ### Cron
 
-> :warning: Only used if you enable and run a [sidecar cron container](#cron-sidecar)
+> **Warning**
+> 
+> Only used if you enable and run a [sidecar cron container](#cron-sidecar)
 
 * `SIDECAR_CRON`: Set to `1` to enable sidecar cron mode (default `0`)
 * `CRON_PERIOD`: Periodically execute Nextcloud [cron](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) (eg. `*/5 * * * *`)
 
 ### Previews generator
 
-> :warning: Only used if you enable and run a [sidecar previews generator container](#previews-generator-sidecar)
+> **Warning**
+> 
+> Only used if you enable and run a [sidecar previews generator container](#previews-generator-sidecar)
 
 * `SIDECAR_PREVIEWGEN`: Set to `1` to enable sidecar previews generator mode (default `0`)
 * `PREVIEWGEN_PERIOD`: Periodically execute pre-generation of previews (eg. `0 * * * *`)
 
 ### News Updater
 
-> :warning: Only used if you enable and run a [sidecar news updater container](#nextcloud-news-updater)
+> **Warning**
+> 
+> Only used if you enable and run a [sidecar news updater container](#nextcloud-news-updater)
 
 * `SIDECAR_NEWSUPDATER`: Set to `1` to enable sidecar news updater mode (default `0`)
 * `NC_NEWSUPDATER_THREADS`: How many feeds should be fetched in parallel (default `10`)
@@ -163,7 +173,11 @@ Image: crazymax/nextcloud:latest
 
 * `/data`: Contains config, data folders, installed user apps (not core ones), session, themes, tmp folders
 
-> :warning: Note that the volume should be owned by the user/group with the specified `PUID` and `PGID`. If you don't give the volume correct permissions, the container may not start.
+> **Warning**
+> 
+> Note that the volume should be owned by the user/group with the specified
+> `PUID` and `PGID`. If you don't give the volume correct permissions, the
+> container may not start.
 
 ## Ports
 

@@ -26,6 +26,7 @@ RUN apk --update --no-cache add \
     imagemagick \
     ghostscript \
     libxml2 \
+    mysql-client \
     nginx \
     openssl \
     php81 \
@@ -68,6 +69,7 @@ RUN apk --update --no-cache add \
     php81-xmlwriter \
     php81-zip \
     php81-zlib \
+    postgresql-client \
     python3 \
     py3-pip \
     tzdata \

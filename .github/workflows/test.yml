@@ -62,6 +62,7 @@ jobs:
           docker run -d --name ${{ env.CONTAINER_NAME }} \
             --link mariadb \
             --network ${{ env.CONTAINER_NAME }} \
+            -e "DB_TYPE=mysql" \
             -e "DB_HOST=mariadb" \
             -e "DB_NAME=nextcloud" \
             -e "DB_USER=nextcloud" \
