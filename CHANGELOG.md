@@ -1,5 +1,10 @@
 # Changelog
 
+## 27.0.2-r0 / 26.0.5-r0 / 25.0.10-r0 (2023/08/30)
+
+* Nextcloud 27.0.2, 26.0.5, 25.0.10 (#135)
+* Wait for database to be ready (#133)
+
 ## 27.0.1-r1 / 26.0.4-r1 / 25.0.9-r1 (2023/07/22)
 
 * smbclient conf not needed anymore (#131)
