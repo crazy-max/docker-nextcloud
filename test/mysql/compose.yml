@@ -1,0 +1,119 @@
+name: nextcloud
+
+services:
+  db:
+    image: mariadb:10.5
+    container_name: nextcloud_db
+    volumes:
+      - "db:/var/lib/mysql"
+    environment:
+      - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
+      - "MYSQL_DATABASE"
+      - "MYSQL_USER"
+      - "MYSQL_PASSWORD"
+    restart: always
+
+  redis:
+    image: redis:6-alpine
+    container_name: nextcloud_redis
+    environment:
+      - "TZ"
+    restart: always
+
+  nextcloud:
+    image: ${NEXTCLOUD_IMAGE:-crazymax/nextcloud}
+    container_name: ${NEXTCLOUD_CONTAINER:-nextcloud}
+    depends_on:
+      - db
+      - redis
+    ports:
+      - target: 8000
+        published: 8000
+        protocol: tcp
+    volumes:
+      - "nextcloud:/data"
+    env_file:
+      - "./nextcloud.env"
+    environment:
+      - "TZ"
+      - "PUID"
+      - "PGID"
+      - "DB_TYPE=mysql"
+      - "DB_HOST=db"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
+    restart: always
+
+  cron:
+    image: ${NEXTCLOUD_IMAGE:-crazymax/nextcloud}
+    container_name: nextcloud_cron
+    depends_on:
+      - nextcloud
+    volumes:
+      - "nextcloud:/data"
+    env_file:
+      - "./nextcloud.env"
+    environment:
+      - "TZ"
+      - "PUID"
+      - "PGID"
+      - "DB_TYPE=mysql"
+      - "DB_HOST=db"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
+      - "SIDECAR_CRON=1"
+      - "CRON_PERIOD=*/5 * * * *"
+    restart: always
+
+  previewgen:
+    image: ${NEXTCLOUD_IMAGE:-crazymax/nextcloud}
+    container_name: nextcloud_previewgen
+    depends_on:
+      - nextcloud
+    volumes:
+      - "nextcloud:/data"
+    env_file:
+      - "./nextcloud.env"
+    environment:
+      - "TZ"
+      - "PUID"
+      - "PGID"
+      - "DB_TYPE=mysql"
+      - "DB_HOST=db"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
+      - "SIDECAR_PREVIEWGEN=1"
+      - "PREVIEWGEN_PERIOD=0 * * * *"
+    restart: always
+
+  news_updater:
+    image: ${NEXTCLOUD_IMAGE:-crazymax/nextcloud}
+    container_name: nextcloud_news_updater
+    depends_on:
+      - nextcloud
+    volumes:
+      - "nextcloud:/data"
+    env_file:
+      - "./nextcloud.env"
+    environment:
+      - "TZ"
+      - "PUID"
+      - "PGID"
+      - "DB_TYPE=mysql"
+      - "DB_HOST=db"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASSWORD=${MYSQL_PASSWORD}"
+      - "SIDECAR_NEWSUPDATER=1"
+      - "NC_NEWSUPDATER_THREADS=10"
+      - "NC_NEWSUPDATER_TIMEOUT=300"
+      - "NC_NEWSUPDATER_INTERVAL=900"
+      - "NC_NEWSUPDATER_LOGLEVEL=error"
+    restart: always
+
+volumes:
+  db:
+  nextcloud:

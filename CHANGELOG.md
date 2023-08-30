@@ -302,10 +302,10 @@
 > :warning: **UPGRADE NOTES**
 > As the Docker container now runs as a non-root user, you have to first stop the container and change permissions to `data` volume:
 > ```
-> docker-compose stop
+> docker compose stop
 > chown -R ${PUID}:${PGID} data/
-> docker-compose pull
-> docker-compose up -d
+> docker compose pull
+> docker compose up -d
 > ```
 
 ## 17.0.1-RC2 / 16.0.6-RC2 / 15.0.13-RC2 (2019/11/11)
@@ -406,7 +406,7 @@
 
 > :warning: **UPGRADE NOTES**
 > Sidecar cron container is now handled with `SIDECAR_CRON` environment variable.
-> See docker-compose example and README for more info.
+> See docker compose example and README for more info.
 
 ## 15.0.5-RC1 / 14.0.8-RC1 / 13.0.12-RC1 (2019/02/27)
 
@@ -515,9 +515,9 @@
 ## 13.0.0-RC2 / 12.0.5-RC3 (2018/02/27)
 
 * Permissions fix more efficient
-* Cron now only available as a "sidecar" container (see docker-compose)
+* Cron now only available as a "sidecar" container (see docker compose)
 * Use busybox cron
-* Replace Nginx + Let's Encrypt with Traefik (see docker-compose)
+* Replace Nginx + Let's Encrypt with Traefik (see docker compose)
 * Disable auto restart and retries of "supervisored" programs (Docker Way)
 * Rename UID and GID env vars to PUID and PGID
 * Remove SITE_DOMAIN env var

@@ -1,16 +1,15 @@
-version: "3.2"
+name: nextcloud
 
 services:
   db:
-    image: mariadb:10.5
+    image: postgres:9.6
     container_name: nextcloud_db
     volumes:
-      - "db:/var/lib/mysql"
+      - "db:/var/lib/postgresql/data"
     environment:
-      - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
-      - "MYSQL_DATABASE"
-      - "MYSQL_USER"
-      - "MYSQL_PASSWORD"
+      - "POSTGRES_DB"
+      - "POSTGRES_USER"
+      - "POSTGRES_PASSWORD"
     restart: always
 
   redis:
@@ -20,22 +19,12 @@ services:
       - "TZ"
     restart: always
 
-  msmtpd:
-    image: crazymax/msmtpd:latest
-    container_name: nextcloud_msmtpd
-    env_file:
-      - "./msmtpd.env"
-    environment:
-      - "TZ"
-    restart: always
-
   nextcloud:
-    image: crazymax/nextcloud:latest
-    container_name: nextcloud
+    image: ${NEXTCLOUD_IMAGE:-crazymax/nextcloud}
+    container_name: ${NEXTCLOUD_CONTAINER:-nextcloud}
     depends_on:
       - db
       - redis
-      - msmtpd
     ports:
       - target: 8000
         published: 8000
@@ -48,15 +37,15 @@ services:
       - "TZ"
       - "PUID"
       - "PGID"
-      - "DB_TYPE=mysql"
+      - "DB_TYPE=pgsql"
       - "DB_HOST=db"
-      - "DB_NAME=${MYSQL_DATABASE}"
-      - "DB_USER=${MYSQL_USER}"
-      - "DB_PASSWORD=${MYSQL_PASSWORD}"
+      - "DB_NAME=${POSTGRES_DB}"
+      - "DB_USER=${POSTGRES_USER}"
+      - "DB_PASSWORD=${POSTGRES_PASSWORD}"
     restart: always
 
   cron:
-    image: crazymax/nextcloud:latest
+    image: ${NEXTCLOUD_IMAGE:-crazymax/nextcloud}
     container_name: nextcloud_cron
     depends_on:
       - nextcloud
@@ -68,17 +57,17 @@ services:
       - "TZ"
       - "PUID"
       - "PGID"
-      - "DB_TYPE=mysql"
+      - "DB_TYPE=pgsql"
       - "DB_HOST=db"
-      - "DB_NAME=${MYSQL_DATABASE}"
-      - "DB_USER=${MYSQL_USER}"
-      - "DB_PASSWORD=${MYSQL_PASSWORD}"
+      - "DB_NAME=${POSTGRES_DB}"
+      - "DB_USER=${POSTGRES_USER}"
+      - "DB_PASSWORD=${POSTGRES_PASSWORD}"
       - "SIDECAR_CRON=1"
       - "CRON_PERIOD=*/5 * * * *"
     restart: always
 
   previewgen:
-    image: crazymax/nextcloud:latest
+    image: ${NEXTCLOUD_IMAGE:-crazymax/nextcloud}
     container_name: nextcloud_previewgen
     depends_on:
       - nextcloud
@@ -90,17 +79,17 @@ services:
       - "TZ"
       - "PUID"
       - "PGID"
-      - "DB_TYPE=mysql"
+      - "DB_TYPE=pgsql"
       - "DB_HOST=db"
-      - "DB_NAME=${MYSQL_DATABASE}"
-      - "DB_USER=${MYSQL_USER}"
-      - "DB_PASSWORD=${MYSQL_PASSWORD}"
+      - "DB_NAME=${POSTGRES_DB}"
+      - "DB_USER=${POSTGRES_USER}"
+      - "DB_PASSWORD=${POSTGRES_PASSWORD}"
       - "SIDECAR_PREVIEWGEN=1"
       - "PREVIEWGEN_PERIOD=0 * * * *"
     restart: always
 
   news_updater:
-    image: crazymax/nextcloud:latest
+    image: ${NEXTCLOUD_IMAGE:-crazymax/nextcloud}
     container_name: nextcloud_news_updater
     depends_on:
       - nextcloud
@@ -112,11 +101,11 @@ services:
       - "TZ"
       - "PUID"
       - "PGID"
-      - "DB_TYPE=mysql"
+      - "DB_TYPE=pgsql"
       - "DB_HOST=db"
-      - "DB_NAME=${MYSQL_DATABASE}"
-      - "DB_USER=${MYSQL_USER}"
-      - "DB_PASSWORD=${MYSQL_PASSWORD}"
+      - "DB_NAME=${POSTGRES_DB}"
+      - "DB_USER=${POSTGRES_USER}"
+      - "DB_PASSWORD=${POSTGRES_PASSWORD}"
       - "SIDECAR_NEWSUPDATER=1"
       - "NC_NEWSUPDATER_THREADS=10"
       - "NC_NEWSUPDATER_TIMEOUT=300"
