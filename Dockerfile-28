@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NEXTCLOUD_VERSION=25.0.13
+ARG NEXTCLOUD_VERSION=28.0.1
 ARG ALPINE_VERSION=3.18
 
 FROM crazymax/yasu:latest AS yasu
@@ -63,6 +63,7 @@ RUN apk --update --no-cache add \
     php81-session \
     php81-simplexml \
     php81-sqlite3 \
+    php81-sysvsem \
     php81-xml \
     php81-xmlreader \
     php81-xmlwriter \
