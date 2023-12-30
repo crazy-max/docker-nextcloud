@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG NEXTCLOUD_VERSION=28.0.1
-ARG ALPINE_VERSION=3.18
+ARG ALPINE_VERSION=3.19
 
 FROM crazymax/yasu:latest AS yasu
 FROM --platform=${BUILDPLATFORM:-linux/amd64} crazymax/alpine-s6:${ALPINE_VERSION}-2.2.0.3 AS download
@@ -29,57 +29,57 @@ RUN apk --update --no-cache add \
     mysql-client \
     nginx \
     openssl \
-    php81 \
-    php81-bcmath \
-    php81-bz2 \
-    php81-cli \
-    php81-ctype \
-    php81-curl \
-    php81-dom \
-    php81-exif \
-    php81-fileinfo \
-    php81-fpm \
-    php81-ftp \
-    php81-gd \
-    php81-gmp \
-    php81-iconv \
-    php81-intl \
-    php81-json \
-    php81-ldap \
-    php81-mbstring \
-    php81-opcache \
-    php81-openssl \
-    php81-pcntl \
-    php81-pecl-apcu \
-    php81-pecl-imagick \
-    php81-pecl-memcached \
-    php81-pecl-smbclient \
-    php81-pdo \
-    php81-pdo_mysql \
-    php81-pdo_pgsql \
-    php81-pdo_sqlite \
-    php81-posix \
-    php81-redis \
-    php81-session \
-    php81-simplexml \
-    php81-sqlite3 \
-    php81-sysvsem \
-    php81-xml \
-    php81-xmlreader \
-    php81-xmlwriter \
-    php81-zip \
-    php81-zlib \
+    php82 \
+    php82-bcmath \
+    php82-bz2 \
+    php82-cli \
+    php82-ctype \
+    php82-curl \
+    php82-dom \
+    php82-exif \
+    php82-fileinfo \
+    php82-fpm \
+    php82-ftp \
+    php82-gd \
+    php82-gmp \
+    php82-iconv \
+    php82-intl \
+    php82-json \
+    php82-ldap \
+    php82-mbstring \
+    php82-opcache \
+    php82-openssl \
+    php82-pcntl \
+    php82-pecl-apcu \
+    php82-pecl-imagick \
+    php82-pecl-memcached \
+    php82-pecl-smbclient \
+    php82-pdo \
+    php82-pdo_mysql \
+    php82-pdo_pgsql \
+    php82-pdo_sqlite \
+    php82-posix \
+    php82-redis \
+    php82-session \
+    php82-simplexml \
+    php82-sqlite3 \
+    php82-sysvsem \
+    php82-xml \
+    php82-xmlreader \
+    php82-xmlwriter \
+    php82-zip \
+    php82-zlib \
     postgresql-client \
     python3 \
     py3-pip \
     tzdata \
-  && mv /etc/php81 /etc/php && ln -s /etc/php /etc/php81 \
-  && mv /etc/init.d/php-fpm81 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm81 \
-  && mv /etc/logrotate.d/php-fpm81 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm81 \
-  && mv /var/log/php81 /var/log/php && ln -s /var/log/php /var/log/php81 \
-  && ln -s /usr/sbin/php-fpm81 /usr/sbin/php-fpm \
-  && pip3 install --upgrade pip \
-  && pip3 install nextcloud_news_updater \
+  && mv /etc/php82 /etc/php && ln -s /etc/php /etc/php82 \
+  && mv /etc/init.d/php-fpm82 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm82 \
+  && mv /etc/logrotate.d/php-fpm82 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm82 \
+  && mv /var/log/php82 /var/log/php && ln -s /var/log/php /var/log/php82 \
+  && ln -s /usr/sbin/php-fpm82 /usr/sbin/php-fpm \
+  && pip3 install --upgrade --break-system-packages pip \
+  && pip3 install --break-system-packages nextcloud_news_updater \
   && cd /tmp \
   && rm -rf /tmp/* /var/www/*
 
