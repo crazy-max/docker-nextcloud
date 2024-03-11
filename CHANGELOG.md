@@ -1,5 +1,10 @@
 # Changelog
 
+## 28.0.3-r0 / 27.1.7-r0 / 26.0.12-r0 (2024/03/11)
+
+* Nextcloud 28.0.3, 27.1.7, 26.0.12 (#156)
+* Update nginx config and add missing packages (#155)
+
 ## 28.0.1-r1 / 27.1.5-r1 / 26.0.10-r1 (2024/01/12)
 
 * Remove ocm-provider handling (#153)
