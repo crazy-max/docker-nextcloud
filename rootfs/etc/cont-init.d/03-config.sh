@@ -110,8 +110,8 @@ ln -sf /data/userapps /var/www/userapps &>/dev/null
 file_env 'DB_USER'
 file_env 'DB_PASSWORD'
 
-if [ "$DB_TYPE" = "mysql" ]; then
-  echo "Checking mysql database connection..."
+if [ "$DB_TYPE" == "pgsql" ] || [ "$DB_TYPE" == "mysql" ]; then
+  echo "Checking $DB_TYPE database connection..."
   if [ -z "$DB_HOST" ]; then
     echo >&2 "ERROR: DB_HOST must be defined"
     exit 1
@@ -120,49 +120,61 @@ if [ "$DB_TYPE" = "mysql" ]; then
     echo >&2 "ERROR: Either DB_PASSWORD or DB_PASSWORD_FILE must be defined"
     exit 1
   fi
-
-  dbcmd="mysql -h ${DB_HOST} -u "${DB_USER}" "-p${DB_PASSWORD}""
-
-  echo "Waiting ${DB_TIMEOUT}s for database to be ready..."
-  counter=1
-  while ! ${dbcmd} -e "show databases;" >/dev/null 2>&1; do
-    sleep 1
-    counter=$((counter + 1))
-    if [ ${counter} -gt ${DB_TIMEOUT} ]; then
-      echo >&2 "ERROR: Failed to connect to database on $DB_HOST"
-      exit 1
-    fi
-  done
-  echo "Database ready!"
-  unset dbcmd
-fi
-
-if [ "$DB_TYPE" = "pgsql" ]; then
-  echo "Checking pgsql database connection..."
-  if [ -z "$DB_HOST" ]; then
-    echo >&2 "ERROR: DB_HOST must be defined"
-    exit 1
+  IFS=":"
+  read -ra parts <<< "$DB_HOST"
+  num_parts="${#parts[@]}"
+  dbhost=$DB_HOST
+  if [ "$DB_TYPE" = "mysql" ]; then
+    dbport=3306
+  elif [ "$DB_TYPE" = "pgsql" ]; then
+    dbport=5432
   fi
-  if [ -z "$DB_PASSWORD" ]; then
-    echo >&2 "ERROR: Either DB_PASSWORD or DB_PASSWORD_FILE must be defined"
-    exit 1
+  if [ "$num_parts" -eq 2 ]; then
+    dbhost="${parts[0]}"
+    dbport="${parts[1]}"
+  fi
+  echo "Waiting ${DB_TIMEOUT}s for database $dbhost:$dbport to be ready..."
+
+  if [ "$DB_TYPE" = "mysql" ]; then
+    dbcmd="mysql -h ${dbhost} -P ${dbport} -u '${DB_USER}' '-p${DB_PASSWORD}'"
+
+    counter=1
+    while ! bash -c ${dbcmd} -e "show databases;" >/dev/null 2>&1; do
+      sleep 1
+      counter=$((counter + 1))
+      if [ ${counter} -gt ${DB_TIMEOUT} ]; then
+        echo >&2 "ERROR: Failed to connect to database on $DB_HOST"
+        exit 1
+      fi
+    done
+    echo "Database ready!"
+    unset dbcmd 
+  elif [ "$DB_TYPE" = "pgsql" ]; then
+
+    export PGPASSWORD=${DB_PASSWORD}
+    dbcmd="pg_isready --host=${dbhost} -p ${dbport} --username=${DB_USER}"
+    dbexist_cmd="psql --host=${dbhost} -p ${dbport} --username=${DB_USER} -lqt | cut -d \| -f 1 | grep -qw \"${DB_NAME}\""
+
+    counter=1
+    while ! bash -c ${dbcmd} ; do
+      sleep 1
+      counter=$((counter + 1))
+      if [ ${counter} -gt ${DB_TIMEOUT} ]; then
+        echo >&2 "ERROR: Failed to connect to database on $DB_HOST"
+        exit 1
+      fi
+    done
+    if ! bash -c ${dbexist_cmd}; then
+      createdb -h ${dbhost} -p ${dbport} -U ${DB_USER} -E UTF8 ${DB_NAME} # nextcloud bug under 28, https://github.com/nextcloud/server/pull/38750
+      if ! bash -c ${dbexist_cmd}; then
+        echo >&2 "ERROR: Failed to create database ${DB_NAME} on $DB_HOST"
+        exit 1
+      fi
+    fi
+    echo "Database ready!"
+    unset dbcmd PGPASSWORD
   fi
 
-  export PGPASSWORD=${DB_PASSWORD}
-  dbcmd="psql --host=${DB_HOST} --username=${DB_USER} -lqt"
-
-  echo "Waiting ${DB_TIMEOUT}s for database to be ready..."
-  counter=1
-  while ${dbcmd} | cut -d \| -f 1 | grep -qw "${DB_NAME}" > /dev/null 2>&1; [ $? -ne 0 ]; do
-    sleep 1
-    counter=$((counter + 1))
-    if [ ${counter} -gt ${DB_TIMEOUT} ]; then
-      echo >&2 "ERROR: Failed to connect to database on $DB_HOST"
-      exit 1
-    fi
-  done
-  echo "Database ready!"
-  unset dbcmd PGPASSWORD
 fi
 
 # Install Nextcloud if config not found
