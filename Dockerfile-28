@@ -24,6 +24,7 @@ RUN apk --update --no-cache add \
     curl \
     ffmpeg \
     imagemagick \
+    imagemagick-svg \
     ghostscript \
     libxml2 \
     mysql-client \
@@ -43,6 +44,7 @@ RUN apk --update --no-cache add \
     php82-gd \
     php82-gmp \
     php82-iconv \
+    php82-imap \
     php82-intl \
     php82-json \
     php82-ldap \
@@ -62,6 +64,7 @@ RUN apk --update --no-cache add \
     php82-redis \
     php82-session \
     php82-simplexml \
+    php82-sodium \
     php82-sqlite3 \
     php82-sysvsem \
     php82-xml \
