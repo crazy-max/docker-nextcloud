@@ -13,8 +13,7 @@
 
 [Nextcloud](https://nextcloud.com) Docker image with advanced features.
 
-> **Note**
-> 
+> [!TIP] 
 > Want to be notified of new releases? Check out 🔔 [Diun (Docker Image Update Notifier)](https://github.com/crazy-max/diun)
 > project!
 
@@ -134,8 +133,7 @@ Image: crazymax/nextcloud:latest
 * `DB_HOST`: Database host (default `db`)
 * `DB_TIMEOUT`: Time in seconds after which we stop trying to reach the database server. Only used for `mysql` and `pgsql` db type (default `60`)
 
-> **Note**
-> 
+> [!NOTE]
 > `DB_PASSWORD_FILE` can be used to fill in the value from a file, especially
 > for Docker's secrets feature.
 
