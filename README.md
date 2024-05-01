@@ -139,8 +139,7 @@ Image: crazymax/nextcloud:latest
 
 ### Cron
 
-> **Warning**
-> 
+> [!WARNING]
 > Only used if you enable and run a [sidecar cron container](#cron-sidecar)
 
 * `SIDECAR_CRON`: Set to `1` to enable sidecar cron mode (default `0`)
@@ -148,8 +147,7 @@ Image: crazymax/nextcloud:latest
 
 ### Previews generator
 
-> **Warning**
-> 
+> [!WARNING]
 > Only used if you enable and run a [sidecar previews generator container](#previews-generator-sidecar)
 
 * `SIDECAR_PREVIEWGEN`: Set to `1` to enable sidecar previews generator mode (default `0`)
@@ -157,8 +155,7 @@ Image: crazymax/nextcloud:latest
 
 ### News Updater
 
-> **Warning**
-> 
+> [!WARNING]
 > Only used if you enable and run a [sidecar news updater container](#nextcloud-news-updater)
 
 * `SIDECAR_NEWSUPDATER`: Set to `1` to enable sidecar news updater mode (default `0`)
@@ -171,8 +168,7 @@ Image: crazymax/nextcloud:latest
 
 * `/data`: Contains config, data folders, installed user apps (not core ones), session, themes, tmp folders
 
-> **Warning**
-> 
+> [!WARNING]
 > Note that the volume should be owned by the user/group with the specified
 > `PUID` and `PGID`. If you don't give the volume correct permissions, the
 > container may not start.
