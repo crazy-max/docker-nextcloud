@@ -36,12 +36,12 @@ services:
     restart: always
 
   db:
-    image: mariadb:10.5
+    image: mariadb:10
     container_name: nextcloud_db
     volumes:
       - "db:/var/lib/mysql"
     environment:
-      - "MYSQL_ALLOW_EMPTY_PASSWORD=yes"
+      - "MARIADB_RANDOM_ROOT_PASSWORD=yes"
       - "MYSQL_DATABASE"
       - "MYSQL_USER"
       - "MYSQL_PASSWORD"
