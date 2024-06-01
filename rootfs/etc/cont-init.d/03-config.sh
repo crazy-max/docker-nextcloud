@@ -62,7 +62,6 @@ echo ${TZ} >/etc/timezone
 echo "Setting PHP-FPM configuration..."
 sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
   -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
-  -e "s/@BODY_TIMEOUT@/$BODY_TIMEOUT/g" \
   -e "s/@CLEAR_ENV@/$CLEAR_ENV/g" \
   /tpls/etc/php/php-fpm.d/www.conf >/etc/php/php-fpm.d/www.conf
 
@@ -79,6 +78,7 @@ sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
 # Nginx
 echo "Setting Nginx configuration..."
 sed -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
+  -e "s/@BODY_TIMEOUT@/$BODY_TIMEOUT/g" \
   -e "s#@REAL_IP_FROM@#$REAL_IP_FROM#g" \
   -e "s#@REAL_IP_HEADER@#$REAL_IP_HEADER#g" \
   -e "s#@LOG_IP_VAR@#$LOG_IP_VAR#g" \
