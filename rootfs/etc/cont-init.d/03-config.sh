@@ -31,6 +31,7 @@ file_env() {
 TZ=${TZ:-UTC}
 MEMORY_LIMIT=${MEMORY_LIMIT:-512M}
 UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-512M}
+BODY_TIMEOUT=${BODY_TIMEOUT:-300s}
 CLEAR_ENV=${CLEAR_ENV:-yes}
 OPCACHE_MEM_SIZE=${OPCACHE_MEM_SIZE:-128}
 LISTEN_IPV6=${LISTEN_IPV6:-true}
@@ -61,6 +62,7 @@ echo ${TZ} >/etc/timezone
 echo "Setting PHP-FPM configuration..."
 sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
   -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
+  -e "s/@BODY_TIMEOUT@/$BODY_TIMEOUT/g" \
   -e "s/@CLEAR_ENV@/$CLEAR_ENV/g" \
   /tpls/etc/php/php-fpm.d/www.conf >/etc/php/php-fpm.d/www.conf
 
