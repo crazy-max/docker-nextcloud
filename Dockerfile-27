@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NEXTCLOUD_VERSION=27.1.9
+ARG NEXTCLOUD_VERSION=27.1.10
 ARG ALPINE_VERSION=3.19
 
 FROM crazymax/yasu:latest AS yasu
@@ -24,9 +24,9 @@ RUN apk --update --no-cache add \
     curl \
     ffmpeg \
     imagemagick \
-    imagemagick-svg \
+    imagemagick-heic \
     imagemagick-pdf \
-    imagemagick-heic \ 
+    imagemagick-svg \
     ghostscript \
     libxml2 \
     mysql-client \

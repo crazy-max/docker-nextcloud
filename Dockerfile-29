@@ -25,9 +25,9 @@ RUN apk --update --no-cache add \
     ffmpeg \
     util-linux \
     imagemagick \
-    imagemagick-svg \
     imagemagick-pdf \
-    imagemagick-heic \    
+    imagemagick-heic \
+    imagemagick-svg \
     ghostscript \
     libxml2 \
     mysql-client \
