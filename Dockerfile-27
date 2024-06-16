@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG NEXTCLOUD_VERSION=27.1.10
-ARG ALPINE_VERSION=3.19
+ARG ALPINE_VERSION=3.20
 
 FROM crazymax/yasu:latest AS yasu
 FROM --platform=${BUILDPLATFORM:-linux/amd64} crazymax/alpine-s6:${ALPINE_VERSION}-2.2.0.3 AS download
@@ -32,57 +32,57 @@ RUN apk --update --no-cache add \
     mysql-client \
     nginx \
     openssl \
-    php82 \
-    php82-bcmath \
-    php82-bz2 \
-    php82-cli \
-    php82-ctype \
-    php82-curl \
-    php82-dom \
-    php82-exif \
-    php82-fileinfo \
-    php82-fpm \
-    php82-ftp \
-    php82-gd \
-    php82-gmp \
-    php82-iconv \
-    php82-imap \
-    php82-intl \
-    php82-json \
-    php82-ldap \
-    php82-mbstring \
-    php82-opcache \
-    php82-openssl \
-    php82-pcntl \
-    php82-pecl-apcu \
-    php82-pecl-imagick \
-    php82-pecl-memcached \
-    php82-pecl-smbclient \
-    php82-pdo \
-    php82-pdo_mysql \
-    php82-pdo_pgsql \
-    php82-pdo_sqlite \
-    php82-posix \
-    php82-redis \
-    php82-session \
-    php82-sodium \
-    php82-simplexml \
-    php82-sqlite3 \
-    php82-sysvsem \
-    php82-xml \
-    php82-xmlreader \
-    php82-xmlwriter \
-    php82-zip \
-    php82-zlib \
+    php83 \
+    php83-bcmath \
+    php83-bz2 \
+    php83-cli \
+    php83-ctype \
+    php83-curl \
+    php83-dom \
+    php83-exif \
+    php83-fileinfo \
+    php83-fpm \
+    php83-ftp \
+    php83-gd \
+    php83-gmp \
+    php83-iconv \
+    php83-imap \
+    php83-intl \
+    php83-json \
+    php83-ldap \
+    php83-mbstring \
+    php83-opcache \
+    php83-openssl \
+    php83-pcntl \
+    php83-pecl-apcu \
+    php83-pecl-imagick \
+    php83-pecl-memcached \
+    php83-pecl-smbclient \
+    php83-pdo \
+    php83-pdo_mysql \
+    php83-pdo_pgsql \
+    php83-pdo_sqlite \
+    php83-posix \
+    php83-redis \
+    php83-session \
+    php83-sodium \
+    php83-simplexml \
+    php83-sqlite3 \
+    php83-sysvsem \
+    php83-xml \
+    php83-xmlreader \
+    php83-xmlwriter \
+    php83-zip \
+    php83-zlib \
     postgresql-client \
     python3 \
     py3-pip \
     tzdata \
-  && mv /etc/php82 /etc/php && ln -s /etc/php /etc/php82 \
-  && mv /etc/init.d/php-fpm82 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm82 \
-  && mv /etc/logrotate.d/php-fpm82 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm82 \
-  && mv /var/log/php82 /var/log/php && ln -s /var/log/php /var/log/php82 \
-  && ln -s /usr/sbin/php-fpm82 /usr/sbin/php-fpm \
+  && mv /etc/php83 /etc/php && ln -s /etc/php /etc/php83 \
+  && mv /etc/init.d/php-fpm83 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm83 \
+  && mv /etc/logrotate.d/php-fpm83 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm83 \
+  && mv /var/log/php83 /var/log/php && ln -s /var/log/php /var/log/php83 \
+  && ln -s /usr/sbin/php-fpm83 /usr/sbin/php-fpm \
   && pip3 install --upgrade --break-system-packages pip \
   && pip3 install --break-system-packages nextcloud_news_updater \
   && cd /tmp \
