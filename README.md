@@ -112,6 +112,7 @@ Image: crazymax/nextcloud:latest
 * `PGID`: Nextcloud group id (default `1000`)
 * `MEMORY_LIMIT`: PHP memory limit (default `512M`)
 * `UPLOAD_MAX_SIZE`: Upload max size (default `512M`)
+* `PM_MAX_CHILDREN`: Maximum number of child processes to be created for PHP-FPM (default `20`)
 * `BODY_TIMEOUT`: Defines a timeout for reading client request body (default `300s`)
 * `CLEAR_ENV`: Clear environment in FPM workers (default `yes`)
 * `OPCACHE_MEM_SIZE`: PHP OpCache memory consumption (default `128`)
