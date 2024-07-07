@@ -30,6 +30,7 @@ RUN apk --update --no-cache add \
     ghostscript \
     libxml2 \
     mysql-client \
+    mariadb-connector-c \
     nginx \
     openssl \
     php83 \
