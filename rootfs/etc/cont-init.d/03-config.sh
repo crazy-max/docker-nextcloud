@@ -40,6 +40,12 @@ APC_SHM_SIZE=${APC_SHM_SIZE:-128M}
 REAL_IP_FROM=${REAL_IP_FROM:-0.0.0.0/32}
 REAL_IP_HEADER=${REAL_IP_HEADER:-X-Forwarded-For}
 LOG_IP_VAR=${LOG_IP_VAR:-remote_addr}
+if [ -z "$SUBDIR" ]
+then
+  REDIRECT_URL='$scheme://$host'
+else 
+  REDIRECT_URL=$SUBDIR
+fi
 
 HSTS_HEADER=${HSTS_HEADER:-max-age=15768000; includeSubDomains}
 XFRAME_OPTS_HEADER=${XFRAME_OPTS_HEADER:-SAMEORIGIN}
@@ -87,7 +93,7 @@ sed -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
   -e "s/@HSTS_HEADER@/$HSTS_HEADER/g" \
   -e "s/@XFRAME_OPTS_HEADER@/$XFRAME_OPTS_HEADER/g" \
   -e "s/@RP_HEADER@/$RP_HEADER/g" \
-  -e "s#@SUBDIR@#$SUBDIR#g" \
+  -e "s#@REDIRECT_URL@#$REDIRECT_URL#g" \
   /tpls/etc/nginx/nginx.conf >/etc/nginx/nginx.conf
 
 if [ "$LISTEN_IPV6" != "true" ]; then
