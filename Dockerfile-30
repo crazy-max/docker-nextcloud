@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NEXTCLOUD_VERSION=27.1.11
+ARG NEXTCLOUD_VERSION=30.0.0
 ARG ALPINE_VERSION=3.20
 
 FROM crazymax/yasu:latest AS yasu
@@ -23,9 +23,10 @@ RUN apk --update --no-cache add \
     ca-certificates \
     curl \
     ffmpeg \
+    util-linux \
     imagemagick \
-    imagemagick-heic \
     imagemagick-pdf \
+    imagemagick-heic \
     imagemagick-svg \
     ghostscript \
     libxml2 \
@@ -66,8 +67,8 @@ RUN apk --update --no-cache add \
     php83-posix \
     php83-redis \
     php83-session \
-    php83-sodium \
     php83-simplexml \
+    php83-sodium \
     php83-sqlite3 \
     php83-sysvsem \
     php83-xml \
