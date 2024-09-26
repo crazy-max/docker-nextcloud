@@ -25,8 +25,8 @@ RUN apk --update --no-cache add \
     ffmpeg \
     util-linux \
     imagemagick \
-    imagemagick-pdf \
     imagemagick-heic \
+    imagemagick-pdf \
     imagemagick-svg \
     ghostscript \
     libxml2 \
