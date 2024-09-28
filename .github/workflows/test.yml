@@ -27,9 +27,9 @@ jobs:
       fail-fast: false
       matrix:
         docker_file:
-          - Dockerfile-27
           - Dockerfile-28
           - Dockerfile-29
+          - Dockerfile-30
         dir:
           - mysql
           - pgsql
