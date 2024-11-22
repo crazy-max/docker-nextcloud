@@ -31,6 +31,8 @@ file_env() {
 TZ=${TZ:-UTC}
 MEMORY_LIMIT=${MEMORY_LIMIT:-512M}
 UPLOAD_MAX_SIZE=${UPLOAD_MAX_SIZE:-512M}
+PM_MAX_CHILDREN=${PM_MAX_CHILDREN:-20}
+BODY_TIMEOUT=${BODY_TIMEOUT:-300s}
 CLEAR_ENV=${CLEAR_ENV:-yes}
 OPCACHE_MEM_SIZE=${OPCACHE_MEM_SIZE:-128}
 LISTEN_IPV6=${LISTEN_IPV6:-true}
@@ -38,6 +40,12 @@ APC_SHM_SIZE=${APC_SHM_SIZE:-128M}
 REAL_IP_FROM=${REAL_IP_FROM:-0.0.0.0/32}
 REAL_IP_HEADER=${REAL_IP_HEADER:-X-Forwarded-For}
 LOG_IP_VAR=${LOG_IP_VAR:-remote_addr}
+if [ -z "$SUBDIR" ]
+then
+  REDIRECT_URL='$scheme://$host'
+else 
+  REDIRECT_URL=$SUBDIR
+fi
 
 HSTS_HEADER=${HSTS_HEADER:-max-age=15768000; includeSubDomains}
 XFRAME_OPTS_HEADER=${XFRAME_OPTS_HEADER:-SAMEORIGIN}
@@ -62,6 +70,7 @@ echo "Setting PHP-FPM configuration..."
 sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
   -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
   -e "s/@CLEAR_ENV@/$CLEAR_ENV/g" \
+  -e "s/@PM_MAX_CHILDREN@/$PM_MAX_CHILDREN/g" \
   /tpls/etc/php/php-fpm.d/www.conf >/etc/php/php-fpm.d/www.conf
 
 # PHP
@@ -77,13 +86,14 @@ sed -e "s/@MEMORY_LIMIT@/$MEMORY_LIMIT/g" \
 # Nginx
 echo "Setting Nginx configuration..."
 sed -e "s/@UPLOAD_MAX_SIZE@/$UPLOAD_MAX_SIZE/g" \
+  -e "s/@BODY_TIMEOUT@/$BODY_TIMEOUT/g" \
   -e "s#@REAL_IP_FROM@#$REAL_IP_FROM#g" \
   -e "s#@REAL_IP_HEADER@#$REAL_IP_HEADER#g" \
   -e "s#@LOG_IP_VAR@#$LOG_IP_VAR#g" \
   -e "s/@HSTS_HEADER@/$HSTS_HEADER/g" \
   -e "s/@XFRAME_OPTS_HEADER@/$XFRAME_OPTS_HEADER/g" \
   -e "s/@RP_HEADER@/$RP_HEADER/g" \
-  -e "s#@SUBDIR@#$SUBDIR#g" \
+  -e "s#@REDIRECT_URL@#$REDIRECT_URL#g" \
   /tpls/etc/nginx/nginx.conf >/etc/nginx/nginx.conf
 
 if [ "$LISTEN_IPV6" != "true" ]; then

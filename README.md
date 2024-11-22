@@ -13,8 +13,7 @@
 
 [Nextcloud](https://nextcloud.com) Docker image with advanced features.
 
-> **Note**
-> 
+> [!TIP] 
 > Want to be notified of new releases? Check out 🔔 [Diun (Docker Image Update Notifier)](https://github.com/crazy-max/diun)
 > project!
 
@@ -92,16 +91,15 @@ docker buildx bake image-all
 Following platforms for this image are available:
 
 ```
-$ docker run --rm mplatform/mquery crazymax/nextcloud:latest
-Image: crazymax/nextcloud:latest
- * Manifest List: Yes
- * Supported platforms:
-   - linux/amd64
-   - linux/arm/v6
-   - linux/arm/v7
-   - linux/arm64
-   - linux/ppc64le
-   - linux/s390x
+$ docker buildx imagetools inspect crazymax/nextcloud --format "{{json .Manifest}}" | \
+  jq -r '.manifests[] | select(.platform.os != null and .platform.os != "unknown") | .platform | "\(.os)/\(.architecture)\(if .variant then "/" + .variant else "" end)"'
+
+linux/amd64
+linux/arm/v6
+linux/arm/v7
+linux/arm64
+linux/ppc64le
+linux/s390x
 ```
 
 ## Environment variables
@@ -113,6 +111,8 @@ Image: crazymax/nextcloud:latest
 * `PGID`: Nextcloud group id (default `1000`)
 * `MEMORY_LIMIT`: PHP memory limit (default `512M`)
 * `UPLOAD_MAX_SIZE`: Upload max size (default `512M`)
+* `PM_MAX_CHILDREN`: Maximum number of child processes to be created for PHP-FPM (default `20`)
+* `BODY_TIMEOUT`: Defines a timeout for reading client request body (default `300s`)
 * `CLEAR_ENV`: Clear environment in FPM workers (default `yes`)
 * `OPCACHE_MEM_SIZE`: PHP OpCache memory consumption (default `128`)
 * `LISTEN_IPV6`: Enable IPv6 for Nginx (default `true`)
@@ -134,15 +134,13 @@ Image: crazymax/nextcloud:latest
 * `DB_HOST`: Database host, can be `domain/ip` or `domain/ip:port` (default `db`)
 * `DB_TIMEOUT`: Time in seconds after which we stop trying to reach the database server. Only used for `mysql` and `pgsql` db type (default `60`)
 
-> **Note**
-> 
+> [!NOTE]
 > `DB_PASSWORD_FILE` can be used to fill in the value from a file, especially
 > for Docker's secrets feature.
 
 ### Cron
 
-> **Warning**
-> 
+> [!WARNING]
 > Only used if you enable and run a [sidecar cron container](#cron-sidecar)
 
 * `SIDECAR_CRON`: Set to `1` to enable sidecar cron mode (default `0`)
@@ -150,8 +148,7 @@ Image: crazymax/nextcloud:latest
 
 ### Previews generator
 
-> **Warning**
-> 
+> [!WARNING]
 > Only used if you enable and run a [sidecar previews generator container](#previews-generator-sidecar)
 
 * `SIDECAR_PREVIEWGEN`: Set to `1` to enable sidecar previews generator mode (default `0`)
@@ -159,8 +156,7 @@ Image: crazymax/nextcloud:latest
 
 ### News Updater
 
-> **Warning**
-> 
+> [!WARNING]
 > Only used if you enable and run a [sidecar news updater container](#nextcloud-news-updater)
 
 * `SIDECAR_NEWSUPDATER`: Set to `1` to enable sidecar news updater mode (default `0`)
@@ -173,8 +169,7 @@ Image: crazymax/nextcloud:latest
 
 * `/data`: Contains config, data folders, installed user apps (not core ones), session, themes, tmp folders
 
-> **Warning**
-> 
+> [!WARNING]
 > Note that the volume should be owned by the user/group with the specified
 > `PUID` and `PGID`. If you don't give the volume correct permissions, the
 > container may not start.
