@@ -131,7 +131,7 @@ linux/s390x
 * `DB_NAME`: Database name (default `nextcloud`)
 * `DB_USER`: Username for database (default `nextcloud`)
 * `DB_PASSWORD`: Password for database user
-* `DB_HOST`: Database host (default `db`)
+* `DB_HOST`: Database host, can be `domain/ip` or `domain/ip:port` (default `db`)
 * `DB_TIMEOUT`: Time in seconds after which we stop trying to reach the database server. Only used for `mysql` and `pgsql` db type (default `60`)
 
 > [!NOTE]
