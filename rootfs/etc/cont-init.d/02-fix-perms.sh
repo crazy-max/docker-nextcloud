@@ -5,9 +5,9 @@ echo "Fixing perms..."
 mkdir -p /data \
   /var/run/nginx \
   /var/run/php-fpm
-chown nextcloud. \
+chown nextcloud:nextcloud \
   /data
-chown -R nextcloud. \
+chown -R nextcloud:nextcloud \
   /home/nextcloud \
   /tpls \
   /var/lib/nginx \

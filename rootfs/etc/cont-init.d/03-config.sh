@@ -43,7 +43,7 @@ LOG_IP_VAR=${LOG_IP_VAR:-remote_addr}
 if [ -z "$SUBDIR" ]
 then
   REDIRECT_URL='$scheme://$host'
-else 
+else
   REDIRECT_URL=$SUBDIR
 fi
 
@@ -106,13 +106,13 @@ mkdir -p /data/config /data/data /data/session /data/tmp /data/userapps
 if [ ! -d /data/themes ]; then
   if [ -d /var/www/themes ]; then
     mv -f /var/www/themes /data/
-    chown -R nextcloud. /data/themes
+    chown -R nextcloud:nextcloud /data/themes
   fi
   mkdir -p /data/themes
 elif [ -d /var/www/themes ]; then
   rm -rf /var/www/themes
 fi
-chown nextcloud. /data/config /data/data /data/session /data/tmp /data/userapps /data/themes
+chown nextcloud:nextcloud /data/config /data/data /data/session /data/tmp /data/userapps /data/themes
 ln -sf /data/config/config.php /var/www/config/config.php &>/dev/null
 ln -sf /data/themes /var/www/themes &>/dev/null
 ln -sf /data/userapps /var/www/userapps &>/dev/null
@@ -235,4 +235,4 @@ EOL
 fi
 
 # config directory must be writable
-chown -R nextcloud. /var/www/config
+chown -R nextcloud:nextcloud /var/www/config
