@@ -56,6 +56,7 @@ DB_HOST=${DB_HOST:-db}
 DB_NAME=${DB_NAME:-nextcloud}
 DB_USER=${DB_USER:-nextcloud}
 DB_TIMEOUT=${DB_TIMEOUT:-60}
+DB_SKIP_SSL=${DB_SKIP_SSL:-true}
 
 SIDECAR_CRON=${SIDECAR_CRON:-0}
 SIDECAR_NEWSUPDATER=${SIDECAR_NEWSUPDATER:-0}
@@ -131,7 +132,10 @@ if [ "$DB_TYPE" = "mysql" ]; then
     exit 1
   fi
 
-  dbcmd="mysql -h ${DB_HOST} -u "${DB_USER}" "-p${DB_PASSWORD}""
+  dbcmd="mariadb -h ${DB_HOST} -u "${DB_USER}" "-p${DB_PASSWORD}""
+  if [ "$DB_SKIP_SSL" = "true" ]; then
+    dbcmd="$dbcmd --skip-ssl"
+  fi
 
   echo "Waiting ${DB_TIMEOUT}s for database to be ready..."
   counter=1
