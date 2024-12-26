@@ -43,7 +43,7 @@ LOG_IP_VAR=${LOG_IP_VAR:-remote_addr}
 if [ -z "$SUBDIR" ]
 then
   REDIRECT_URL='$scheme://$host'
-else 
+else
   REDIRECT_URL=$SUBDIR
 fi
 
@@ -56,6 +56,7 @@ DB_HOST=${DB_HOST:-db}
 DB_NAME=${DB_NAME:-nextcloud}
 DB_USER=${DB_USER:-nextcloud}
 DB_TIMEOUT=${DB_TIMEOUT:-60}
+DB_SKIP_SSL=${DB_SKIP_SSL:-true}
 
 SIDECAR_CRON=${SIDECAR_CRON:-0}
 SIDECAR_NEWSUPDATER=${SIDECAR_NEWSUPDATER:-0}
@@ -106,13 +107,13 @@ mkdir -p /data/config /data/data /data/session /data/tmp /data/userapps
 if [ ! -d /data/themes ]; then
   if [ -d /var/www/themes ]; then
     mv -f /var/www/themes /data/
-    chown -R nextcloud. /data/themes
+    chown -R nextcloud:nextcloud /data/themes
   fi
   mkdir -p /data/themes
 elif [ -d /var/www/themes ]; then
   rm -rf /var/www/themes
 fi
-chown nextcloud. /data/config /data/data /data/session /data/tmp /data/userapps /data/themes
+chown nextcloud:nextcloud /data/config /data/data /data/session /data/tmp /data/userapps /data/themes
 ln -sf /data/config/config.php /var/www/config/config.php &>/dev/null
 ln -sf /data/themes /var/www/themes &>/dev/null
 ln -sf /data/userapps /var/www/userapps &>/dev/null
@@ -131,7 +132,10 @@ if [ "$DB_TYPE" = "mysql" ]; then
     exit 1
   fi
 
-  dbcmd="mysql -h ${DB_HOST} -u "${DB_USER}" "-p${DB_PASSWORD}""
+  dbcmd="mariadb -h ${DB_HOST} -u "${DB_USER}" "-p${DB_PASSWORD}""
+  if [ "$DB_SKIP_SSL" = "true" ]; then
+    dbcmd="$dbcmd --skip-ssl"
+  fi
 
   echo "Waiting ${DB_TIMEOUT}s for database to be ready..."
   counter=1
@@ -235,4 +239,4 @@ EOL
 fi
 
 # config directory must be writable
-chown -R nextcloud. /var/www/config
+chown -R nextcloud:nextcloud /var/www/config
