@@ -133,7 +133,6 @@ linux/s390x
 * `DB_PASSWORD`: Password for database user
 * `DB_HOST`: Database host (default `db`)
 * `DB_TIMEOUT`: Time in seconds after which we stop trying to reach the database server. Only used for `mysql` and `pgsql` db type (default `60`)
-* `DB_SKIP_SSL`: Skip SSL connection to MySQL server (default `true`)
 
 > [!NOTE]
 > `DB_PASSWORD_FILE` can be used to fill in the value from a file, especially
