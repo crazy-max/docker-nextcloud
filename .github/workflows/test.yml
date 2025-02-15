@@ -44,8 +44,9 @@ jobs:
         uses: actions/checkout@v4
       -
         name: Build
-        uses: docker/bake-action@v5
+        uses: docker/bake-action@v6
         with:
+          source: .
           targets: image-local
         env:
           DEFAULT_TAG: ${{ env.BUILD_TAG }}
