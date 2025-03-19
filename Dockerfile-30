@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NEXTCLOUD_VERSION=30.0.6
+ARG NEXTCLOUD_VERSION=30.0.7
 ARG ALPINE_VERSION=3.21
 
 FROM crazymax/yasu:latest AS yasu
@@ -23,12 +23,11 @@ RUN apk --update --no-cache add \
     ca-certificates \
     curl \
     ffmpeg \
-    util-linux \
+    ghostscript \
     imagemagick \
     imagemagick-heic \
     imagemagick-pdf \
     imagemagick-svg \
-    ghostscript \
     libxml2 \
     mysql-client \
     mariadb-connector-c \
@@ -80,6 +79,7 @@ RUN apk --update --no-cache add \
     python3 \
     py3-pip \
     tzdata \
+    util-linux \
   && mv /etc/php83 /etc/php && ln -s /etc/php /etc/php83 \
   && mv /etc/init.d/php-fpm83 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm83 \
   && mv /etc/logrotate.d/php-fpm83 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm83 \
