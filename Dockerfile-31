@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NEXTCLOUD_VERSION=31.0.2
+ARG NEXTCLOUD_VERSION=31.0.3
 ARG ALPINE_VERSION=3.21
 
 FROM crazymax/yasu:latest AS yasu
