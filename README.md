@@ -95,8 +95,6 @@ $ docker buildx imagetools inspect crazymax/nextcloud --format "{{json .Manifest
   jq -r '.manifests[] | select(.platform.os != null and .platform.os != "unknown") | .platform | "\(.os)/\(.architecture)\(if .variant then "/" + .variant else "" end)"'
 
 linux/amd64
-linux/arm/v6
-linux/arm/v7
 linux/arm64
 linux/ppc64le
 linux/s390x
