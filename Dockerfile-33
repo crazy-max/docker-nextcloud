@@ -1,0 +1,112 @@
+# syntax=docker/dockerfile:1
+
+ARG NEXTCLOUD_VERSION=33.0.0
+ARG ALPINE_VERSION=3.22
+
+FROM crazymax/yasu:latest AS yasu
+FROM --platform=${BUILDPLATFORM:-linux/amd64} crazymax/alpine-s6:${ALPINE_VERSION}-2.2.0.3 AS download
+RUN apk --update --no-cache add curl gnupg tar unzip xz
+
+ARG NEXTCLOUD_VERSION
+WORKDIR /tmp
+RUN curl -SsOL "https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" \
+  && curl -SsOL "https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc" \
+  && curl -SsOL "https://nextcloud.com/nextcloud.asc"
+RUN gpg --import "nextcloud.asc" \
+  && gpg --verify --batch --no-tty "nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc" "nextcloud-${NEXTCLOUD_VERSION}.tar.bz2"
+WORKDIR /dist/nextcloud
+RUN tar -xjf "/tmp/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" --strip 1 -C .
+
+FROM crazymax/alpine-s6:${ALPINE_VERSION}-2.2.0.3
+RUN apk --update --no-cache add \
+    bash \
+    ca-certificates \
+    curl \
+    ffmpeg \
+    ghostscript \
+    imagemagick \
+    imagemagick-heic \
+    imagemagick-pdf \
+    imagemagick-svg \
+    libxml2 \
+    mysql-client \
+    mariadb-connector-c \
+    nginx \
+    openssl \
+    php83 \
+    php83-bcmath \
+    php83-bz2 \
+    php83-cli \
+    php83-ctype \
+    php83-curl \
+    php83-dom \
+    php83-exif \
+    php83-fileinfo \
+    php83-fpm \
+    php83-ftp \
+    php83-gd \
+    php83-gmp \
+    php83-iconv \
+    php83-imap \
+    php83-intl \
+    php83-json \
+    php83-ldap \
+    php83-mbstring \
+    php83-opcache \
+    php83-openssl \
+    php83-pcntl \
+    php83-pecl-apcu \
+    php83-pecl-imagick \
+    php83-pecl-memcached \
+    php83-pecl-smbclient \
+    php83-pdo \
+    php83-pdo_mysql \
+    php83-pdo_pgsql \
+    php83-pdo_sqlite \
+    php83-posix \
+    php83-redis \
+    php83-session \
+    php83-simplexml \
+    php83-sodium \
+    php83-sqlite3 \
+    php83-sysvsem \
+    php83-xml \
+    php83-xmlreader \
+    php83-xmlwriter \
+    php83-zip \
+    php83-zlib \
+    postgresql-client \
+    python3 \
+    py3-pip \
+    tzdata \
+    util-linux \
+  && mv /etc/php83 /etc/php && ln -s /etc/php /etc/php83 \
+  && mv /etc/init.d/php-fpm83 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm83 \
+  && mv /etc/logrotate.d/php-fpm83 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm83 \
+  && mv /var/log/php83 /var/log/php && ln -s /var/log/php /var/log/php83 \
+  && ln -s /usr/sbin/php-fpm83 /usr/sbin/php-fpm \
+  && pip3 install --upgrade --break-system-packages pip \
+  && pip3 install --break-system-packages nextcloud_news_updater \
+  && cd /tmp \
+  && rm -rf /tmp/* /var/www/*
+
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
+  TZ="UTC" \
+  PUID="1000" \
+  PGID="1000"
+
+COPY --from=yasu / /
+COPY --from=download --chown=nobody:nogroup /dist/nextcloud /var/www
+COPY rootfs /
+
+RUN addgroup -g ${PGID} nextcloud \
+  && adduser -D -h /home/nextcloud -u ${PUID} -G nextcloud -s /bin/sh nextcloud
+
+EXPOSE 8000
+WORKDIR /var/www
+VOLUME [ "/data" ]
+
+ENTRYPOINT [ "/init" ]
+
+HEALTHCHECK --interval=10s --timeout=5s --start-period=20s \
+  CMD /usr/local/bin/healthcheck
