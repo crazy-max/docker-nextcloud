@@ -3,10 +3,10 @@
 ARG NEXTCLOUD_VERSION=33.0.1
 ARG ALPINE_VERSION=3.23
 
-FROM crazymax/yasu:latest AS yasu
+FROM tianon/gosu:latest AS gosu
+
 FROM --platform=${BUILDPLATFORM:-linux/amd64} crazymax/alpine-s6:${ALPINE_VERSION}-2.2.0.3 AS download
 RUN apk --update --no-cache add curl gnupg tar unzip xz
-
 ARG NEXTCLOUD_VERSION
 WORKDIR /tmp
 RUN curl -SsOL "https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" \
@@ -95,7 +95,7 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
   PUID="1000" \
   PGID="1000"
 
-COPY --from=yasu / /
+COPY --from=gosu /gosu /usr/local/bin/
 COPY --from=download --chown=nobody:nogroup /dist/nextcloud /var/www
 COPY rootfs /
 
