@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG NEXTCLOUD_VERSION=31.0.14
-ARG ALPINE_VERSION=3.22
+ARG ALPINE_VERSION=3.23
 
 FROM crazymax/yasu:latest AS yasu
 FROM --platform=${BUILDPLATFORM:-linux/amd64} crazymax/alpine-s6:${ALPINE_VERSION}-2.2.0.3 AS download
@@ -33,58 +33,58 @@ RUN apk --update --no-cache add \
     mariadb-connector-c \
     nginx \
     openssl \
-    php83 \
-    php83-bcmath \
-    php83-bz2 \
-    php83-cli \
-    php83-ctype \
-    php83-curl \
-    php83-dom \
-    php83-exif \
-    php83-fileinfo \
-    php83-fpm \
-    php83-ftp \
-    php83-gd \
-    php83-gmp \
-    php83-iconv \
-    php83-imap \
-    php83-intl \
-    php83-json \
-    php83-ldap \
-    php83-mbstring \
-    php83-opcache \
-    php83-openssl \
-    php83-pcntl \
-    php83-pecl-apcu \
-    php83-pecl-imagick \
-    php83-pecl-memcached \
-    php83-pecl-smbclient \
-    php83-pdo \
-    php83-pdo_mysql \
-    php83-pdo_pgsql \
-    php83-pdo_sqlite \
-    php83-posix \
-    php83-redis \
-    php83-session \
-    php83-simplexml \
-    php83-sodium \
-    php83-sqlite3 \
-    php83-sysvsem \
-    php83-xml \
-    php83-xmlreader \
-    php83-xmlwriter \
-    php83-zip \
-    php83-zlib \
+    php84 \
+    php84-bcmath \
+    php84-bz2 \
+    php84-cli \
+    php84-ctype \
+    php84-curl \
+    php84-dom \
+    php84-exif \
+    php84-fileinfo \
+    php84-fpm \
+    php84-ftp \
+    php84-gd \
+    php84-gmp \
+    php84-iconv \
+    php84-imap \
+    php84-intl \
+    php84-json \
+    php84-ldap \
+    php84-mbstring \
+    php84-opcache \
+    php84-openssl \
+    php84-pcntl \
+    php84-pecl-apcu \
+    php84-pecl-imagick \
+    php84-pecl-memcached \
+    php84-pecl-smbclient \
+    php84-pdo \
+    php84-pdo_mysql \
+    php84-pdo_pgsql \
+    php84-pdo_sqlite \
+    php84-posix \
+    php84-redis \
+    php84-session \
+    php84-simplexml \
+    php84-sodium \
+    php84-sqlite3 \
+    php84-sysvsem \
+    php84-xml \
+    php84-xmlreader \
+    php84-xmlwriter \
+    php84-zip \
+    php84-zlib \
     postgresql-client \
     python3 \
     py3-pip \
     tzdata \
     util-linux \
-  && mv /etc/php83 /etc/php && ln -s /etc/php /etc/php83 \
-  && mv /etc/init.d/php-fpm83 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm83 \
-  && mv /etc/logrotate.d/php-fpm83 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm83 \
-  && mv /var/log/php83 /var/log/php && ln -s /var/log/php /var/log/php83 \
-  && ln -s /usr/sbin/php-fpm83 /usr/sbin/php-fpm \
+  && mv /etc/php84 /etc/php && ln -s /etc/php /etc/php84 \
+  && mv /etc/init.d/php-fpm84 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm84 \
+  && mv /etc/logrotate.d/php-fpm84 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm84 \
+  && mv /var/log/php84 /var/log/php && ln -s /var/log/php /var/log/php84 \
+  && ln -s /usr/sbin/php-fpm84 /usr/sbin/php-fpm \
   && pip3 install --upgrade --break-system-packages pip \
   && pip3 install --break-system-packages nextcloud_news_updater \
   && cd /tmp \
