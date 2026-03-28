@@ -18,7 +18,7 @@ on:
       - 'master'
 
 env:
-  LATEST_DOCKERFILE: Dockerfile-32
+  LATEST_DOCKERFILE: Dockerfile-33
   DOCKERHUB_SLUG: crazymax/nextcloud
   GHCR_SLUG: ghcr.io/crazy-max/nextcloud
 
