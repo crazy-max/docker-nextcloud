@@ -18,7 +18,7 @@ on:
       - 'master'
 
 env:
-  LATEST_DOCKERFILE: Dockerfile-32
+  LATEST_DOCKERFILE: v33.Dockerfile
   DOCKERHUB_SLUG: crazymax/nextcloud
   GHCR_SLUG: ghcr.io/crazy-max/nextcloud
 
@@ -36,7 +36,7 @@ jobs:
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             TAG=${GITHUB_REF#refs/tags/}
             VERSION=${TAG%-*}
-            DOCKERFILE=Dockerfile-${TAG%%.*}
+            DOCKERFILE=v${TAG%%.*}.Dockerfile
           fi
           echo "DOCKERFILE=${DOCKERFILE}" >> $GITHUB_ENV
       -
