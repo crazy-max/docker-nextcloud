@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NEXTCLOUD_VERSION=31.0.14
+ARG NEXTCLOUD_VERSION=34.0.2
 ARG ALPINE_VERSION=3.23
 
 FROM tianon/gosu:latest AS gosu
