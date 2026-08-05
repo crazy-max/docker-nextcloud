@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG NEXTCLOUD_VERSION=33.0.7
-ARG ALPINE_VERSION=3.23
+ARG ALPINE_VERSION=3.24
 
 FROM tianon/gosu:latest AS gosu
 
@@ -33,58 +33,57 @@ RUN apk --update --no-cache add \
     mariadb-connector-c \
     nginx \
     openssl \
-    php84 \
-    php84-bcmath \
-    php84-bz2 \
-    php84-cli \
-    php84-ctype \
-    php84-curl \
-    php84-dom \
-    php84-exif \
-    php84-fileinfo \
-    php84-fpm \
-    php84-ftp \
-    php84-gd \
-    php84-gmp \
-    php84-iconv \
-    php84-imap \
-    php84-intl \
-    php84-json \
-    php84-ldap \
-    php84-mbstring \
-    php84-opcache \
-    php84-openssl \
-    php84-pcntl \
-    php84-pecl-apcu \
-    php84-pecl-imagick \
-    php84-pecl-memcached \
-    php84-pecl-smbclient \
-    php84-pdo \
-    php84-pdo_mysql \
-    php84-pdo_pgsql \
-    php84-pdo_sqlite \
-    php84-posix \
-    php84-redis \
-    php84-session \
-    php84-simplexml \
-    php84-sodium \
-    php84-sqlite3 \
-    php84-sysvsem \
-    php84-xml \
-    php84-xmlreader \
-    php84-xmlwriter \
-    php84-zip \
-    php84-zlib \
+    php85 \
+    php85-bcmath \
+    php85-bz2 \
+    php85-cli \
+    php85-ctype \
+    php85-curl \
+    php85-dom \
+    php85-exif \
+    php85-fileinfo \
+    php85-fpm \
+    php85-ftp \
+    php85-gd \
+    php85-gmp \
+    php85-iconv \
+    php85-imap \
+    php85-intl \
+    php85-json \
+    php85-ldap \
+    php85-mbstring \
+    php85-openssl \
+    php85-pcntl \
+    php85-pecl-apcu \
+    php85-pecl-imagick \
+    php85-pecl-memcached \
+    php85-pecl-smbclient \
+    php85-pdo \
+    php85-pdo_mysql \
+    php85-pdo_pgsql \
+    php85-pdo_sqlite \
+    php85-posix \
+    php85-redis \
+    php85-session \
+    php85-simplexml \
+    php85-sodium \
+    php85-sqlite3 \
+    php85-sysvsem \
+    php85-xml \
+    php85-xmlreader \
+    php85-xmlwriter \
+    php85-zip \
+    php85-zlib \
     postgresql-client \
     python3 \
     py3-pip \
     tzdata \
     util-linux \
-  && mv /etc/php84 /etc/php && ln -s /etc/php /etc/php84 \
-  && mv /etc/init.d/php-fpm84 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm84 \
-  && mv /etc/logrotate.d/php-fpm84 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm84 \
-  && mv /var/log/php84 /var/log/php && ln -s /var/log/php /var/log/php84 \
-  && ln -s /usr/sbin/php-fpm84 /usr/sbin/php-fpm \
+  && mv /etc/php85 /etc/php && ln -s /etc/php /etc/php85 \
+  && mv /etc/init.d/php-fpm85 /etc/init.d/php-fpm && ln -s /etc/init.d/php-fpm /etc/init.d/php-fpm85 \
+  && mv /etc/logrotate.d/php-fpm85 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm85 \
+  && mv /var/log/php85 /var/log/php && ln -s /var/log/php /var/log/php85 \
+  && ln -s /usr/sbin/php-fpm85 /usr/sbin/php-fpm \
   && pip3 install --upgrade --break-system-packages pip \
   && pip3 install --break-system-packages nextcloud_news_updater \
   && cd /tmp \
