@@ -14,92 +14,69 @@ on:
     tags:
       - '*'
   pull_request:
-    branches:
-      - 'master'
 
 env:
   LATEST_DOCKERFILE: v34.Dockerfile
-  DOCKERHUB_SLUG: crazymax/nextcloud
-  GHCR_SLUG: ghcr.io/crazy-max/nextcloud
 
 jobs:
-  build:
+  prepare:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read # same as global permissions
-      packages: write # required to push to GHCR
+    outputs:
+      dockerfile: ${{ steps.prepare.outputs.dockerfile }}
+      latest: ${{ steps.prepare.outputs.latest }}
     steps:
       -
         name: Prepare
+        id: prepare
         run: |
-          DOCKERFILE=${{ env.LATEST_DOCKERFILE }}
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            TAG=${GITHUB_REF#refs/tags/}
-            VERSION=${TAG%-*}
-            DOCKERFILE=v${TAG%%.*}.Dockerfile
+          dockerfile="${LATEST_DOCKERFILE}"
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            tag="${GITHUB_REF#refs/tags/}"
+            dockerfile="v${tag%%.*}.Dockerfile"
           fi
-          echo "DOCKERFILE=${DOCKERFILE}" >> $GITHUB_ENV
-      -
-        name: Docker meta
-        id: meta
-        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
-        with:
-          images: |
-            ${{ env.DOCKERHUB_SLUG }}
-            ${{ env.GHCR_SLUG }}
-          tags: |
-            type=match,pattern=(.*)-r,group=1
-            type=ref,event=pr
-            type=edge
-          flavor: |
-            latest=${{ env.DOCKERFILE == env.LATEST_DOCKERFILE && startsWith(github.ref, 'refs/tags/') }}
-          labels: |
-            org.opencontainers.image.title=Nextcloud
-            org.opencontainers.image.description=Suite of client-server software for creating and using file hosting services
-            org.opencontainers.image.vendor=CrazyMax
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
-      -
-        name: Login to DockerHub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          echo "dockerfile=${dockerfile}" >> "${GITHUB_OUTPUT}"
+          if [[ "${dockerfile}" == "${LATEST_DOCKERFILE}" && "${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "latest=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "latest=false" >> "${GITHUB_OUTPUT}"
+          fi
+
+  build:
+    uses: docker/github-builder/.github/workflows/bake.yml@a492c6d04fd3315f67230809b44d60cc0acd50b3 # v1.16.0
+    needs:
+      - prepare
+    permissions:
+      contents: read # same as global permissions
+      id-token: write # for signing attestation(s) with GitHub OIDC Token
+      packages: write # required to push to GHCR
+    with:
+      setup-qemu: true
+      target: image-all
+      cache: true
+      cache-scope: build
+      output: image
+      push: ${{ github.event_name != 'pull_request' }}
+      set-meta-labels: true
+      meta-images: |
+        crazymax/nextcloud
+        ghcr.io/crazy-max/nextcloud
+      meta-tags: |
+        type=match,pattern=(.*)-r,group=1
+        type=ref,event=pr
+        type=edge
+      meta-flavor: |
+        latest=${{ needs.prepare.outputs.latest == 'true' }}
+      meta-labels: |
+        org.opencontainers.image.title=Nextcloud
+        org.opencontainers.image.description=Suite of client-server software for creating and using file hosting services
+        org.opencontainers.image.vendor=CrazyMax
+      vars: |
+        DOCKERFILE=${{ needs.prepare.outputs.dockerfile }}
+    secrets:
+      registry-auths: |
+        - registry: docker.io
+          username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: Login to GHCR
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
-        with:
-          registry: ghcr.io
+        - registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: Build
-        uses: docker/bake-action@d3418bd7d0e9324001bca92fa8ba175ea7e6dc9b # v7.3.0
-        with:
-          files: |
-            ./docker-bake.hcl
-            cwd://${{ steps.meta.outputs.bake-file }}
-          targets: image-all
-          push: ${{ github.event_name != 'pull_request' }}
-        env:
-          DOCKERFILE: ${{ env.DOCKERFILE }}
-      -
-        name: Check manifest
-        if: github.event_name != 'pull_request'
-        run: |
-          docker buildx imagetools inspect ${{ env.DOCKERHUB_SLUG }}:${{ steps.meta.outputs.version }}
-          docker buildx imagetools inspect ${{ env.GHCR_SLUG }}:${{ steps.meta.outputs.version }}
-      -
-        name: Inspect image
-        if: github.event_name != 'pull_request'
-        run: |
-          docker pull ${{ env.DOCKERHUB_SLUG }}:${{ steps.meta.outputs.version }}
-          docker image inspect ${{ env.DOCKERHUB_SLUG }}:${{ steps.meta.outputs.version }}
-          docker pull ${{ env.GHCR_SLUG }}:${{ steps.meta.outputs.version }}
-          docker image inspect ${{ env.GHCR_SLUG }}:${{ steps.meta.outputs.version }}
