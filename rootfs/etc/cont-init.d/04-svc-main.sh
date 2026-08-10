@@ -9,16 +9,17 @@ if [ "$SIDECAR_CRON" = "1" ] || [ "$SIDECAR_PREVIEWGEN" = "1" ] || [ "$SIDECAR_N
   exit 0
 fi
 
-# Override several config values of Nextcloud
-echo "Bootstrapping configuration..."
-gosu nextcloud:nextcloud php -f /tpls/bootstrap.php > /tmp/config.php
-gosu nextcloud:nextcloud cp /tmp/config.php /data/config/config.php
-gosu nextcloud:nextcloud sed -i -e "s#@TZ@#$TZ#g" /data/config/config.php
+set_system_config() {
+  echo "Setting Nextcloud system configuration..."
+  occ config:system:set logtimezone --value="${TZ:-UTC}" --no-ansi
+  occ config:system:set logdateformat --value="Y-m-d H:i:s" --no-ansi
+}
 
 # Upgrade Nextcloud if installed
 if [ "$(occ status --no-ansi | grep 'installed: true')" != "" ]; then
   echo "Upgrading Nextcloud..."
   occ upgrade --no-ansi
+  set_system_config
 fi
 
 # First install ?
@@ -26,6 +27,7 @@ if [ -f /tmp/first-install ]; then
   echo "Installing Nextcloud ${NEXTCLOUD_VERSION}..."
   gosu nextcloud:nextcloud php /var/www/index.php &>/dev/null
   rm -f /tmp/first-install
+  set_system_config
 
   echo ">>"
   echo ">> Open your browser to configure your admin account"

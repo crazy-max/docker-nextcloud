@@ -126,7 +126,6 @@ linux/s390x
 * `HSTS_HEADER`: [HTTP Strict Transport Security](https://docs.nextcloud.com/server/stable/admin_manual/installation/harden_server.html#enable-http-strict-transport-security) header value (default `max-age=15768000; includeSubDomains`)
 * `XFRAME_OPTS_HEADER`: [X-Frame-Options](https://docs.nextcloud.com/server/stable/admin_manual/installation/harden_server.html#serve-security-related-headers-by-the-web-server) header value (default `SAMEORIGIN`)
 * `RP_HEADER`: [Referrer Policy](https://docs.nextcloud.com/server/stable/admin_manual/installation/harden_server.html#serve-security-related-headers-by-the-web-server) header value (default `strict-origin`)
-* `SUBDIR`: [Subdir](https://docs.nextcloud.com/server/stable/admin_manual/installation/nginx.html#nextcloud-in-a-subdir-of-nginx) to use. Read [this section](#running-in-a-subdir) for more info.
 * `DB_TYPE`: Database type (mysql, pgsql or sqlite) (default `sqlite`)
 * `DB_NAME`: Database name (default `nextcloud`)
 * `DB_USER`: Username for database (default `nextcloud`)
@@ -335,10 +334,33 @@ $CONFIG = [
 
 ### Running in a subdir
 
-If you want to access your Nextcloud installation in a subdir (like
-`/nextcloud`), you have to set the `SUBDIR` environment variable and also add
-`PathPrefixStrip:/nextcloud` to your frontend rule if you use Traefik. Do not
-forget to remove `includeSubDomains` option in `HSTS_HEADER` if used.
+This image does not rewrite requests for subdir deployments. The bundled Nginx
+configuration expects requests to arrive at the root path it serves and emits
+root-relative redirects.
+
+If you expose Nextcloud below a path prefix like `/nextcloud`, configure the
+reverse proxy to own that routing. For example, strip `/nextcloud` before
+forwarding requests to this container and handle any public redirects for that
+prefix in the proxy configuration.
+
+Configure Nextcloud's own URLs separately with a custom configuration file such
+as `/data/config/proxy.config.php`:
+
+```php
+<?php
+
+$CONFIG = [
+    'overwritewebroot' => '/nextcloud',
+];
+```
+
+CalDAV/CardDAV discovery uses root `/.well-known/...` URLs. If your reverse
+proxy only routes `/nextcloud/...` to this container, also route those
+`/.well-known` requests to Nextcloud or redirect them at the proxy to
+`/nextcloud/remote.php/dav/`.
+
+Remember to remove `includeSubDomains` from `HSTS_HEADER` if the prefixed
+deployment does not cover all subdomains.
 
 ## Contributing
 
