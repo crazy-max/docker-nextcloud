@@ -26,7 +26,6 @@ jobs:
       fail-fast: false
       matrix:
         docker_file:
-          - v32.Dockerfile
           - v33.Dockerfile
           - v34.Dockerfile
         dir:
