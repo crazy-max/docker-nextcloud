@@ -74,6 +74,19 @@ DB_TIMEOUT=${DB_TIMEOUT:-60}
 SIDECAR_CRON=${SIDECAR_CRON:-0}
 SIDECAR_NEWSUPDATER=${SIDECAR_NEWSUPDATER:-0}
 
+if [ "$SIDECAR_NEWSUPDATER" = "1" ]; then
+  echo >&2 "ERROR: Nextcloud News Updater sidecar support has been removed."
+  echo >&2 "Use the regular Nextcloud cron sidecar for News app feed updates."
+  exit 1
+fi
+
+SUBDIR=${SUBDIR:-}
+if [ -n "$SUBDIR" ]; then
+  echo >&2 "ERROR: SUBDIR environment variable support has been removed."
+  echo >&2 "Configure path-prefix routing in your reverse proxy and set overwritewebroot in a custom config file."
+  exit 1
+fi
+
 # Timezone
 echo "Setting timezone to ${TZ}..."
 ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
