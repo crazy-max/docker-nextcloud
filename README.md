@@ -41,6 +41,7 @@ ___
   * [Previews generator sidecar](#previews-generator-sidecar)
   * [Nextcloud News Updater](#nextcloud-news-updater)
   * [Email server](#email-server)
+  * [Custom configuration](#custom-configuration)
   * [Redis cache](#redis-cache)
   * [Running in a subdir](#running-in-a-subdir)
 * [Contributing](#contributing)
@@ -167,6 +168,7 @@ linux/s390x
 ## Volumes
 
 * `/data`: Contains config, data folders, installed user apps (not core ones), session, themes, tmp folders
+* `/data/config/*.config.php`: Additional Nextcloud configuration files loaded from the persistent config directory
 
 > [!WARNING]
 > Note that the volume should be owned by the user/group with the specified
@@ -293,20 +295,42 @@ declared in our [`compose.yml`](examples/compose/compose.yml):
 
 ![Email server config](.github/email-server-config.png)
 
+### Custom configuration
+
+Nextcloud can load additional
+[`*.config.php` files](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/config_sample_php_parameters.html#multiple-merged-configuration-files)
+from its config directory.
+Use `/data/config/<name>.config.php` for custom settings instead of editing
+`/data/config/config.php`, which is managed by Nextcloud and this image.
+
+These files are merged with `config.php` and take precedence over values defined
+there. You can inspect the merged configuration with:
+
+```bash
+docker compose exec nextcloud occ config:list system --private
+```
+
+Do not store backup files ending with `.config.php` in `/data/config`, because
+Nextcloud will load them as active configuration.
+
 ### Redis cache
 
 Redis is recommended, alongside APCu to make Nextcloud faster. If you want to
 enable Redis, deploy a redis container (see [compose file](examples/compose/compose.yml))
-and add this to your `config.php`:
+and create `/data/config/redis.config.php`:
 
-```
+```php
+<?php
+
+$CONFIG = [
     'memcache.local' => '\OC\Memcache\APCu',
     'memcache.distributed' => '\OC\Memcache\Redis',
     'memcache.locking' => '\OC\Memcache\Redis',
-    'redis' => array(
+    'redis' => [
         'host' => 'redis',
         'port' => 6379,
-    ),
+    ],
+];
 ```
 
 ### Running in a subdir
