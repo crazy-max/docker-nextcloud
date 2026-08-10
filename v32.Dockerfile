@@ -75,8 +75,6 @@ RUN apk --update --no-cache add \
     php85-zip \
     php85-zlib \
     postgresql-client \
-    python3 \
-    py3-pip \
     tzdata \
     util-linux \
   && mv /etc/php85 /etc/php && ln -s /etc/php /etc/php85 \
@@ -84,8 +82,6 @@ RUN apk --update --no-cache add \
   && mv /etc/logrotate.d/php-fpm85 /etc/logrotate.d/php-fpm && ln -s /etc/logrotate.d/php-fpm /etc/logrotate.d/php-fpm85 \
   && mv /var/log/php85 /var/log/php && ln -s /var/log/php /var/log/php85 \
   && ln -s /usr/sbin/php-fpm85 /usr/sbin/php-fpm \
-  && pip3 install --upgrade --break-system-packages pip \
-  && pip3 install --break-system-packages nextcloud_news_updater \
   && cd /tmp \
   && rm -rf /tmp/* /var/www/*
 

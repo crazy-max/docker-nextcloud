@@ -27,7 +27,6 @@ ___
   * [Nextcloud](#nextcloud)
   * [Cron](#cron)
   * [Previews generator](#previews-generator)
-  * [News Updater](#news-updater)
 * [Volumes](#volumes)
 * [Ports](#ports)
 * [Usage](#usage)
@@ -39,7 +38,6 @@ ___
   * [OCC command](#occ-command)
   * [Cron sidecar](#cron-sidecar)
   * [Previews generator sidecar](#previews-generator-sidecar)
-  * [Nextcloud News Updater](#nextcloud-news-updater)
   * [Email server](#email-server)
   * [Custom configuration](#custom-configuration)
   * [Redis cache](#redis-cache)
@@ -56,7 +54,6 @@ ___
 * [Automatic installation](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/automatic_configuration.html)
 * Cron task for [Nextcloud background jobs](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html#cron) as a [sidecar cron container](#cron-sidecar)
 * Execute pre-generation of previews through [Preview Generator](https://github.com/rullzer/previewgenerator) plugin
-* Handle [Nextcloud News Updater](https://github.com/nextcloud/news-updater) for [News plugin](https://apps.nextcloud.com/apps/news) through a [sidecar news updater container](#nextcloud-news-updater)
 * OPCache enabled to store precompiled script bytecode in shared memory
 * APCu installed and configured
 * Memcached and Redis also enabled to enhance server performance
@@ -152,17 +149,6 @@ linux/s390x
 
 * `SIDECAR_PREVIEWGEN`: Set to `1` to enable sidecar previews generator mode (default `0`)
 * `PREVIEWGEN_PERIOD`: Periodically execute pre-generation of previews (eg. `0 * * * *`)
-
-### News Updater
-
-> [!WARNING]
-> Only used if you enable and run a [sidecar news updater container](#nextcloud-news-updater)
-
-* `SIDECAR_NEWSUPDATER`: Set to `1` to enable sidecar news updater mode (default `0`)
-* `NC_NEWSUPDATER_THREADS`: How many feeds should be fetched in parallel (default `10`)
-* `NC_NEWSUPDATER_TIMEOUT`: Maximum number of seconds for updating a feed (default `300`)
-* `NC_NEWSUPDATER_INTERVAL`: Update interval between fetching the next round of updates in seconds (default `900`)
-* `NC_NEWSUPDATER_LOGLEVEL`: Log granularity, `info` will log all urls and received data, `error` will only log errors (default `error`)
 
 ## Volumes
 
@@ -263,29 +249,6 @@ docker run -d --name nextcloud_previewgen \
   -v "$(pwd)/data:/data" \
   crazymax/nextcloud:latest
 ```
-
-### Nextcloud News Updater
-
-If you want to enable the [Nextcloud News Updater](https://github.com/nextcloud/news-updater),
-you have to run a "sidecar" container (see news_updater service in
-[compose.yml](examples/compose/compose.yml) example) or run a simple container
-like this:
-
-```bash
-docker run -d --name nextcloud_news_updater \
-  --env-file $(pwd)/nextcloud.env \
-  -e "SIDECAR_NEWSUPDATER=1" \
-  -e "NC_NEWSUPDATER_THREADS=10" \
-  -e "NC_NEWSUPDATER_TIMEOUT=300" \
-  -e "NC_NEWSUPDATER_INTERVAL=900" \
-  -e "NC_NEWSUPDATER_LOGLEVEL=error" \
-  -v "$(pwd)/data:/data" \
-  crazymax/nextcloud:latest
-```
-
-And do not forget to disable **Use system cron for updates** in news settings:
-
-![Background jobs](.github/newsupdater-system-cron-updates.png)
 
 ### Email server
 
