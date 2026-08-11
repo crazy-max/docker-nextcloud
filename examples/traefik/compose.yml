@@ -2,25 +2,21 @@ name: nextcloud
 
 services:
   traefik:
-    image: traefik:2.6
+    image: traefik:3.6
     container_name: traefik
     command:
-      - "--global.checknewversion=false"
-      - "--global.sendanonymoususage=false"
-      - "--log=true"
+      - "--global.checkNewVersion=false"
+      - "--global.sendAnonymousUsage=false"
       - "--log.level=INFO"
-      - "--entrypoints.http=true"
       - "--entrypoints.http.address=:80"
       - "--entrypoints.http.http.redirections.entrypoint.to=https"
       - "--entrypoints.http.http.redirections.entrypoint.scheme=https"
-      - "--entrypoints.https=true"
       - "--entrypoints.https.address=:443"
-      - "--certificatesresolvers.letsencrypt"
-      - "--certificatesresolvers.letsencrypt.acme.storage=acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/acme.json"
       - "--certificatesresolvers.letsencrypt.acme.email=webmaster@example.com"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
       - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=http"
-      - "--providers.docker"
+      - "--providers.docker=true"
       - "--providers.docker.watch=true"
       - "--providers.docker.exposedbydefault=false"
     ports:
@@ -76,15 +72,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.nextcloud.entrypoints=https"
       - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.example.com`)"
-      - "traefik.http.routers.nextcloud.middlewares=nextcloud-dav,nextcloud-wellknown"
       - "traefik.http.routers.nextcloud.tls=true"
       - "traefik.http.routers.nextcloud.tls.certresolver=letsencrypt"
       - "traefik.http.routers.nextcloud.tls.domains[0].main=nextcloud.example.com"
       - "traefik.http.services.nextcloud.loadbalancer.server.port=8000"
-      - "traefik.http.middlewares.nextcloud-dav.replacepathregex.regex=^/.well-known/(card|cal)dav"
-      - "traefik.http.middlewares.nextcloud-dav.replacepathregex.replacement=/remote.php/dav/"
-      - "traefik.http.middlewares.nextcloud-wellknown.replacepathregex.regex=^(/.well-known.*)"
-      - "traefik.http.middlewares.nextcloud-wellknown.replacepathregex.replacement=/index.php$$1"
     env_file:
       - "./nextcloud.env"
     environment:
