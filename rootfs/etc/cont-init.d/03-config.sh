@@ -38,10 +38,13 @@ persist_web_dir() {
     for web_entry in "$web_path"/* "$web_path"/.[!.]*; do
       [ -e "$web_entry" ] || continue
       entry_name="$(basename "$web_entry")"
-      [ -e "${data_path}/${entry_name}" ] || cp -a "$web_entry" "$data_path/"
+      if [ ! -e "${data_path}/${entry_name}" ]; then
+        cp -a "$web_entry" "$data_path/" || exit 1
+      fi
     done
-    mv "$web_path" "${web_path}.dist"
+    rm -rf "$web_path"
   fi
+  rm -rf "${web_path}.dist"
   if [ -e "$web_path" ] && [ ! -L "$web_path" ]; then
     echo >&2 "ERROR: Failed to replace ${web_path} with ${data_path} symlink"
     exit 1
