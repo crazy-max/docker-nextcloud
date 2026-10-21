@@ -24,8 +24,8 @@ jobs:
       fail-fast: false
       matrix:
         docker_file:
-          - v33.Dockerfile
           - v34.Dockerfile
+          - v35.Dockerfile
         dir:
           - mysql
           - pgsql

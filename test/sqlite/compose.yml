@@ -2,7 +2,7 @@ name: nextcloud
 
 services:
   redis:
-    image: redis:6-alpine
+    image: redis:8-alpine
     container_name: nextcloud_redis
     environment:
       - "TZ"

@@ -16,7 +16,7 @@ on:
   pull_request:
 
 env:
-  LATEST_DOCKERFILE: v34.Dockerfile
+  LATEST_DOCKERFILE: v35.Dockerfile
 
 jobs:
   prepare:
