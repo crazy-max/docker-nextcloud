@@ -1,5 +1,4 @@
-#!/usr/bin/with-contenv sh
-# shellcheck shell=sh
+#!/bin/sh
 
 CRONTAB_PATH="/var/spool/cron/crontabs"
 SIDECAR_PREVIEWGEN=${SIDECAR_PREVIEWGEN:-0}
@@ -15,7 +14,7 @@ echo ">>"
 
 # Init
 rm -rf ${CRONTAB_PATH}
-mkdir -m 0644 -p ${CRONTAB_PATH}
+mkdir -p ${CRONTAB_PATH}
 touch ${CRONTAB_PATH}/nextcloud
 
 # Cron
@@ -28,13 +27,5 @@ fi
 
 # Fix perms
 echo "Fixing crontabs permissions..."
-chmod -R 0644 ${CRONTAB_PATH}
-
-# Create service
-mkdir -p /etc/services.d/cron
-cat > /etc/services.d/cron/run <<EOL
-#!/usr/bin/execlineb -P
-with-contenv
-exec busybox crond -f -L /dev/stdout
-EOL
-chmod +x /etc/services.d/cron/run
+chmod 0755 ${CRONTAB_PATH}
+chmod 0644 ${CRONTAB_PATH}/nextcloud
