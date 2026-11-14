@@ -1,0 +1,13 @@
+#!/command/with-contenv sh
+set -eu
+
+contents=/etc/s6-overlay/s6-rc.d/user/contents.d
+mkdir -p "${contents}"
+
+if [ "${SIDECAR_CRON:-0}" = "1" ] || [ "${SIDECAR_PREVIEWGEN:-0}" = "1" ]; then
+  rm -f "${contents}/nginx" "${contents}/php-fpm"
+  touch "${contents}/cron"
+else
+  rm -f "${contents}/cron"
+  touch "${contents}/nginx" "${contents}/php-fpm"
+fi

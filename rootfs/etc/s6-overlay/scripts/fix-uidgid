@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+if [ -n "${PGID}" ] && [ "${PGID}" != "$(id -g nextcloud)" ]; then
+  echo "Switching to PGID ${PGID}..."
+  groupmod -o -g "${PGID}" nextcloud
+fi
+if [ -n "${PUID}" ] && [ "${PUID}" != "$(id -u nextcloud)" ]; then
+  echo "Switching to PUID ${PUID}..."
+  usermod -o -u "${PUID}" nextcloud
+fi

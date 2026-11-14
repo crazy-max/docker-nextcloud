@@ -5,7 +5,7 @@ ARG ALPINE_VERSION=3.24
 
 FROM tianon/gosu:latest AS gosu
 
-FROM --platform=${BUILDPLATFORM:-linux/amd64} crazymax/alpine-s6:${ALPINE_VERSION}-2.2.0.3 AS download
+FROM --platform=${BUILDPLATFORM:-linux/amd64} alpine:${ALPINE_VERSION} AS download
 RUN apk --update --no-cache add curl gnupg tar unzip xz
 ARG NEXTCLOUD_VERSION
 WORKDIR /tmp
@@ -17,7 +17,7 @@ RUN gpg --import "nextcloud.asc" \
 WORKDIR /dist/nextcloud
 RUN tar -xjf "/tmp/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" --strip 1 -C .
 
-FROM crazymax/alpine-s6:${ALPINE_VERSION}-2.2.0.3
+FROM alpine:${ALPINE_VERSION}
 RUN apk --update --no-cache add \
     bash \
     ca-certificates \
@@ -75,6 +75,8 @@ RUN apk --update --no-cache add \
     php85-zip \
     php85-zlib \
     postgresql-client \
+    s6-overlay \
+    shadow \
     tzdata \
     util-linux \
   && mv /etc/php85 /etc/php && ln -s /etc/php /etc/php85 \
@@ -86,6 +88,7 @@ RUN apk --update --no-cache add \
   && rm -rf /tmp/* /var/www/*
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2" \
+  S6_STAGE2_HOOK="/etc/s6-overlay/scripts/runtime-bundles" \
   TZ="UTC" \
   PUID="1000" \
   PGID="1000"

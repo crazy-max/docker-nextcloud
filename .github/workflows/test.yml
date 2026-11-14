@@ -16,6 +16,8 @@ on:
 env:
   BUILD_TAG: nextcloud:test
   CONTAINER_NAME: nextcloud
+  PUID: "1234"
+  PGID: "1235"
 
 jobs:
   test:
@@ -46,7 +48,7 @@ jobs:
       -
         name: Start
         run: |
-          docker compose up -d
+          docker compose up -d --wait --wait-timeout 120
         working-directory: test/${{ matrix.dir }}
         env:
           NEXTCLOUD_IMAGE: ${{ env.BUILD_TAG }}
@@ -57,6 +59,16 @@ jobs:
         with:
           name: ${{ env.CONTAINER_NAME }}
           log_check: "ready to handle connections"
+      -
+        name: Check services
+        run: |
+          docker compose exec -T nextcloud sh -s < ../services.sh
+          docker compose exec -T cron sh -s < ../services.sh
+          docker compose exec -T previewgen sh -s < ../services.sh
+        working-directory: test/${{ matrix.dir }}
+        env:
+          NEXTCLOUD_IMAGE: ${{ env.BUILD_TAG }}
+          NEXTCLOUD_CONTAINER: ${{ env.CONTAINER_NAME }}
       -
         name: Logs
         if: always()

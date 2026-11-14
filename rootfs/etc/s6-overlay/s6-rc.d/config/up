@@ -1,0 +1,8 @@
+with-contenv
+if { /etc/s6-overlay/scripts/fix-logs }
+if { /etc/s6-overlay/scripts/fix-uidgid }
+if { /etc/s6-overlay/scripts/fix-perms }
+if { /etc/s6-overlay/scripts/config }
+if { /etc/s6-overlay/scripts/config-main }
+if { /etc/s6-overlay/scripts/config-cron }
+/etc/s6-overlay/scripts/config-previewgen
