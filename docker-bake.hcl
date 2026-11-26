@@ -2,10 +2,6 @@ variable "DEFAULT_TAG" {
   default = "nextcloud:local"
 }
 
-variable "DOCKERFILE" {
-  default = "v35.Dockerfile"
-}
-
 // Special target: https://github.com/docker/metadata-action#bake-definition
 target "docker-metadata-action" {
   tags = ["${DEFAULT_TAG}"]
@@ -16,12 +12,8 @@ group "default" {
   targets = ["image-local"]
 }
 
-target "dockerfile" {
-  dockerfile = DOCKERFILE
-}
-
 target "image" {
-  inherits = ["dockerfile", "docker-metadata-action"]
+  inherits = ["docker-metadata-action"]
 }
 
 target "image-local" {

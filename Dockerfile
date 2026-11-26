@@ -1,21 +1,20 @@
 # syntax=docker/dockerfile:1
 
-ARG NEXTCLOUD_VERSION=34.0.5
+ARG NEXTCLOUD_VERSION=35.0.2
 ARG ALPINE_VERSION=3.24
 
 FROM tianon/gosu:latest AS gosu
 
 FROM --platform=${BUILDPLATFORM:-linux/amd64} alpine:${ALPINE_VERSION} AS download
-RUN apk --update --no-cache add curl gnupg tar unzip xz
+RUN apk --update --no-cache add gnupg tar unzip xz
 ARG NEXTCLOUD_VERSION
 WORKDIR /tmp
-RUN curl -SsOL "https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" \
-  && curl -SsOL "https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc" \
-  && curl -SsOL "https://nextcloud.com/nextcloud.asc"
-RUN gpg --import "nextcloud.asc" \
-  && gpg --verify --batch --no-tty "nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc" "nextcloud-${NEXTCLOUD_VERSION}.tar.bz2"
+ADD https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 ./nextcloud.tar.bz2
+ADD https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc ./nextcloud.tar.bz2.asc
+ADD --checksum=sha256:ae5d6087ae037a673b9901c946a156b180744253375e2e18e1005e6310d95d55 https://nextcloud.com/nextcloud.asc ./nextcloud.asc
+RUN gpg --import "nextcloud.asc" && gpg --verify --batch --no-tty nextcloud.tar.bz2.asc nextcloud.tar.bz2
 WORKDIR /dist/nextcloud
-RUN tar -xjf "/tmp/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" --strip 1 -C .
+RUN tar -xjf /tmp/nextcloud.tar.bz2 --strip 1 -C .
 
 FROM alpine:${ALPINE_VERSION}
 RUN apk --update --no-cache add \

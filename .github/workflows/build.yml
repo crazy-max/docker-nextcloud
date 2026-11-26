@@ -15,36 +15,9 @@ on:
       - '*'
   pull_request:
 
-env:
-  LATEST_DOCKERFILE: v35.Dockerfile
-
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    outputs:
-      dockerfile: ${{ steps.prepare.outputs.dockerfile }}
-      latest: ${{ steps.prepare.outputs.latest }}
-    steps:
-      -
-        name: Prepare
-        id: prepare
-        run: |
-          dockerfile="${LATEST_DOCKERFILE}"
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            tag="${GITHUB_REF#refs/tags/}"
-            dockerfile="v${tag%%.*}.Dockerfile"
-          fi
-          echo "dockerfile=${dockerfile}" >> "${GITHUB_OUTPUT}"
-          if [[ "${dockerfile}" == "${LATEST_DOCKERFILE}" && "${GITHUB_REF}" == refs/tags/* ]]; then
-            echo "latest=true" >> "${GITHUB_OUTPUT}"
-          else
-            echo "latest=false" >> "${GITHUB_OUTPUT}"
-          fi
-
   build:
     uses: docker/github-builder/.github/workflows/bake.yml@58cb9f5b71b1836d6f690c1e95effdeb9b98cb8a # v1.17.0
-    needs:
-      - prepare
     permissions:
       contents: read # same as global permissions
       id-token: write # for signing attestation(s) with GitHub OIDC Token
@@ -62,14 +35,10 @@ jobs:
         type=match,pattern=(.*)-r,group=1
         type=ref,event=pr
         type=edge
-      meta-flavor: |
-        latest=${{ needs.prepare.outputs.latest == 'true' }}
       meta-labels: |
         org.opencontainers.image.title=Nextcloud
         org.opencontainers.image.description=Suite of client-server software for creating and using file hosting services
         org.opencontainers.image.vendor=CrazyMax
-      vars: |
-        DOCKERFILE=${{ needs.prepare.outputs.dockerfile }}
     secrets:
       registry-auths: |
         - registry: docker.io
