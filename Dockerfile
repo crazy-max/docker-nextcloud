@@ -1,6 +1,10 @@
 # syntax=docker/dockerfile:1
 
+# renovate: datasource=custom.nextcloud depName=nextcloud-releases/server
 ARG NEXTCLOUD_VERSION=35.0.2
+ARG NEXTCLOUD_SHA256=dfc7955eaec5621de90e031d10f76006173b3f3e31d5d6e174821d1da14f162d
+ARG NEXTCLOUD_ASC_SHA256=85635385653baeb82bfc1628bd8de4fb941e0f1bcecbadfa699ba894cad308db
+# renovate: datasource=docker depName=alpine versioning=docker
 ARG ALPINE_VERSION=3.24
 
 FROM tianon/gosu:latest AS gosu
@@ -8,9 +12,11 @@ FROM tianon/gosu:latest AS gosu
 FROM --platform=${BUILDPLATFORM:-linux/amd64} alpine:${ALPINE_VERSION} AS download
 RUN apk --update --no-cache add gnupg tar unzip xz
 ARG NEXTCLOUD_VERSION
+ARG NEXTCLOUD_SHA256
+ARG NEXTCLOUD_ASC_SHA256
 WORKDIR /tmp
-ADD https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 ./nextcloud.tar.bz2
-ADD https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc ./nextcloud.tar.bz2.asc
+ADD --checksum=sha256:${NEXTCLOUD_SHA256} https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 ./nextcloud.tar.bz2
+ADD --checksum=sha256:${NEXTCLOUD_ASC_SHA256} https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc ./nextcloud.tar.bz2.asc
 ADD --checksum=sha256:ae5d6087ae037a673b9901c946a156b180744253375e2e18e1005e6310d95d55 https://nextcloud.com/nextcloud.asc ./nextcloud.asc
 RUN gpg --import "nextcloud.asc" && gpg --verify --batch --no-tty nextcloud.tar.bz2.asc nextcloud.tar.bz2
 WORKDIR /dist/nextcloud
