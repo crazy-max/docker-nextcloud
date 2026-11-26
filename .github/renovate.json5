@@ -1,0 +1,75 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigestsToSemver",
+    "helpers:githubDigestChangelogs"
+  ],
+  "enabledManagers": [
+    "github-actions",
+    "dockerfile",
+    "custom.regex"
+  ],
+  "prHourlyLimit": 0,
+  "minimumReleaseAge": "2 days",
+  "internalChecksFilter": "strict",
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "commitMessageSuffix": ""
+  },
+  "labels": ["kind/dependencies", "bot"],
+  "semanticCommits": "disabled",
+  "commitMessagePrefix": "deps{{#if isVulnerabilityAlert}}(security){{/if}}:",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^Dockerfile$/"],
+      // Capture both SHA-256 arguments as one digest so Renovate replaces them together.
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>custom\\.nextcloud) depName=(?<depName>\\S+)\\r?\\nARG NEXTCLOUD_VERSION=(?<currentValue>\\d+\\.\\d+\\.\\d+)\\r?\\nARG NEXTCLOUD_SHA256=(?<currentDigest>[a-f0-9]{64}\\r?\\nARG NEXTCLOUD_ASC_SHA256=[a-f0-9]{64})"
+      ]
+    }
+  ],
+  "customDatasources": {
+    "nextcloud": {
+      "defaultRegistryUrlTemplate": "https://api.github.com/repos/{{packageName}}/releases?per_page=100",
+      "transformTemplates": [
+        "{\
+          'releases': [$map(\
+            $[draft = false and prerelease = false and $match(tag_name, /^v[0-9]+\\.[0-9]+\\.[0-9]+$/)],\
+            function($r) { (\
+              $version := $substringAfter($r.tag_name, 'v');\
+              $archive := 'nextcloud-' & $version & '.tar.bz2';\
+              $assets := $r.assets[$match($string(digest), /^sha256:[a-f0-9]{64}$/)];\
+              $tar := $assets[name = $archive].digest;\
+              $asc := $assets[name = $archive & '.asc'].digest;\
+              $exists($tar) and $exists($asc) ? {\
+                'version': $version,\
+                'digest': $substringAfter($tar, 'sha256:') & '\\nARG NEXTCLOUD_ASC_SHA256=' & $substringAfter($asc, 'sha256:'),\
+                'releaseTimestamp': $r.published_at,\
+                'changelogUrl': $r.html_url\
+              }\
+            ) }\
+          )],\
+          'sourceUrl': 'https://github.com/nextcloud-releases/server'\
+        }"
+      ]
+    }
+  },
+  "packageRules": [
+    {
+      "matchFileNames": ["Dockerfile"],
+      "commitMessagePrefix": "deps(dockerfile{{#if isVulnerabilityAlert}},security{{/if}}):"
+    },
+    {
+      "matchFileNames": [".github/workflows/**"],
+      "commitMessagePrefix": "deps(ci{{#if isVulnerabilityAlert}},security{{/if}}):"
+    },
+    {
+      "matchUpdateTypes": ["major", "minor", "patch"],
+      "commitMessageAction": "bump",
+      "commitMessageTopic": "{{{depName}}}",
+      "commitMessageExtra": "from {{{replace '^v' '' currentValue}}} to {{{replace '^v' '' newValue}}}"
+    }
+  ]
+}
