@@ -17,7 +17,8 @@ ARG NEXTCLOUD_ASC_SHA256
 WORKDIR /tmp
 ADD --checksum=sha256:${NEXTCLOUD_SHA256} https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2 ./nextcloud.tar.bz2
 ADD --checksum=sha256:${NEXTCLOUD_ASC_SHA256} https://download.nextcloud.com/server/releases/nextcloud-${NEXTCLOUD_VERSION}.tar.bz2.asc ./nextcloud.tar.bz2.asc
-ADD --checksum=sha256:ae5d6087ae037a673b9901c946a156b180744253375e2e18e1005e6310d95d55 https://nextcloud.com/nextcloud.asc ./nextcloud.asc
+# Release signing key from https://nextcloud.com/nextcloud.asc
+COPY nextcloud.asc ./nextcloud.asc
 RUN gpg --import "nextcloud.asc" && gpg --verify --batch --no-tty nextcloud.tar.bz2.asc nextcloud.tar.bz2
 WORKDIR /dist/nextcloud
 RUN tar -xjf /tmp/nextcloud.tar.bz2 --strip 1 -C .
