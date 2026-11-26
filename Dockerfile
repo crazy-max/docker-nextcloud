@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:1
 
 # renovate: datasource=custom.nextcloud depName=nextcloud-releases/server
-ARG NEXTCLOUD_VERSION=35.0.2
-ARG NEXTCLOUD_SHA256=dfc7955eaec5621de90e031d10f76006173b3f3e31d5d6e174821d1da14f162d
-ARG NEXTCLOUD_ASC_SHA256=85635385653baeb82bfc1628bd8de4fb941e0f1bcecbadfa699ba894cad308db
+ARG NEXTCLOUD_VERSION=35.0.3
+ARG NEXTCLOUD_SHA256=58401440ce81b7f8d445a8c2a8027572b616ef83592f96b121fd15ec8a1aed35
+ARG NEXTCLOUD_ASC_SHA256=1a498e7e4e7fc28ca529bccfa50b4ca066dafd9d06d2c95652b31e510ef9068c
 # renovate: datasource=docker depName=alpine versioning=docker
 ARG ALPINE_VERSION=3.24
 
